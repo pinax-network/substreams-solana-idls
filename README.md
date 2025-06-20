@@ -1,0 +1,2 @@
+# substreams-idls
+Substreams IDLs
