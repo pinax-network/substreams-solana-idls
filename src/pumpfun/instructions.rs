@@ -1,8 +1,23 @@
-use borsh::BorshDeserialize;
-use substreams_solana_utils::pubkey::Pubkey;
+use crate::common::ParseError;
+use borsh::{BorshDeserialize, BorshSerialize};
+use serde::{Deserialize, Serialize};
+use solana_program::pubkey::Pubkey;
 
-#[derive(Debug, BorshDeserialize)]
-pub enum PumpfunInstruction {
+// -----------------------------------------------------------------------------
+// Discriminators
+// -----------------------------------------------------------------------------
+const INITIALIZE: [u8; 8] = [175, 175, 109, 31, 13, 152, 155, 237];
+const SET_PARAMS: [u8; 8] = [165, 31, 134, 53, 189, 180, 130, 255];
+const CREATE_INSTRUCTION: [u8; 8] = [24, 30, 200, 40, 5, 28, 7, 119];
+const BUY: [u8; 8] = [102, 6, 61, 18, 1, 218, 235, 234];
+const SELL: [u8; 8] = [51, 230, 133, 164, 1, 127, 131, 173];
+const WITHDRAW: [u8; 8] = [183, 18, 70, 156, 148, 109, 161, 34];
+
+// -----------------------------------------------------------------------------
+// Event data structures
+// -----------------------------------------------------------------------------
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum PumpFunInstruction {
     Initialize,
     SetParams(SetParamsInstruction),
     Create(CreateInstruction),
@@ -12,22 +27,7 @@ pub enum PumpfunInstruction {
     Unknown,
 }
 
-impl PumpfunInstruction {
-    pub fn unpack(data: &[u8]) -> Result<Self, &'static str> {
-        let (tag, data) = data.split_at(8);
-        match tag {
-            [175, 175, 109, 31, 13, 152, 155, 237] => Ok(Self::Initialize),
-            [165, 31, 134, 53, 189, 180, 130, 255] => Ok(Self::SetParams(SetParamsInstruction::unpack(data)?)),
-            [24, 30, 200, 40, 5, 28, 7, 119] => Ok(Self::Create(CreateInstruction::unpack(data)?)),
-            [102, 6, 61, 18, 1, 218, 235, 234] => Ok(Self::Buy(BuyInstruction::unpack(data)?)),
-            [51, 230, 133, 164, 1, 127, 131, 173] => Ok(Self::Sell(SellInstruction::unpack(data)?)),
-            [183, 18, 70, 156, 148, 109, 161, 34] => Ok(Self::Withdraw),
-            _ => Ok(Self::Unknown),
-        }
-    }
-}
-
-#[derive(Debug, BorshDeserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct SetParamsInstruction {
     pub fee_recipient: Pubkey,
     pub initial_virtual_token_reserves: u64,
@@ -36,46 +36,74 @@ pub struct SetParamsInstruction {
     pub token_total_supply: u64,
     pub fee_basis_points: u64,
 }
-
-impl SetParamsInstruction {
-    fn unpack(data: &[u8]) -> Result<Self, &'static str> {
-        Self::deserialize(&mut &data[..]).map_err(|_| "Failed to deserialize SetParamsInstruction.")
-    }
-}
-
-#[derive(Debug, BorshDeserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CreateInstruction {
     pub name: String,
     pub symbol: String,
     pub uri: String,
 }
-
-impl CreateInstruction {
-    fn unpack(data: &[u8]) -> Result<Self, &'static str> {
-        Self::deserialize(&mut &data[..]).map_err(|_| "Failed to deserialize CreateInstruction.")
-    }
-}
-
-#[derive(Debug, BorshDeserialize)]
+/// Buys tokens from a Pump.fun bonding curve, swapping SOL for the specified SPL token.
+///
+/// This instruction transfers up to `max_sol_cost` lamports from the buyer’s wallet,
+/// sends any protocol fees to the fee recipient, deposits the SOL into the curve’s vault,
+/// mints `amount` tokens to the buyer’s token account (creating it if needed),
+/// and emits a purchase event.
+///
+/// ### Accounts expected by this instruction:
+///
+/// 0. `[]` Global state account.
+/// 1. `[writable]` Fee recipient account.
+/// 2. `[]` Token mint (e.g. CWOIN).
+/// 3. `[writable]` Bonding curve configuration account.
+/// 4. `[writable]` Vault account holding the curve’s token reserve.
+/// 5. `[writable]` User state account (tracks per-user data).
+/// 6. `[writable, signer]` Buyer’s wallet (fee payer).
+/// 7. `[]` System program.
+/// 8. `[]` SPL Token program.
+/// 9. `[writable]` Creator vault account (for creator-fee withdrawals).
+/// 10. `[]` Event authority account (used to record purchase events).
+/// 11. `[]` Pump.fun program ID.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct BuyInstruction {
-    pub amount: u64,
+    /// Amount of tokens to buy (in token smallest units)
+    pub amount: u64, // foo
+    /// Maximum acceptable SOL cost for the purchase (slippage protection)
     pub max_sol_cost: u64,
 }
 
-impl BuyInstruction {
-    fn unpack(data: &[u8]) -> Result<Self, &'static str> {
-        Self::deserialize(&mut &data[..]).map_err(|_| "Failed to deserialize BuyInstruction.")
-    }
-}
-
-#[derive(Debug, BorshDeserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct SellInstruction {
     pub amount: u64,
     pub min_sol_output: u64,
 }
 
-impl SellInstruction {
-    fn unpack(data: &[u8]) -> Result<Self, &'static str> {
-        Self::deserialize(&mut &data[..]).map_err(|_| "Failed to deserialize SellInstruction.")
+// -----------------------------------------------------------------------------
+// Parsing implementation
+// -----------------------------------------------------------------------------
+impl<'a> TryFrom<&'a [u8]> for PumpFunInstruction {
+    type Error = ParseError;
+
+    fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
+        if data.len() < 16 {
+            return Err(ParseError::TooShort(data.len()));
+        }
+
+        let discriminator: [u8; 8] = data[0..8].try_into().expect("slice with length 8");
+        let payload = &data[8..];
+
+        match discriminator {
+            SET_PARAMS => Ok(Self::SetParams(SetParamsInstruction::try_from_slice(payload)?)),
+            CREATE_INSTRUCTION => Ok(Self::Create(CreateInstruction::try_from_slice(payload)?)),
+            BUY => Ok(Self::Buy(BuyInstruction::try_from_slice(payload)?)),
+            SELL => Ok(Self::Sell(SellInstruction::try_from_slice(payload)?)),
+            WITHDRAW => Ok(Self::Withdraw),
+            INITIALIZE => Ok(Self::Initialize),
+            other => Err(ParseError::Unknown(other)),
+        }
     }
+}
+
+// Convenience function retaining the old name; forwards to `TryFrom`.
+pub fn unpack(data: &[u8]) -> Result<PumpFunInstruction, ParseError> {
+    PumpFunInstruction::try_from(data)
 }

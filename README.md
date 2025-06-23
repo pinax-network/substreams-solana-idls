@@ -36,8 +36,8 @@ use substreams_solana_idls::pumpfun;
 fn map_events(block: Block) -> Result<Events, Error> {
     for tx in block.transactions() {
         for instruction in tx.walk_instructions() {
-            match pumpfun::logs::unpack(instruction.data()) {
-                pumpfun::logs::PumpFunEvent::Trade(trade) => {
+            match pumpfun::events::unpack(instruction.data()) {
+                pumpfun::events::PumpFunEvent::Trade(trade) => {
                     /* Trade event handling logic */
                 }
                 _ => {},

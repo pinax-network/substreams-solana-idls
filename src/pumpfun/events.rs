@@ -1,20 +1,15 @@
+use crate::common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
-use thiserror::Error;
 
 // -----------------------------------------------------------------------------
-// Error handling
+// Discriminators
 // -----------------------------------------------------------------------------
-#[derive(Error, Debug)]
-pub enum ParseError {
-    #[error("payload too short: {0} bytes (need at least 16)")]
-    TooShort(usize),
-    #[error("unknown discriminator {0:?}")]
-    Unknown([u8; 8]),
-    #[error("Borsh decode error: {0}")]
-    Decode(#[from] borsh::io::Error),
-}
+const CREATE: [u8; 8] = [27, 114, 169, 77, 222, 235, 99, 118];
+const TRADE: [u8; 8] = [228, 69, 165, 46, 81, 203, 154, 29];
+const COMPLETE: [u8; 8] = [95, 114, 97, 156, 212, 46, 152, 8];
+const SETPARMS: [u8; 8] = [223, 195, 159, 246, 62, 48, 143, 131];
 
 // -----------------------------------------------------------------------------
 // Event data structures
@@ -25,6 +20,7 @@ pub enum PumpFunEvent {
     Trade(TradeEvent),
     Complete(CompleteEvent),
     SetParams(SetParamsEvent),
+    Unknown,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
@@ -82,14 +78,6 @@ pub struct CompleteEvent {
 }
 
 // -----------------------------------------------------------------------------
-// Discriminators (consts make maintenance + testing easier)
-// -----------------------------------------------------------------------------
-const CREATE: [u8; 8] = [27, 114, 169, 77, 222, 235, 99, 118];
-const TRADE: [u8; 8] = [228, 69, 165, 46, 81, 203, 154, 29];
-const COMPLETE: [u8; 8] = [95, 114, 97, 156, 212, 46, 152, 8];
-const SETPARMS: [u8; 8] = [223, 195, 159, 246, 62, 48, 143, 131];
-
-// -----------------------------------------------------------------------------
 // Parsing implementation
 // -----------------------------------------------------------------------------
 impl<'a> TryFrom<&'a [u8]> for PumpFunEvent {
@@ -100,10 +88,10 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunEvent {
             return Err(ParseError::TooShort(data.len()));
         }
 
-        let disc: [u8; 8] = data[0..8].try_into().expect("slice with length 8");
+        let discriminator: [u8; 8] = data[0..8].try_into().expect("slice with length 8");
         let payload = &data[16..]; // skip pump.fun + Anchor discriminators
 
-        match disc {
+        match discriminator {
             CREATE => Ok(Self::Create(CreateEvent::try_from_slice(payload)?)),
             TRADE => Ok(Self::Trade(TradeEvent::try_from_slice(payload)?)),
             COMPLETE => Ok(Self::Complete(CompleteEvent::try_from_slice(payload)?)),
@@ -113,7 +101,7 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunEvent {
     }
 }
 
-/// Convenience function retaining the old name; forwards to `TryFrom`.
+// Convenience function retaining the old name; forwards to `TryFrom`.
 pub fn unpack(data: &[u8]) -> Result<PumpFunEvent, ParseError> {
     PumpFunEvent::try_from(data)
 }
