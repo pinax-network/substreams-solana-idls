@@ -4,40 +4,36 @@ mod tests {
     use substreams_idls::pumpfun;
 
     #[test]
-    fn parse_trade_log() {
+    fn parse_event_trade_event() {
         // --------------------------------------------------------------------
         // raw Pump.fun Trade event (hex)
         // --------------------------------------------------------------------
         // https://solscan.io/tx/sK44CDg4qzi9jvTgA32dCTNh6Y3CgXki2kj9XtpaXRr83BipzpWPjnENzJR3TjLegAfDfPDG5Z8GZDkbrXDQk3w
-        let bytes = hex!("e445a52e51cb9a1dbddb7fd34ee661ee32e48e8b6ad77786c4e23fb007a1fb63f64412846ee10800244665850d8f918fecd4eb020000000052ee26d37800000001ed09a7fd83eda97b39a03f1bed6c3629d4bf3bd2c4a26f26c90fccb41e3c61db26b2466800000000484fe4d70c0000002592f509be12020048a3c0db0500000025fae2bd2c140100e004c87ceb98fa5ce47f803806fd2c7945d29524959aec00ded97814f38f78465f00000000000000bb1a0700000000005bc9df4aa79d20a724add3dae08e33ed59fb304bf1033a7f0e50777f5b87f86c0500000000000000b95f000000000000");
+        let bytes = hex!("e445a52e51cb9a1dbddb7fd34ee661ee1506533f60e64c4528916a7b404296ac72a1b1b65e817505f94b02b46d1969be46b1f416000000000076c04f9a040000013cd2f118afae78c0d0a91f649ff048b4a16749e82caac521286d90a6085cdd1026b2466800000000e7329a910b0000009d11034a374d0200e7867695040000009d79f0fda54e0100ad11e6a4fc2944a4fa8251bef815426e1bfb28c6b6646677607c6ad9f566a6465f000000000000001ed4370000000000deed67d04e125b1a2d7c6933fec6c7b08bce5763a576c88dcd36697d38298183050000000000000038f0020000000000");
 
         // --------------------------------------------------------------------
         // decode and make sure we got the right variant
         // --------------------------------------------------------------------
-        let pump_log = pumpfun::logs::parse_event(&bytes).expect("decode PumpfunLog");
-        let trade = match pump_log {
-            pumpfun::logs::PumpFunEvent::Trade(trade) => trade,
+        match pumpfun::logs::parse_event(&bytes).expect("decode PumpfunLog") {
+            pumpfun::logs::PumpFunEvent::Trade(trade) => {
+                assert_eq!(trade.mint.to_string(), "2R5A2hvHqKUQE2sDpBQhPpCS5psiFFurPWfKazAnE8oX");
+                assert_eq!(trade.sol_amount, 385_134_918);
+                assert_eq!(trade.token_amount, 5_060_809_487_872);
+                assert!(trade.is_buy);
+                assert_eq!(trade.user.to_string(), "56S29mZ3wqvw8hATuUUFqKhGcSGYFASRRFNT38W8q7G3");
+                assert_eq!(trade.timestamp, 1_749_463_590);
+                assert_eq!(trade.virtual_sol_reserves, 49_687_442_151);
+                assert_eq!(trade.virtual_token_reserves, 647_849_813_676_445);
+                assert_eq!(trade.real_sol_reserves, 19_687_442_151);
+                assert_eq!(trade.real_token_reserves, 367_949_813_676_445);
+                assert_eq!(trade.fee_recipient.to_string(), "CebN5WGQ4jvEPvsVU4EoHEpgzq1VV7AbicfhtW4xC9iM");
+                assert_eq!(trade.fee_basis_points, 95);
+                assert_eq!(trade.fee, 3_658_782);
+                assert_eq!(trade.creator.to_string(), "G1DUMJ8japRCHHxWkyVwsrzRJC4DSHCFD7NefPi6kZg6");
+                assert_eq!(trade.creator_fee_basis_points, 5);
+                assert_eq!(trade.creator_fee, 192_568);
+            }
             _ => panic!("Expected a Trade event"),
-        };
-
-        // --------------------------------------------------------------------
-        // assertions (values taken from the JSON you supplied)
-        // --------------------------------------------------------------------
-        assert_eq!(trade.mint.to_string(), "4RfXFyiDSGvKukvz5yYFZ6qAD8MrvXrcvyW11xSfpump");
-        assert_eq!(trade.sol_amount, 49_009_900);
-        assert_eq!(trade.token_amount, 518_938_619_474);
-        assert!(trade.is_buy);
-        assert_eq!(trade.user.to_string(), "GxJAXx1tgzUYLBMW47PZcibHJKh4nHcrrnJry1FQ9KSz");
-        assert_eq!(trade.timestamp, 1_749_463_590);
-        assert_eq!(trade.virtual_sol_reserves, 55_161_671_496);
-        assert_eq!(trade.virtual_token_reserves, 583_557_373_596_197);
-        assert_eq!(trade.real_sol_reserves, 25_161_671_496);
-        assert_eq!(trade.real_token_reserves, 303_657_373_596_197);
-        assert_eq!(trade.fee_recipient.to_string(), "G5UZAVbAf46s7cKWoyKu8kYTip9DGTpbLZ2qa9Aq69dP");
-        assert_eq!(trade.fee_basis_points, 95);
-        assert_eq!(trade.fee, 465_595);
-        assert_eq!(trade.creator.to_string(), "7BJdxxFVo7jJXztNWjQfjdHQafXFJJxRa7AuMtXjowGX");
-        assert_eq!(trade.creator_fee_basis_points, 5);
-        assert_eq!(trade.creator_fee, 24_505);
+        }
     }
 }
