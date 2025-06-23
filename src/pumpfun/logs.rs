@@ -1,12 +1,25 @@
-use std::error::Error;
-
 use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
-use substreams::Hex;
+use solana_program::pubkey::Pubkey;
+use thiserror::Error;
 
-use crate::pubkey::Pubkey;
+// -----------------------------------------------------------------------------
+// Error handling
+// -----------------------------------------------------------------------------
+#[derive(Error, Debug)]
+pub enum ParseError {
+    #[error("payload too short: {0} bytes (need at least 16)")]
+    TooShort(usize),
+    #[error("unknown discriminator {0:?}")]
+    Unknown([u8; 8]),
+    #[error("Borsh decode error: {0}")]
+    Decode(#[from] borsh::io::Error),
+}
 
-#[derive(Debug, Serialize, Deserialize)]
+// -----------------------------------------------------------------------------
+// Event data structures
+// -----------------------------------------------------------------------------
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum PumpFunEvent {
     Create(CreateEvent),
     Trade(TradeEvent),
@@ -14,11 +27,7 @@ pub enum PumpFunEvent {
     SetParams(SetParamsEvent),
 }
 
-/// Event emitted when a new token is created
-///
-/// This event contains information about a newly created token, including its
-/// metadata, mint address, bonding curve address, and the accounts involved.
-#[derive(BorshSerialize, BorshDeserialize, Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CreateEvent {
     pub name: String,
     pub symbol: String,
@@ -34,11 +43,7 @@ pub struct CreateEvent {
     pub real_token_reserves: u64,
 }
 
-/// Event emitted when a token is bought or sold
-///
-/// This event contains details about a trade transaction, including the amounts
-/// exchanged, the type of trade (buy/sell), and the updated bonding curve state.
-#[derive(BorshSerialize, BorshDeserialize, Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct TradeEvent {
     pub mint: Pubkey,
     pub sol_amount: u64,
@@ -58,11 +63,7 @@ pub struct TradeEvent {
     pub creator_fee: u64,
 }
 
-/// Event emitted when global parameters are updated
-///
-/// This event contains information about updates to the global program parameters,
-/// including fee settings and initial bonding curve configuration values.
-#[derive(BorshSerialize, BorshDeserialize, Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct SetParamsEvent {
     pub fee_recipient: Pubkey,
     pub initial_virtual_token_reserves: u64,
@@ -72,11 +73,7 @@ pub struct SetParamsEvent {
     pub fee_basis_points: u64,
 }
 
-/// Event emitted when a bonding curve operation completes
-///
-/// This event signals the completion of a bonding curve operation,
-/// providing information about the involved accounts.
-#[derive(BorshSerialize, BorshDeserialize, Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CompleteEvent {
     pub user: Pubkey,
     pub mint: Pubkey,
@@ -84,47 +81,39 @@ pub struct CompleteEvent {
     pub timestamp: i64,
 }
 
-/// Parses base64-encoded program log data into a structured PumpFunEvent
-///
-/// This function decodes the base64 data from program logs, identifies the event type
-/// using the discriminator (first 8 bytes), and deserializes the remaining data into
-/// the appropriate event structure.
-///
-/// # Arguments
-///
-/// * `signature` - Transaction signature associated with the event
-/// * `data` - Base64-encoded event data from program logs
-///
-/// # Returns
-///
-/// Returns a parsed PumpFunEvent if successful, or an error if parsing fails
-pub fn parse_event(data: &[u8]) -> Result<PumpFunEvent, Box<dyn Error>> {
-    // need at least the two 8-byte discriminators
-    if data.len() < 16 {
-        return Err("Pumpfun event: data too short for discriminators".into());
-    }
+// -----------------------------------------------------------------------------
+// Discriminators (consts make maintenance + testing easier)
+// -----------------------------------------------------------------------------
+const CREATE: [u8; 8] = [27, 114, 169, 77, 222, 235, 99, 118];
+const TRADE: [u8; 8] = [228, 69, 165, 46, 81, 203, 154, 29];
+const COMPLETE: [u8; 8] = [95, 114, 97, 156, 212, 46, 152, 8];
+const SETPARMS: [u8; 8] = [223, 195, 159, 246, 62, 48, 143, 131];
 
-    // split once for Pump.fun kind, again for Anchor event id
-    let (discriminator, rest) = data.split_at(8);
-    let (_anchor_discriminator, payload) = rest.split_at(8);
+// -----------------------------------------------------------------------------
+// Parsing implementation
+// -----------------------------------------------------------------------------
+impl<'a> TryFrom<&'a [u8]> for PumpFunEvent {
+    type Error = ParseError;
 
-    match discriminator {
-        // CreateEvent
-        [27, 114, 169, 77, 222, 235, 99, 118] => Ok(PumpFunEvent::Create(
-            CreateEvent::try_from_slice(&payload).map_err(|e| format!("Failed to decode CreateEvent: {}", e))?,
-        )),
-        // TradeEvent
-        [228, 69, 165, 46, 81, 203, 154, 29] => Ok(PumpFunEvent::Trade(
-            TradeEvent::try_from_slice(&payload).map_err(|e| format!("Failed to decode TradeEvent: {}", e))?,
-        )),
-        // CompleteEvent
-        [95, 114, 97, 156, 212, 46, 152, 8] => Ok(PumpFunEvent::Complete(
-            CompleteEvent::try_from_slice(&payload).map_err(|e| format!("Failed to decode CompleteEvent: {}", e))?,
-        )),
-        // SetParamsEvent
-        [223, 195, 159, 246, 62, 48, 143, 131] => Ok(PumpFunEvent::SetParams(
-            SetParamsEvent::try_from_slice(&payload).map_err(|e| format!("Failed to decode SetParamsEvent: {}", e))?,
-        )),
-        _ => Err(format!("Unknown discriminator: {} {:?}", Hex::encode(discriminator), discriminator).into()),
+    fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
+        if data.len() < 16 {
+            return Err(ParseError::TooShort(data.len()));
+        }
+
+        let disc: [u8; 8] = data[0..8].try_into().expect("slice with length 8");
+        let payload = &data[16..]; // skip pump.fun + Anchor discriminators
+
+        match disc {
+            CREATE => Ok(Self::Create(CreateEvent::try_from_slice(payload)?)),
+            TRADE => Ok(Self::Trade(TradeEvent::try_from_slice(payload)?)),
+            COMPLETE => Ok(Self::Complete(CompleteEvent::try_from_slice(payload)?)),
+            SETPARMS => Ok(Self::SetParams(SetParamsEvent::try_from_slice(payload)?)),
+            other => Err(ParseError::Unknown(other)),
+        }
     }
+}
+
+/// Convenience function retaining the old name; forwards to `TryFrom`.
+pub fn unpack(data: &[u8]) -> Result<PumpFunEvent, ParseError> {
+    PumpFunEvent::try_from(data)
 }
