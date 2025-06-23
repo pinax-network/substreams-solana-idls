@@ -17,9 +17,7 @@ impl PumpfunInstruction {
         let (tag, data) = data.split_at(8);
         match tag {
             [175, 175, 109, 31, 13, 152, 155, 237] => Ok(Self::Initialize),
-            [165, 31, 134, 53, 189, 180, 130, 255] => {
-                Ok(Self::SetParams(SetParamsInstruction::unpack(data)?))
-            }
+            [165, 31, 134, 53, 189, 180, 130, 255] => Ok(Self::SetParams(SetParamsInstruction::unpack(data)?)),
             [24, 30, 200, 40, 5, 28, 7, 119] => Ok(Self::Create(CreateInstruction::unpack(data)?)),
             [102, 6, 61, 18, 1, 218, 235, 234] => Ok(Self::Buy(BuyInstruction::unpack(data)?)),
             [51, 230, 133, 164, 1, 127, 131, 173] => Ok(Self::Sell(SellInstruction::unpack(data)?)),

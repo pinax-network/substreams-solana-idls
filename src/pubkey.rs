@@ -1,16 +1,9 @@
 use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
+use substreams_solana::base58;
 
 /// Number of bytes in a pubkey
 pub const PUBKEY_BYTES: usize = 32;
-/// maximum length of derived `Pubkey` seed
-// pub const MAX_SEED_LEN: usize = 32;
-// /// Maximum number of seeds
-// pub const MAX_SEEDS: usize = 16;
-// /// Maximum string length of a base58 encoded pubkey
-// const MAX_BASE58_LEN: usize = 44;
-//
-// const PDA_MARKER: &[u8; 21] = b"ProgramDerivedAddress";
 
 #[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize, BorshSerialize, BorshDeserialize)]
 pub struct Pubkey(pub(crate) [u8; 32]);
@@ -18,6 +11,12 @@ pub struct Pubkey(pub(crate) [u8; 32]);
 impl Pubkey {
     pub fn to_bytes(self) -> [u8; 32] {
         self.0
+    }
+    pub fn to_string(&self) -> String {
+        base58::encode(self.0).to_string()
+    }
+    pub fn default() -> Self {
+        Pubkey([0u8; 32])
     }
 }
 

@@ -1,13 +1,10 @@
 use std::error::Error;
-use std::fmt::{self, Display};
 
 use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
 use substreams::Hex;
-// use solana_sdk::{commitment_config::CommitmentConfig, pubkey::Pubkey};
-use substreams_solana::base58;
 
-use crate::pumpfun::pubkey::Pubkey;
+use crate::pubkey::Pubkey;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum PumpFunEvent {
@@ -102,28 +99,31 @@ pub struct CompleteEvent {
 ///
 /// Returns a parsed PumpFunEvent if successful, or an error if parsing fails
 pub fn parse_event(data: &[u8]) -> Result<PumpFunEvent, Box<dyn Error>> {
-    // Get event type from the first 8 bytes
-    if data.len() < 8 {
-        return Err(format!("Data too short to contain discriminator: {:?}", data).into());
+    // need at least the two 8-byte discriminators
+    if data.len() < 16 {
+        return Err("Pumpfun event: data too short for discriminators".into());
     }
 
-    let discriminator = &data[..8];
+    // split once for Pump.fun kind, again for Anchor event id
+    let (discriminator, rest) = data.split_at(8);
+    let (_anchor_discriminator, payload) = rest.split_at(8);
+
     match discriminator {
         // CreateEvent
         [27, 114, 169, 77, 222, 235, 99, 118] => Ok(PumpFunEvent::Create(
-            CreateEvent::try_from_slice(&data[8..]).map_err(|e| format!("Failed to decode CreateEvent: {}", e))?,
+            CreateEvent::try_from_slice(&payload).map_err(|e| format!("Failed to decode CreateEvent: {}", e))?,
         )),
         // TradeEvent
         [228, 69, 165, 46, 81, 203, 154, 29] => Ok(PumpFunEvent::Trade(
-            TradeEvent::try_from_slice(&data[8..]).map_err(|e| format!("Failed to decode TradeEvent: {}", e))?,
+            TradeEvent::try_from_slice(&payload).map_err(|e| format!("Failed to decode TradeEvent: {}", e))?,
         )),
         // CompleteEvent
         [95, 114, 97, 156, 212, 46, 152, 8] => Ok(PumpFunEvent::Complete(
-            CompleteEvent::try_from_slice(&data[8..]).map_err(|e| format!("Failed to decode CompleteEvent: {}", e))?,
+            CompleteEvent::try_from_slice(&payload).map_err(|e| format!("Failed to decode CompleteEvent: {}", e))?,
         )),
         // SetParamsEvent
         [223, 195, 159, 246, 62, 48, 143, 131] => Ok(PumpFunEvent::SetParams(
-            SetParamsEvent::try_from_slice(&data[8..]).map_err(|e| format!("Failed to decode SetParamsEvent: {}", e))?,
+            SetParamsEvent::try_from_slice(&payload).map_err(|e| format!("Failed to decode SetParamsEvent: {}", e))?,
         )),
         _ => Err(format!("Unknown discriminator: {} {:?}", Hex::encode(discriminator), discriminator).into()),
     }
