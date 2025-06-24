@@ -1,10 +1,11 @@
+//! Pump.fun on-chain instruction definitions and Borsh deserialisation helpers.
 use crate::common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
-// Discriminators
+// Discriminators (first 8 bytes of the instruction data)
 // -----------------------------------------------------------------------------
 const INITIALIZE: [u8; 8] = [175, 175, 109, 31, 13, 152, 155, 237];
 const SET_PARAMS: [u8; 8] = [165, 31, 134, 53, 189, 180, 130, 255];
@@ -13,167 +14,224 @@ const BUY: [u8; 8] = [102, 6, 61, 18, 1, 218, 235, 234];
 const SELL: [u8; 8] = [51, 230, 133, 164, 1, 127, 131, 173];
 const WITHDRAW: [u8; 8] = [183, 18, 70, 156, 148, 109, 161, 34];
 
-// -----------------------------------------------------------------------------
-// Event data structures
-// -----------------------------------------------------------------------------
+// ──────────────────────────────────────────────────────────────────────────────
+// High-level enum (only the Sell variant shown here)
+// ──────────────────────────────────────────────────────────────────────────────
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub enum PumpFunInstruction {
+    /// Initialise global state (no payload).
     Initialize,
-    SetParams {
-        fee_recipient: Pubkey,
-        initial_virtual_token_reserves: u64,
-        initial_virtual_sol_reserves: u64,
-        initial_real_token_reserves: u64,
-        token_total_supply: u64,
-        fee_basis_points: u64,
-    },
+
+    /// Update fee recipient / virtual reserves.
+    /// See [`SetParamsInstruction`].
+    SetParams(SetParamsInstruction),
+
+    /// Create a new SPL-Token ↔ SOL bonding-curve pool.
+    /// See [`CreateInstruction`].
     Create(CreateInstruction),
+
+    /// Buy tokens from a bonding curve (SOL → SPL).
+    /// See [`BuyInstruction`].
     Buy(BuyInstruction),
+
+    /// Sell tokens to a bonding curve (SPL → SOL).
+    /// See [`SellInstruction`].
     Sell(SellInstruction),
+
+    /// Withdraw accumulated protocol fees.
     Withdraw,
+
+    /// Discriminator did not match any known instruction.
     Unknown,
 }
 
+// -----------------------------------------------------------------------------
+// Payload structs (rich docs live here)
+// -----------------------------------------------------------------------------
+
+/// Instruction data for [`PumpFunInstruction::SetParams`].
+///
+/// Updates protocol parameters on an existing bonding curve.
+///
+/// ### What happens
+/// * Writes new virtual reserve figures to the curve config.
+/// * Changes the global `fee_recipient`.
+/// * Emits a `ParamsUpdated` event.
+///
+/// ### Accounts
+/// | # | Modifier(s)        | Purpose                          |
+/// |---|--------------------|----------------------------------|
+/// | 0 | `[writable]`       | Bonding-curve configuration      |
+/// | 1 | `[signer]`         | Admin authority (curve owner)    |
+/// | 2 | `[]`               | Global state                     |
+/// | 3 | `[]`               | Pump.fun program ID              |
+///
+/// ### Data fields
+/// * `fee_recipient` – new account that will receive protocol fees.
+/// * `*_virtual_*_reserves` – virtual reserves for the bonding formula.
+/// * `initial_real_token_reserves` – real SPL-Token held by the curve at initialisation.
+/// * `token_total_supply` – total supply of the SPL-Token.
+/// * `fee_basis_points` – protocol fee in basis points (1/100 %).
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct SetParamsInstruction {
+    /// Account that will collect protocol fees going forward.
     pub fee_recipient: Pubkey,
+    /// Virtual token reserve used in price calculation.
     pub initial_virtual_token_reserves: u64,
+    /// Virtual SOL reserve used in price calculation.
     pub initial_virtual_sol_reserves: u64,
+    /// Real SPL-Token balance present at pool creation (for reference).
     pub initial_real_token_reserves: u64,
+    /// Total supply of the SPL-Token.
     pub token_total_supply: u64,
+    /// Protocol fee charged on each trade (basis points, i.e. 1 bp = 0.01 %).
     pub fee_basis_points: u64,
 }
-
-/// Creates a new SPL-Token ↔ SOL bonding pool on Pump.fun.
+/// Instruction data for [`PumpFunInstruction::Create`].
 ///
-/// This instruction will:
-/// - Initialize (or configure) the SPL token mint under Pump.fun’s mint authority.
-/// - Create and mint the Metaplex metadata account with the given name, symbol, and URI.
-/// - Derive and initialize the bonding curve and its associated curve accounts.
-/// - Register the new pool in the global state under the creator’s key.
-/// - Emit a PoolCreated event.
+/// Creates a new SPL-Token ↔ SOL bonding pool on Pump.fun.
 ///
-/// Accounts expected by this instruction:
+/// ### What happens
+/// * Initialises (or configures) the SPL-Token mint under Pump.fun’s mint authority.
+/// * Creates the Metaplex metadata account with the given `name`, `symbol`, and `uri`.
+/// * Derives & initialises bonding-curve config and curve accounts.
+/// * Registers the pool in global state under the `creator`.
+/// * Emits a `PoolCreated` event.
 ///
-/// 0. `[writable, signer]`  Token mint account to be initialized/configured.
-/// 1. `[]`                  Mint authority (Pump.fun Token Mint Authority).
-/// 2. `[writable]`          Bonding curve configuration account.
-/// 3. `[writable]`          Associated bonding curve account.
-/// 4. `[]`                  Global state account.
-/// 5. `[]`                  Metaplex Token Metadata program.
-/// 6. `[writable]`          Metadata account (Metaplex) for storing name/symbol/URI.
-/// 7. `[writable, signer]`  User’s wallet (fee payer & pool creator).
-/// 8. `[]`                  System program.
-/// 9. `[]`                  SPL Token program.
-/// 10. `[]`                 Associated Token Account program.
-/// 11. `[]`                 Rent sysvar.
-/// 12. `[]`                 Event authority account (for emitting Create events).
-/// 13. `[]`                 Pump.fun program ID.
+/// ### Accounts
+/// | #  | Modifier(s)          | Purpose                                                        |
+/// |----|----------------------|----------------------------------------------------------------|
+/// | 0  | `[writable, signer]` | SPL-Token mint to initialise/configure                         |
+/// | 1  | `[]`                 | Pump.fun Token Mint Authority                                  |
+/// | 2  | `[writable]`         | Bonding-curve configuration account                            |
+/// | 3  | `[writable]`         | Associated bonding-curve account                               |
+/// | 4  | `[]`                 | Global state                                                   |
+/// | 5  | `[]`                 | Metaplex Token Metadata program                                |
+/// | 6  | `[writable]`         | Metadata account for name/symbol/URI                           |
+/// | 7  | `[writable, signer]` | User wallet (fee payer & pool creator)                         |
+/// | 8  | `[]`                 | System program                                                 |
+/// | 9  | `[]`                 | SPL-Token program                                              |
+/// | 10 | `[]`                 | Associated-Token-Account program                               |
+/// | 11 | `[]`                 | Rent sysvar                                                   |
+/// | 12 | `[]`                 | Event authority                                                |
+/// | 13 | `[]`                 | Pump.fun program ID                                            |
 ///
-/// Instruction data:
-/// - `name: String`    — on-chain display name for the token pool.
-/// - `symbol: String`  — on-chain token symbol.
-/// - `uri: String`     — off-chain metadata URI (e.g. pointing at JSON on IPFS).
-/// - `creator: Pubkey` — pubkey of the pool creator (receives creator fees).
-///
-/// Create {
-///     /// On-chain display name for this token pool.
-///     name: String,
-///     /// On-chain token symbol.
-///     symbol: String,
-///     /// URI pointing to the metadata JSON (e.g. IPFS link).
-///     uri: String,
-///     /// Public key of the pool creator (can collect creator fees).
-///     creator: Pubkey,
-/// },
+/// ### Data fields
+/// * `name`    – on-chain display name for the token.
+/// * `symbol`  – SPL-Token ticker symbol.
+/// * `uri`     – URI to off-chain JSON metadata (IPFS/HTTPS).
+/// * `creator` – wallet that earns creator fees for this pool.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CreateInstruction {
+    /// Display name for the token pool (UTF-8).
     pub name: String,
+    /// Ticker symbol (≤ 10 UTF-8 bytes).
     pub symbol: String,
+    /// URI pointing to off-chain JSON metadata.
     pub uri: String,
+    /// Pool creator (receives creator fees).
     pub creator: Pubkey,
 }
-/// Buys tokens from a Pump.fun bonding curve, swapping SOL for the specified SPL token.
+
+/// Instruction data for [`PumpFunInstruction::Buy`].
 ///
-/// This instruction transfers up to `max_sol_cost` lamports from the buyer’s wallet,
-/// sends any protocol fees to the fee recipient, deposits the SOL into the curve’s vault,
-/// mints `amount` tokens to the buyer’s token account (creating it if needed),
-/// and emits a purchase event.
+/// Buys tokens from a Pump.fun bonding curve (SOL → SPL).
 ///
-/// ### Accounts expected by this instruction:
+/// ### What happens
+/// * Transfers up to `max_sol_cost` lamports from the buyer.
+/// * Deposits SOL into the curve’s vault.
+/// * Mints `amount` tokens to the buyer’s destination ATA (creating it if needed).
+/// * Pays protocol & creator fees.
+/// * Emits a `Buy` event.
 ///
-/// 0. `[]` Global state account.
-/// 1. `[writable]` Fee recipient account.
-/// 2. `[]` Token mint (e.g. CWOIN).
-/// 3. `[writable]` Bonding curve configuration account.
-/// 4. `[writable]` Vault account holding the curve’s token reserve.
-/// 5. `[writable]` User state account (tracks per-user data).
-/// 6. `[writable, signer]` Buyer’s wallet (fee payer).
-/// 7. `[]` System program.
-/// 8. `[]` SPL Token program.
-/// 9. `[writable]` Creator vault account (for creator-fee withdrawals).
-/// 10. `[]` Event authority account (used to record purchase events).
-/// 11. `[]` Pump.fun program ID.
+/// ### Accounts
+/// | #  | Modifier(s)          | Purpose                                           |
+/// |----|----------------------|---------------------------------------------------|
+/// | 0  | `[]`                 | Global state                                      |
+/// | 1  | `[writable]`         | Fee recipient                                     |
+/// | 2  | `[]`                 | Token mint                                        |
+/// | 3  | `[writable]`         | Bonding-curve configuration                       |
+/// | 4  | `[writable]`         | Vault holding the curve’s **token** reserve       |
+/// | 5  | `[writable]`         | User state (per-user data)                        |
+/// | 6  | `[writable, signer]` | Buyer wallet (fee payer)                          |
+/// | 7  | `[]`                 | System program                                    |
+/// | 8  | `[]`                 | SPL-Token program                                 |
+/// | 9  | `[writable]`         | Creator vault (creator fees)                      |
+/// | 10 | `[]`                 | Event authority                                   |
+/// | 11 | `[]`                 | Pump.fun program ID                               |
+///
+/// ### Data fields
+/// * `amount` – tokens to buy (smallest units).
+/// * `max_sol_cost` – max lamports the buyer is willing to spend.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct BuyInstruction {
-    /// Amount of tokens to buy (in token smallest units)
-    pub amount: u64, // foo
-    /// Maximum acceptable SOL cost for the purchase (slippage protection)
+    /// Amount of tokens to purchase.
+    pub amount: u64,
+    /// Maximum lamports the buyer will pay (slippage guard).
     pub max_sol_cost: u64,
 }
 
-/// Sells tokens to a Pump.fun bonding curve, swapping the specified SPL tokens for SOL.
+/// Instruction data for [`PumpFunInstruction::Sell`].
 ///
-/// This instruction transfers `amount` tokens from the seller’s token account into the
-/// curve’s vault (burning them), withdraws SOL from the curve’s SOL vault, deducts protocol
-/// fees to the fee recipient, and then sends at least `min_sol_output` lamports back to the
-/// seller’s wallet.  Any excess SOL (above `min_sol_output`) remains in the vault.
+/// Sells tokens to a Pump.fun bonding curve (SPL → SOL).
 ///
-/// ### Accounts expected by this instruction:
+/// ### What happens
+/// * Burns `amount` tokens from the seller’s account.
+/// * Withdraws SOL from the curve’s SOL vault.
+/// * Deducts protocol & creator fees.
+/// * Sends **at least** `min_sol_output` lamports to the seller.
+/// * Emits a `Sell` event.
 ///
-/// 0. `[]` Global state account.
-/// 1. `[writable]` Fee recipient account.
-/// 2. `[]` Token mint (e.g. CWOIN or TOLY).
-/// 3. `[writable]` Bonding curve configuration account.
-/// 4. `[writable]` Vault account holding the curve’s token reserve.
-/// 5. `[writable]` User state account (tracks per-user data).
-/// 6. `[writable, signer]` Seller’s wallet (fee payer).
-/// 7. `[]` System program.
-/// 8. `[writable]` Creator vault account (for creator-fee withdrawals).
-/// 9. `[]` SPL Token program.
-/// 10. `[]` Event authority account (used to record sell events).
-/// 11. `[]` Pump.fun program ID.
+/// ### Accounts
+/// | #  | Modifier(s)          | Purpose                                           |
+/// |----|----------------------|---------------------------------------------------|
+/// | 0  | `[]`                 | Global state                                      |
+/// | 1  | `[writable]`         | Fee recipient                                     |
+/// | 2  | `[]`                 | Token mint (e.g. CWOIN / TOLY)                    |
+/// | 3  | `[writable]`         | Bonding-curve configuration                       |
+/// | 4  | `[writable]`         | Vault holding the curve’s **token** reserve       |
+/// | 5  | `[writable]`         | User state (per-user data)                        |
+/// | 6  | `[writable, signer]` | Seller wallet (fee payer)                         |
+/// | 7  | `[]`                 | System program                                    |
+/// | 8  | `[writable]`         | Creator vault (creator-fee withdrawals)           |
+/// | 9  | `[]`                 | SPL-Token program                                 |
+/// | 10 | `[]`                 | Event authority                                   |
+/// | 11 | `[]`                 | Pump.fun program ID                               |
+///
+/// ### Data fields
+/// * `amount` – tokens to sell (smallest units).
+/// * `min_sol_output` – minimum lamports the seller expects.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct SellInstruction {
-    /// The number of tokens to sell into the curve.
+    /// Number of tokens to sell.
     pub amount: u64,
-    /// The minimum lamports (1 SOL = 10⁹ lamports) expected in return.
+    /// Minimum lamports the seller expects (slippage guard).
     pub min_sol_output: u64,
 }
 
 // -----------------------------------------------------------------------------
-// Parsing implementation
+// Borsh deserialisation helper
 // -----------------------------------------------------------------------------
 impl<'a> TryFrom<&'a [u8]> for PumpFunInstruction {
     type Error = ParseError;
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
-        if data.len() < 16 {
+        if data.len() < 8 {
             return Err(ParseError::TooShort(data.len()));
         }
 
-        let discriminator: [u8; 8] = data[0..8].try_into().expect("slice with length 8");
-        let payload = &data[8..];
+        let (disc, payload) = data.split_at(8);
+        let discriminator: [u8; 8] = disc.try_into().expect("slice len 8");
 
-        match discriminator {
-            SET_PARAMS => Ok(Self::SetParams(SetParamsInstruction::try_from_slice(payload)?)),
-            CREATE_INSTRUCTION => Ok(Self::Create(CreateInstruction::try_from_slice(payload)?)),
-            BUY => Ok(Self::Buy(BuyInstruction::try_from_slice(payload)?)),
-            SELL => Ok(Self::Sell(SellInstruction::try_from_slice(payload)?)),
-            WITHDRAW => Ok(Self::Withdraw),
-            INITIALIZE => Ok(Self::Initialize),
-            other => Err(ParseError::Unknown(other)),
-        }
+        Ok(match discriminator {
+            SET_PARAMS => Self::SetParams(SetParamsInstruction::try_from_slice(payload)?),
+            CREATE_INSTRUCTION => Self::Create(CreateInstruction::try_from_slice(payload)?),
+            BUY => Self::Buy(BuyInstruction::try_from_slice(payload)?),
+            SELL => Self::Sell(SellInstruction::try_from_slice(payload)?),
+            WITHDRAW => Self::Withdraw,
+            INITIALIZE => Self::Initialize,
+            other => return Err(ParseError::Unknown(other)),
+        })
     }
 }
 
