@@ -1,5 +1,5 @@
 //! Pump.fun on-chain instruction definitions and Borsh deserialisation helpers.
-use crate::common::ParseError;
+use crate::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;

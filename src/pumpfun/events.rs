@@ -1,6 +1,6 @@
 //! Pump.fun on-chain **events** and their Borsh-deserialisation helpers.
 
-use crate::common::ParseError;
+use crate::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
@@ -9,9 +9,11 @@ use solana_program::pubkey::Pubkey;
 // Discriminators (first 8 bytes of the emitted log’s data)
 // -----------------------------------------------------------------------------
 const CREATE: [u8; 8] = [27, 114, 169, 77, 222, 235, 99, 118];
-const TRADE: [u8; 8] = [228, 69, 165, 46, 81, 203, 154, 29];
 const COMPLETE: [u8; 8] = [95, 114, 97, 156, 212, 46, 152, 8];
 const SET_PARAMS: [u8; 8] = [223, 195, 159, 246, 62, 48, 143, 131];
+const TRADE: [u8; 8] = [228, 69, 165, 46, 81, 203, 154, 29];
+const TRADE_LEN_V1: usize = 121;
+const TRADE_LEN_V2: usize = 217;
 
 // -----------------------------------------------------------------------------
 // High-level event enum (concise; rich docs live in each struct)
@@ -155,21 +157,20 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunEvent {
         let disc: [u8; 8] = data[0..8].try_into().expect("slice len 8");
         let payload = &data[16..]; // skip both discriminators
 
-        // Handle TradeEvents with different payload lengths
-        if disc == TRADE {
-            if data.len() == 137 {
-                return Ok(Self::TradeV1(TradeEventV1::try_from_slice(payload)?));
-            } else if data.len() == 233 {
-                return Ok(Self::TradeV2(TradeEventV2::try_from_slice(payload)?));
-            } else {
-                return Err(ParseError::Unknown(disc));
-            }
-        }
-
         Ok(match disc {
             CREATE => Self::Create(CreateEvent::try_from_slice(payload)?),
             COMPLETE => Self::Complete(CompleteEvent::try_from_slice(payload)?),
             SET_PARAMS => Self::SetParams(SetParamsEvent::try_from_slice(payload)?),
+            TRADE => match payload.len() {
+                TRADE_LEN_V1 => Self::TradeV1(TradeEventV1::try_from_slice(payload)?),
+                TRADE_LEN_V2 => Self::TradeV2(TradeEventV2::try_from_slice(payload)?),
+                other => {
+                    return Err(ParseError::InvalidLength {
+                        expected: TRADE_LEN_V1.max(TRADE_LEN_V2),
+                        got: other,
+                    })
+                }
+            },
             other => return Err(ParseError::Unknown(other)),
         })
     }
