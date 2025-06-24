@@ -4,15 +4,42 @@ mod tests {
     use substreams_solana_idls::pumpfun;
 
     #[test]
-    fn unpack_trade_event() {
+    fn unpack_trade_event_v1() {
+        // https://solscan.io/tx/285JxcUbpFMiBQkB3GQGdykYEyAxy4tswTrLFuctTPcdiCdtkSiBDkpX97VbP2Dibw657PVakGt4h6qz3NZqgstP
+        let bytes = hex!("e445a52e51cb9a1dbddb7fd34ee661eed1eccc2b2d1ae4e554365084d2e506be491327246a3eb013188a1f7904a7cfbf64079b5d0000000080bd8289782e000000f9e4e232fe0ef74bd1a1c1c3d678748dcc382ae18715020e2e58a0469a91dd9de31952670000000023ba9b24070000009cc72a594aba0300230e7828000000009c2f180db9bb0200");
+
+        match pumpfun::events::unpack(&bytes).expect("decode PumpFunEvent") {
+            pumpfun::events::PumpFunEvent::TradeV1(event) => {
+                assert_eq!(
+                    event,
+                    pumpfun::events::TradeEventV1 {
+                        mint: "F8Tdm1Qo1HXiHAnCm6e3XpjDa2MejBxWn2RWK7nvpump".parse().unwrap(),
+                        sol_amount: 1570441060,
+                        token_amount: 51095238000000,
+                        is_buy: false,
+                        user: "HpUwfjtNscqm8zFpkmhtGoPuA2MxSRy5mDWHaaHndwkQ".parse().unwrap(),
+                        timestamp: 1733433827,
+                        virtual_sol_reserves: 30678956579,
+                        virtual_token_reserves: 1049253416454044,
+                        real_sol_reserves: 678956579,
+                        real_token_reserves: 769353416454044,
+                    }
+                );
+            }
+            _ => panic!("Expected a TradeEvent"),
+        }
+    }
+
+    #[test]
+    fn unpack_trade_event_v2() {
         // https://solscan.io/tx/sK44CDg4qzi9jvTgA32dCTNh6Y3CgXki2kj9XtpaXRr83BipzpWPjnENzJR3TjLegAfDfPDG5Z8GZDkbrXDQk3w
         let bytes = hex!("e445a52e51cb9a1dbddb7fd34ee661ee1506533f60e64c4528916a7b404296ac72a1b1b65e817505f94b02b46d1969be46b1f416000000000076c04f9a040000013cd2f118afae78c0d0a91f649ff048b4a16749e82caac521286d90a6085cdd1026b2466800000000e7329a910b0000009d11034a374d0200e7867695040000009d79f0fda54e0100ad11e6a4fc2944a4fa8251bef815426e1bfb28c6b6646677607c6ad9f566a6465f000000000000001ed4370000000000deed67d04e125b1a2d7c6933fec6c7b08bce5763a576c88dcd36697d38298183050000000000000038f0020000000000");
 
         match pumpfun::events::unpack(&bytes).expect("decode PumpFunEvent") {
-            pumpfun::events::PumpFunEvent::Trade(event) => {
+            pumpfun::events::PumpFunEvent::TradeV2(event) => {
                 assert_eq!(
                     event,
-                    pumpfun::events::TradeEvent {
+                    pumpfun::events::TradeEventV2 {
                         mint: "2R5A2hvHqKUQE2sDpBQhPpCS5psiFFurPWfKazAnE8oX".parse().unwrap(),
                         sol_amount: 385_134_918,
                         token_amount: 5_060_809_487_872,

@@ -22,7 +22,8 @@ pub enum PumpFunEvent {
     Create(CreateEvent),
 
     /// Trade executed (buy or sell). See [`TradeEvent`].
-    Trade(TradeEvent),
+    TradeV1(TradeEventV1),
+    TradeV2(TradeEventV2),
 
     /// Pool completed / closed. See [`CompleteEvent`].
     Complete(CompleteEvent),
@@ -66,7 +67,26 @@ pub struct CreateEvent {
 
 /// Emitted on every buy or sell.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
-pub struct TradeEvent {
+pub struct TradeEventV1 {
+    pub mint: Pubkey,
+    /// Lamports moved (positive on buys, negative on sells).
+    pub sol_amount: u64,
+    /// Token amount moved (positive on buys, negative on sells).
+    pub token_amount: u64,
+    /// `true` = buy (SOL→SPL), `false` = sell.
+    pub is_buy: bool,
+    /// Trader’s wallet.
+    pub user: Pubkey,
+    pub timestamp: i64,
+    pub virtual_sol_reserves: u64,
+    pub virtual_token_reserves: u64,
+    pub real_sol_reserves: u64,
+    pub real_token_reserves: u64,
+}
+
+/// Emitted on every buy or sell.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+pub struct TradeEventV2 {
     pub mint: Pubkey,
     /// Lamports moved (positive on buys, negative on sells).
     pub sol_amount: u64,
@@ -135,9 +155,19 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunEvent {
         let disc: [u8; 8] = data[0..8].try_into().expect("slice len 8");
         let payload = &data[16..]; // skip both discriminators
 
+        // Handle TradeEvents with different payload lengths
+        if disc == TRADE {
+            if data.len() == 137 {
+                return Ok(Self::TradeV1(TradeEventV1::try_from_slice(payload)?));
+            } else if data.len() == 233 {
+                return Ok(Self::TradeV2(TradeEventV2::try_from_slice(payload)?));
+            } else {
+                return Err(ParseError::Unknown(disc));
+            }
+        }
+
         Ok(match disc {
             CREATE => Self::Create(CreateEvent::try_from_slice(payload)?),
-            TRADE => Self::Trade(TradeEvent::try_from_slice(payload)?),
             COMPLETE => Self::Complete(CompleteEvent::try_from_slice(payload)?),
             SET_PARAMS => Self::SetParams(SetParamsEvent::try_from_slice(payload)?),
             other => return Err(ParseError::Unknown(other)),
