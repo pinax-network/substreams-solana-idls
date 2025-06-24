@@ -16,10 +16,17 @@ const WITHDRAW: [u8; 8] = [183, 18, 70, 156, 148, 109, 161, 34];
 // -----------------------------------------------------------------------------
 // Event data structures
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub enum PumpFunInstruction {
     Initialize,
-    SetParams(SetParamsInstruction),
+    SetParams {
+        fee_recipient: Pubkey,
+        initial_virtual_token_reserves: u64,
+        initial_virtual_sol_reserves: u64,
+        initial_real_token_reserves: u64,
+        token_total_supply: u64,
+        fee_basis_points: u64,
+    },
     Create(CreateInstruction),
     Buy(BuyInstruction),
     Sell(SellInstruction),
@@ -36,11 +43,55 @@ pub struct SetParamsInstruction {
     pub token_total_supply: u64,
     pub fee_basis_points: u64,
 }
+
+/// Creates a new SPL-Token ↔ SOL bonding pool on Pump.fun.
+///
+/// This instruction will:
+/// - Initialize (or configure) the SPL token mint under Pump.fun’s mint authority.
+/// - Create and mint the Metaplex metadata account with the given name, symbol, and URI.
+/// - Derive and initialize the bonding curve and its associated curve accounts.
+/// - Register the new pool in the global state under the creator’s key.
+/// - Emit a PoolCreated event.
+///
+/// Accounts expected by this instruction:
+///
+/// 0. `[writable, signer]`  Token mint account to be initialized/configured.
+/// 1. `[]`                  Mint authority (Pump.fun Token Mint Authority).
+/// 2. `[writable]`          Bonding curve configuration account.
+/// 3. `[writable]`          Associated bonding curve account.
+/// 4. `[]`                  Global state account.
+/// 5. `[]`                  Metaplex Token Metadata program.
+/// 6. `[writable]`          Metadata account (Metaplex) for storing name/symbol/URI.
+/// 7. `[writable, signer]`  User’s wallet (fee payer & pool creator).
+/// 8. `[]`                  System program.
+/// 9. `[]`                  SPL Token program.
+/// 10. `[]`                 Associated Token Account program.
+/// 11. `[]`                 Rent sysvar.
+/// 12. `[]`                 Event authority account (for emitting Create events).
+/// 13. `[]`                 Pump.fun program ID.
+///
+/// Instruction data:
+/// - `name: String`    — on-chain display name for the token pool.
+/// - `symbol: String`  — on-chain token symbol.
+/// - `uri: String`     — off-chain metadata URI (e.g. pointing at JSON on IPFS).
+/// - `creator: Pubkey` — pubkey of the pool creator (receives creator fees).
+///
+/// Create {
+///     /// On-chain display name for this token pool.
+///     name: String,
+///     /// On-chain token symbol.
+///     symbol: String,
+///     /// URI pointing to the metadata JSON (e.g. IPFS link).
+///     uri: String,
+///     /// Public key of the pool creator (can collect creator fees).
+///     creator: Pubkey,
+/// },
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CreateInstruction {
     pub name: String,
     pub symbol: String,
     pub uri: String,
+    pub creator: Pubkey,
 }
 /// Buys tokens from a Pump.fun bonding curve, swapping SOL for the specified SPL token.
 ///
@@ -71,9 +122,32 @@ pub struct BuyInstruction {
     pub max_sol_cost: u64,
 }
 
+/// Sells tokens to a Pump.fun bonding curve, swapping the specified SPL tokens for SOL.
+///
+/// This instruction transfers `amount` tokens from the seller’s token account into the
+/// curve’s vault (burning them), withdraws SOL from the curve’s SOL vault, deducts protocol
+/// fees to the fee recipient, and then sends at least `min_sol_output` lamports back to the
+/// seller’s wallet.  Any excess SOL (above `min_sol_output`) remains in the vault.
+///
+/// ### Accounts expected by this instruction:
+///
+/// 0. `[]` Global state account.
+/// 1. `[writable]` Fee recipient account.
+/// 2. `[]` Token mint (e.g. CWOIN or TOLY).
+/// 3. `[writable]` Bonding curve configuration account.
+/// 4. `[writable]` Vault account holding the curve’s token reserve.
+/// 5. `[writable]` User state account (tracks per-user data).
+/// 6. `[writable, signer]` Seller’s wallet (fee payer).
+/// 7. `[]` System program.
+/// 8. `[writable]` Creator vault account (for creator-fee withdrawals).
+/// 9. `[]` SPL Token program.
+/// 10. `[]` Event authority account (used to record sell events).
+/// 11. `[]` Pump.fun program ID.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct SellInstruction {
+    /// The number of tokens to sell into the curve.
     pub amount: u64,
+    /// The minimum lamports (1 SOL = 10⁹ lamports) expected in return.
     pub min_sol_output: u64,
 }
 

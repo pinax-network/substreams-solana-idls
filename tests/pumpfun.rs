@@ -54,4 +54,25 @@ mod tests {
             _ => panic!("Expected a BuyInstruction"),
         }
     }
+
+    #[test]
+    fn unpack_create_instruction() {
+        // https://solscan.io/tx/XzPzYUbKHHrG6gyKciKW2yHWqzjF1cbuiJzN6bwYQy3oQLwaFwc5ErKpMc1QHr9BLxuLzfqKaSosetgXgREyqc9
+        let bytes = hex!("181ec828051c077704000000474f424f04000000474f424f5000000068747470733a2f2f697066732e696f2f697066732f6261666b7265696470357362746f346d76757472367463646b713574763262357a70336f727a706264646d767a3262786279747463336b6969326d77b855e4b353e62f466ee300057240ca099fc08b16e82dc80ab252b6d0c3b8bc").to_vec();
+
+        match pumpfun::instructions::unpack(&bytes).expect("decode PumpFunInstruction") {
+            pumpfun::instructions::PumpFunInstruction::Create(event) => {
+                assert_eq!(
+                    event,
+                    pumpfun::instructions::CreateInstruction {
+                        name: "GOBO".to_string(),
+                        symbol: "GOBO".to_string(),
+                        uri: "https://ipfs.io/ipfs/bafkreidp5sbto4mvutr6tcdkq5tv2b5zp3orzpbddmvz2bxbyttc3kii2m".to_string(),
+                        creator: "94LYWfthmeLjQ4ypgi9qjQNxeZdrZiL36i9RfDBLCFCX".parse().unwrap(),
+                    }
+                );
+            }
+            _ => panic!("Expected a CreateInstruction"),
+        }
+    }
 }
