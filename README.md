@@ -1,47 +1,79 @@
-# Substreams Solana IDLs
+# Substreams Solana IDLs
 
-> Type-safe Solana IDLs & instruction/event decoders for Substreams modules.
+> **Type‑safe instruction & event decoders for any Solana program you want to index with Substreams.**
 
-## Includes
+This crate bundles thin, `no_std`‑friendly byte‑codecs that turn on‑chain **instruction** and **event** byte arrays into well‑typed Rust enums & structs, ready for use inside Substreams modules.
 
-| Support | Ecosystem | Protocol | Program ID |
-|---------|----------|------------|-----------------|
-| 🚧       | Pump.fun | Pump Bonding-Curve | `6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P` |
-| 🚧       | Pump.fun | PumpSwap AMM | `pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA` |
-| 🚧       | Raydium | AMM V4 | `675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8` |
-| ❌       | Raydium | AMM CP | `CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C` |
-| ❌       | Raydium | CLMM V3 | `CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK` |
-| ❌       | Raydium | Stable Swap AMM | `5quBtoiQqxF9Jv6KYKctB59NT3gtJD2Y65kdnB1Uev3h` |
-| ❌       | Jupiter | Swap Aggregator V6 | `JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4` |
-| ❌       | Jupiter | Limit Order | `jupoNjAxXgZ4rjzxzPMP4oxduvQsQtZzyknqvzYNrNu` |
-| ❌       | Jupiter | DCA | `DCA265Vj8a9CEuX1eb1LWRnDT7uK6q1xMipnNyatn23M` |
-| ❌       | Jupiter | Legacy Swap Routers V4/V5 | `JUP4Fb2cqiRUcaTHdrPC8h2gNsA2ETXiPDD33WcGuJB` |
-| ❌       | Jupiter | Legacy Swap Routers ≤V3 | `JUP3c2Uh3WA4Ng34tw6kPd2G4C5BB21Xo36Je1s32Ph` |
-| ❌       | Orca | Whirlpool AMM (CLMM v3-style) |  `whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc` |
-| ❌       | Orca | Token Swap V2 ("Classic" pools) - AMM V2 | `9W959DqEETiGZocYWCQPaJ6sBmUzgfxXfqGeTEdp3aQP` |
+---
 
-## Status
+## Protocol Coverage
 
-- ✅ Completed
-- 🚧 In progress
-- ❌ Not supported
+| Status | Ecosystem | Protocol / App | Program ID |
+| ------ | --------- | -------------- | ---------- |
+| 🚧 | Pump.fun | **Bonding‑Curve** | `6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P` |
+| 🚧 | Pump.fun | **PumpSwap AMM** | `pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA` |
+| 🚧 | Raydium | **AMM V4** | `675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8` |
+| ❌ | Raydium | AMM CP | `CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C` |
+| ❌ | Raydium | CLMM V3 | `CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK` |
+| ❌ | Raydium | Stable Swap | `5quBtoiQqxF9Jv6KYKctB59NT3gtJD2Y65kdnB1Uev3h` |
+| 🚧 | Jupiter | Swap Aggregator V6 | `JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4` |
+| ❌ | Jupiter | Limit Order | `jupoNjAxXgZ4rjzxzPMP4oxduvQsQtZzyknqvzYNrNu` |
+| ❌ | Jupiter | DCA | `DCA265Vj8a9CEuX1eb1LWRnDT7uK6q1xMipnNyatn23M` |
+| ❌ | Jupiter | Legacy Swap ≤ V5 | `JUP4Fb2cqiRUcaTHdrPC8h2gNsA2ETXiPDD33WcGuJB` |
+| ❌ | Orca | Whirlpool (CLMM) | `whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc` |
+| ❌ | Orca | Token Swap ("Classic") | `9W959DqEETiGZocYWCQPaJ6sBmUzgfxXfqGeTEdp3aQP` |
 
-## Quickstart
+**Legend**   ✅ done · 🚧 in progress · ❌ planned / help wanted
+
+> Want another program supported? Open an issue or PR with the program ID and IDL link.
+
+---
+
+## Module Layout
+
+```
+substreams_solana_idls::
+├── <protocol>::PROGRAM_ID        // Program ID constant
+├── <protocol>::instructions      // Instruction enum + `unpack(&[u8])`
+└── <protocol>::events            // Event enum + `unpack(&[u8])`
+```
+
+Every protocol lives in its own module so you only pull in what you need.
+
+---
+
+## Quick Start (Pump.fun example)
 
 ```rust
-...
 use substreams_solana_idls::pumpfun;
 
 #[substreams::handlers::map]
 fn map_events(block: Block) -> Result<Events, Error> {
     for tx in block.transactions() {
-        for instruction in tx.walk_instructions() {
-            match pumpfun::events::unpack(instruction.data()) {
-                pumpfun::events::PumpFunEvent::Trade(trade) => {
-                    /* Trade event handling logic */
+        for ix in tx.walk_instructions() {
+            // Fast path: ignore anything not coming from Pump.fun
+            if ix.program() != pumpfun::PROGRAM_ID { continue; }
+
+            match pumpfun::events::unpack(ix.data()) {
+                pumpfun::events::PumpFunEvent::Trade(tr) => {
+                    // …handle trade…
                 }
-                _ => {},
+                _ => {}
             }
         }
     }
+    Ok(Default::default())
 }
+```
+
+Swap `pumpfun` for any supported protocol and you get the same ergonomic API.
+
+---
+
+## Contributing
+
+* Add a new folder under `src/<protocol>` with `instructions.rs`, `events.rs`, and `mod.rs`.
+* Follow existing modules for structure & doc style.
+* Keep dependencies minimal (`borsh`, `serde`, `solana_program` only).
+
+PRs and issues welcome!
