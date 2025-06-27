@@ -1,3 +1,4 @@
+pub mod jupiter;
 pub mod pumpfun;
 
 use thiserror::Error;
