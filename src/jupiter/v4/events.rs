@@ -14,7 +14,7 @@ const SWAP: [u8; 8] = [228, 69, 165, 46, 81, 203, 154, 29]; // e445a52e51cb9a1d
 // High-level event enum (concise; rich docs live in each struct)
 // -----------------------------------------------------------------------------
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub enum JupiterV6Event {
+pub enum JupiterV4Event {
     /// Swap. See [`SwapEvent`].
     Swap(SwapEvent),
 
@@ -39,7 +39,7 @@ pub struct SwapEvent {
 // -----------------------------------------------------------------------------
 // Borsh deserialisation helper
 // -----------------------------------------------------------------------------
-impl<'a> TryFrom<&'a [u8]> for JupiterV6Event {
+impl<'a> TryFrom<&'a [u8]> for JupiterV4Event {
     type Error = ParseError;
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
@@ -60,6 +60,6 @@ impl<'a> TryFrom<&'a [u8]> for JupiterV6Event {
 
 /// Convenience wrapper that forwards to `TryFrom`.
 #[deprecated(since = "0.0.0", note = "not yet implemented")]
-pub fn unpack(data: &[u8]) -> Result<JupiterV6Event, ParseError> {
-    JupiterV6Event::try_from(data)
+pub fn unpack(data: &[u8]) -> Result<JupiterV4Event, ParseError> {
+    JupiterV4Event::try_from(data)
 }
