@@ -56,7 +56,7 @@ impl<'a> TryFrom<&'a [u8]> for JupiterV6Event {
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
         if data.len() < 16 {
-            // 8 bytes Pump.fun discriminator + 8 bytes Anchor discriminator
+            // 8 bytes discriminator + 8 bytes Anchor discriminator
             return Err(ParseError::TooShort(data.len()));
         }
 

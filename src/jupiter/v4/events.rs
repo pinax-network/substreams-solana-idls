@@ -8,7 +8,7 @@ use solana_program::pubkey::Pubkey;
 // -----------------------------------------------------------------------------
 // Discriminators (first 8 bytes of the emitted log’s data)
 // -----------------------------------------------------------------------------
-const SWAP: [u8; 8] = [228, 69, 165, 46, 81, 203, 154, 29]; // e445a52e51cb9a1d
+const SWAP: [u8; 8] = [81, 108, 227, 190, 205, 208, 10, 196]; // 516ce3becdd00ac4
 
 // -----------------------------------------------------------------------------
 // High-level event enum (concise; rich docs live in each struct)
@@ -43,13 +43,13 @@ impl<'a> TryFrom<&'a [u8]> for JupiterV4Event {
     type Error = ParseError;
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
-        if data.len() < 16 {
-            // 8 bytes Pump.fun discriminator + 8 bytes Anchor discriminator
+        if data.len() < 8 {
+            // 8 bytes discriminator + 8 bytes Anchor discriminator
             return Err(ParseError::TooShort(data.len()));
         }
 
         let disc: [u8; 8] = data[0..8].try_into().expect("slice len 8");
-        let payload = &data[16..]; // skip both discriminators
+        let payload = &data[8..]; // skip both discriminators
 
         Ok(match disc {
             SWAP => Self::Swap(SwapEvent::try_from_slice(payload)?),
@@ -59,7 +59,6 @@ impl<'a> TryFrom<&'a [u8]> for JupiterV4Event {
 }
 
 /// Convenience wrapper that forwards to `TryFrom`.
-#[deprecated(since = "0.0.0", note = "not yet implemented")]
 pub fn unpack(data: &[u8]) -> Result<JupiterV4Event, ParseError> {
     JupiterV4Event::try_from(data)
 }
