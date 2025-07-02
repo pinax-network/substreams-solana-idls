@@ -1,5 +1,6 @@
 pub mod jupiter;
 pub mod pumpfun;
+pub mod raydium;
 
 use thiserror::Error;
 
@@ -12,6 +13,8 @@ pub enum ParseError {
     TooShort(usize),
     #[error("unknown discriminator {0:?}")]
     Unknown([u8; 8]),
+    #[error("unknown Raydium discriminator {0:?}")]
+    RaydiumUnknown(u8),
     #[error("invalid payload length: expected {expected} bytes, got {got}")]
     InvalidLength { expected: usize, got: usize },
     #[error("Borsh decode error: {0}")]
