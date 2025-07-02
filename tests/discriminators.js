@@ -10,5 +10,7 @@ const bytes = [
 for (const b of bytes) {
     const buf = Buffer.from(b, 'hex');
     const disc = buf.slice(0, 8);
-    console.log(`disc=${Array.from(disc)} (${disc.toString('hex')})`, buf.length - 16);
+    const anchor_disc = buf.slice(8, 16);
+    console.log(`disc=${Array.from(disc)} (${disc.toString('hex')})`, buf.length);
+    console.log(`anchor_disc=${Array.from(anchor_disc)} (${anchor_disc.toString('hex')})`);
 }

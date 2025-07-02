@@ -11,8 +11,10 @@ use solana_program::pubkey::Pubkey;
 const PUMP_EVENT: [u8; 8] = [0xe4, 0x45, 0xa5, 0x2e, 0x51, 0xcb, 0x9a, 0x1d];
 const BUY_EVENT: [u8; 8] = [103, 244, 82, 31, 44, 245, 119, 119];
 const CREATE_CONFIG_EVENT: [u8; 8] = [107, 52, 89, 129, 55, 226, 81, 22];
-const CREATE_POOL_EVENT_V1: [u8; 8] = [177, 49, 12, 210, 160, 118, 167, 116];
-const CREATE_POOL_EVENT_V2: [u8; 8] = [228, 69, 165, 46, 81, 203, 154, 29]; // e445a52e51cb9a1d (325)
+const CREATE_POOL_EVENT: [u8; 8] = [177, 49, 12, 210, 160, 118, 167, 116]; // b1310cd2a076a774 (341)
+
+// anchor_disc=177,49,12,210,160,118,167,116 (b1310cd2a076a774)
+
 const DEPOSIT_EVENT: [u8; 8] = [120, 248, 61, 83, 31, 142, 107, 144];
 const DISABLE_EVENT: [u8; 8] = [107, 253, 193, 76, 228, 202, 27, 104];
 const EXTEND_ACCOUNT_EVENT: [u8; 8] = [97, 97, 215, 144, 93, 146, 22, 124];
@@ -183,13 +185,6 @@ pub struct CreatePoolEventV1 {
     pub user_quote_token_account: Pubkey,
 }
 
-/// Anchor’s EventHeader (copy-pasted here to avoid pulling in anchor-lang)
-#[derive(BorshSerialize, BorshDeserialize, Debug, Clone, PartialEq, Eq)]
-pub struct EventHeader {
-    pub slot: u64,
-    pub timestamp: i64,
-}
-
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CreatePoolEventV2 {
     pub timestamp: i64,
@@ -213,8 +208,6 @@ pub struct CreatePoolEventV2 {
     pub user_quote_token_account: Pubkey,
     // V2 specific fields
     pub coin_creator: Pubkey,
-    pub coin_creator_fee_basis_points: u64,
-    pub coin_creator_fee: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
@@ -314,8 +307,8 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunAmmEvent {
             BUY_EVENT => Self::BuyEventV2(BuyEventV2::try_from_slice(payload)?),
             SELL_EVENT => Self::SellEventV2(SellEventV2::try_from_slice(payload)?),
             CREATE_CONFIG_EVENT => Self::CreateConfigEvent(CreateConfigEvent::try_from_slice(payload)?),
-            CREATE_POOL_EVENT_V1 => Self::CreatePoolEventV1(CreatePoolEventV1::try_from_slice(payload)?),
-            CREATE_POOL_EVENT_V2 => Self::CreatePoolEventV2(CreatePoolEventV2::try_from_slice(payload)?),
+            // TO-DO CreatePoolEventV1
+            CREATE_POOL_EVENT => Self::CreatePoolEventV2(CreatePoolEventV2::try_from_slice(payload)?),
             DEPOSIT_EVENT => Self::DepositEvent(DepositEvent::try_from_slice(payload)?),
             DISABLE_EVENT => Self::DisableEvent(DisableEvent::try_from_slice(payload)?),
             EXTEND_ACCOUNT_EVENT => Self::ExtendAccountEvent(ExtendAccountEvent::try_from_slice(payload)?),
