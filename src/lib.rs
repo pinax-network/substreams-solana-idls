@@ -13,8 +13,12 @@ pub enum ParseError {
     TooShort(usize),
     #[error("unknown discriminator {0:?}")]
     Unknown([u8; 8]),
+    #[error("unknown anchor discriminator {0:?}")]
+    AnchorUnknown([u8; 8]),
     #[error("unknown Raydium discriminator {0:?}")]
     RaydiumUnknown(u8),
+    #[error("unknown Pump.fun discriminator {0:?}")]
+    PumpFunUnknown([u8; 8]),
     #[error("invalid payload length: expected {expected} bytes, got {got}")]
     InvalidLength { expected: usize, got: usize },
     #[error("Borsh decode error: {0}")]
