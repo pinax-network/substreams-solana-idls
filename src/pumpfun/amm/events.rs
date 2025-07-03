@@ -12,9 +12,6 @@ const PUMP_EVENT: [u8; 8] = [0xe4, 0x45, 0xa5, 0x2e, 0x51, 0xcb, 0x9a, 0x1d];
 const BUY_EVENT: [u8; 8] = [103, 244, 82, 31, 44, 245, 119, 119];
 const CREATE_CONFIG_EVENT: [u8; 8] = [107, 52, 89, 129, 55, 226, 81, 22];
 const CREATE_POOL_EVENT: [u8; 8] = [177, 49, 12, 210, 160, 118, 167, 116]; // b1310cd2a076a774 (341)
-
-// anchor_disc=177,49,12,210,160,118,167,116 (b1310cd2a076a774)
-
 const DEPOSIT_EVENT: [u8; 8] = [120, 248, 61, 83, 31, 142, 107, 144];
 const DISABLE_EVENT: [u8; 8] = [107, 253, 193, 76, 228, 202, 27, 104];
 const EXTEND_ACCOUNT_EVENT: [u8; 8] = [97, 97, 215, 144, 93, 146, 22, 124];
