@@ -1,4 +1,5 @@
 //! on-chain **events** and their Borsh-deserialisation helpers.
+// https://github.com/raydium-io/raydium-amm/blob/master/program/src/log.rs
 
 use crate::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
@@ -21,7 +22,7 @@ pub const SWAP_OUT: u8 = 4;
 // High-level event enum (concise; rich docs live in each struct)
 // -----------------------------------------------------------------------------
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub enum RaydiumV4Event {
+pub enum RaydiumV4Log {
     /// New pool initialised. See [`InitLog`].
     Init(InitLog),
 
@@ -130,7 +131,7 @@ pub struct SwapBaseOutLog {
 // -----------------------------------------------------------------------------
 // Borsh deserialisation helper
 // -----------------------------------------------------------------------------
-impl<'a> TryFrom<&'a [u8]> for RaydiumV4Event {
+impl<'a> TryFrom<&'a [u8]> for RaydiumV4Log {
     type Error = ParseError;
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
@@ -154,6 +155,6 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumV4Event {
 }
 
 /// Convenience wrapper that forwards to `TryFrom`.
-pub fn unpack(data: &[u8]) -> Result<RaydiumV4Event, ParseError> {
-    RaydiumV4Event::try_from(data)
+pub fn unpack(data: &[u8]) -> Result<RaydiumV4Log, ParseError> {
+    RaydiumV4Log::try_from(data)
 }

@@ -9,8 +9,8 @@ mod tests {
         // let base64 = "AwBOclMAAAAAmOUFnQ4AAAACAAAAAAAAAABOclMAAAAAfTDHRyEBAAAR7JIChTUAAIVC62EPAAAA";
         let bytes = hex!("03004e72530000000098e5059d0e0000000200000000000000004e7253000000007d30c7472101000011ec9202853500008542eb610f000000");
 
-        match raydium::amm::v4::events::unpack(&bytes).expect("decode event") {
-            raydium::amm::v4::events::RaydiumV4Event::SwapBaseIn(event) => {
+        match raydium::amm::v4::logs::unpack(&bytes).expect("decode event") {
+            raydium::amm::v4::logs::RaydiumV4Log::SwapBaseIn(event) => {
                 assert_eq!(event.log_type, 3, "log_type");
                 assert_eq!(event.amount_in, 1400000000, "amount_in");
                 assert_eq!(event.minimum_out, 62763951512, "minimum_out");
@@ -19,6 +19,27 @@ mod tests {
                 assert_eq!(event.pool_coin, 1242449784957, "pool_coin");
                 assert_eq!(event.pool_pc, 58845390105617, "pool_pc");
                 assert_eq!(event.out_amount, 66067317381, "out_amount");
+            }
+            _ => panic!("Expected a Event"),
+        }
+    }
+
+    #[test]
+    fn unpack_amm_v4_swap_event_2() {
+        // https://solscan.io/tx/3GTW94fNv4JF4LeWNXCd6mQhxcZjNic9D1UoY9Qenf2S2t7gcgj7z58KwmHMHAYPqKVe812rrnpf2SKw8MdbNW7m
+        // let base64 = "AwL/AQAAAAAAAAAAAAAAAAACAAAAAAAAAAL/AQAAAAAA4VSaQlgAAADuOE6EHwAAAAS2AAAAAAAA";
+        let bytes = hex!("0302ff0100000000000000000000000000020000000000000002ff010000000000e1549a4258000000ee384e841f00000004b6000000000000");
+
+        match raydium::amm::v4::logs::unpack(&bytes).expect("decode event") {
+            raydium::amm::v4::logs::RaydiumV4Log::SwapBaseIn(event) => {
+                assert_eq!(event.log_type, 3, "log_type");
+                assert_eq!(event.amount_in, 130818, "amount_in");
+                assert_eq!(event.minimum_out, 0, "minimum_out");
+                assert_eq!(event.direction, 2, "direction");
+                assert_eq!(event.user_source, 130818, "user_source");
+                assert_eq!(event.pool_coin, 379074532577, "pool_coin");
+                assert_eq!(event.pool_pc, 135363705070, "pool_pc");
+                assert_eq!(event.out_amount, 46596, "out_amount");
             }
             _ => panic!("Expected a Event"),
         }
