@@ -23,4 +23,42 @@ mod tests {
             _ => panic!("Expected a Event"),
         }
     }
+
+    #[test]
+    fn unpack_amm_v4_swap_instruction() {
+        // https://solscan.io/tx/2mCvqGCwJszrr3BWB1Jen6gtEpS1xMoakxD4KRAAqFka76WJhQDCMFRZX7VqKGPNqfGXUzvyrLDENoqizBcBGCWN
+        match raydium::amm::v4::instructions::unpack(&hex!("0926ed3c0000000000c637450000000000")).expect("decode event") {
+            raydium::amm::v4::instructions::RaydiumV4Instruction::SwapBaseIn(event) => {
+                assert_eq!(event.amount_in, 3992870, "amount_in");
+                assert_eq!(event.minimum_amount_out, 4536262, "minimum_amount_out");
+                assert_eq!(event.discriminator, 9, "discriminator");
+            }
+            _ => panic!("Expected an Instruction"),
+        }
+    }
+
+    #[test]
+    fn unpack_amm_v4_swap_base_in_instruction() {
+        // https://solscan.io/tx/4NHdxiefrFEDazhdrcTjmG73G3TewYjhexKvpnNHgnzG5NK53A5otzHcE3xrzohGVAjvxQnYL3ysLD8xH89dVr3
+        match raydium::amm::v4::instructions::unpack(&hex!("092ec29212000000000000000000000000")).expect("decode event") {
+            raydium::amm::v4::instructions::RaydiumV4Instruction::SwapBaseIn(event) => {
+                assert_eq!(event.amount_in, 311607854, "amount_in");
+                assert_eq!(event.minimum_amount_out, u64::MIN, "minimum_amount_out");
+                assert_eq!(event.discriminator, 9, "discriminator");
+            }
+            _ => panic!("Expected an Instruction"),
+        }
+    }
+    #[test]
+    fn unpack_amm_v4_swap_base_out_instruction() {
+        // https://solscan.io/tx/3DHK2CAoTWeBoyM4Yzfsd5zSAPnN1kPXpbDp42YXKh2gE5K4Un28xu5qEeCpq7f85hUC3cCVkivhCARffSLARXZf
+        match raydium::amm::v4::instructions::unpack(&hex!("0bffffffffffffffff0b6f14a60c010000")).expect("decode event") {
+            raydium::amm::v4::instructions::RaydiumV4Instruction::SwapBaseOut(event) => {
+                assert_eq!(event.max_amount_in, u64::MAX, "max_amount_in");
+                assert_eq!(event.amount_out, 1153837592331, "amount_out");
+                assert_eq!(event.discriminator, 11, "discriminator");
+            }
+            _ => panic!("Expected a SwapBaseOut Instruction 1"),
+        }
+    }
 }

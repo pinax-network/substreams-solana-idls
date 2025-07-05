@@ -139,10 +139,10 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumV4Event {
         }
 
         // First byte is Raydium’s log_type discriminator
-        let disc = data[0];
+        let discriminator = data[0];
         let payload = data; // include the discriminator – Raydium structs need it
 
-        Ok(match disc {
+        Ok(match discriminator {
             SWAP_IN => Self::SwapBaseIn(SwapBaseInLog::try_from_slice(payload)?),
             SWAP_OUT => Self::SwapBaseOut(SwapBaseOutLog::try_from_slice(payload)?),
             INIT => Self::Init(InitLog::try_from_slice(payload)?),

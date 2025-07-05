@@ -1,5 +1,6 @@
 use substreams_solana::b58;
 pub mod events;
+pub mod instructions;
 
 /// Raydium Liquidity Pool V4
 ///
