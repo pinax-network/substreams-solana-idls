@@ -59,6 +59,19 @@ mod tests {
     }
 
     #[test]
+    fn unpack_amm_v4_swap_instruction_2() {
+        // https://solscan.io/tx/3GTW94fNv4JF4LeWNXCd6mQhxcZjNic9D1UoY9Qenf2S2t7gcgj7z58KwmHMHAYPqKVe812rrnpf2SKw8MdbNW7m
+        match raydium::amm::v4::instructions::unpack(&hex!("0902ff010000000000000000000000000040")).expect("decode event") {
+            raydium::amm::v4::instructions::RaydiumV4Instruction::SwapBaseIn(event) => {
+                assert_eq!(event.amount_in, 130818, "amount_in");
+                assert_eq!(event.minimum_amount_out, 0, "minimum_amount_out");
+                assert_eq!(event.discriminator, 9, "discriminator");
+            }
+            _ => panic!("Expected an Instruction"),
+        }
+    }
+
+    #[test]
     fn unpack_amm_v4_swap_base_in_instruction() {
         // https://solscan.io/tx/4NHdxiefrFEDazhdrcTjmG73G3TewYjhexKvpnNHgnzG5NK53A5otzHcE3xrzohGVAjvxQnYL3ysLD8xH89dVr3
         match raydium::amm::v4::instructions::unpack(&hex!("092ec29212000000000000000000000000")).expect("decode event") {

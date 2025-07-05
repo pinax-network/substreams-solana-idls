@@ -11,6 +11,15 @@ use serde::{Deserialize, Serialize};
 const SWAP_BASE_IN: u8 = 9;
 const SWAP_BASE_OUT: u8 = 11;
 
+// The canonical SwapBaseIn payload is 17 bytes.
+// Extra bytes (the 0x40 you saw) are legal and ignored by the contract.
+// The discriminator is 1 byte, followed by 16 bytes of payload.
+//
+// The following transaction includes 18 bytes of data, but the first 17 are the
+// canonical payload. The 18th byte is ignored by the contract.
+// https://solscan.io/tx/3JzyAsW5DZiX6B4CHp4TLkim3ksqoWhRHj2my7qNaGuPrDakoAoUqCa51tWjETTHsVZneFQPjmkRNAEkrn9Q1665
+const SWAP_LEN: usize = 17; // Length of the swap instructions (including discriminator)
+
 const _INITIALIZE: u8 = 0; // Placeholder for future use
 const _INITIALIZE2: u8 = 0; // Placeholder for future use
 const _MONITOR_STEP: u8 = 0; // Placeholder for future use
@@ -153,8 +162,8 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumV4Instruction {
         let payload = data; // include the discriminator – Raydium structs need it
 
         Ok(match discriminator {
-            SWAP_BASE_IN => Self::SwapBaseIn(SwapBaseInInstruction::try_from_slice(payload)?),
-            SWAP_BASE_OUT => Self::SwapBaseOut(SwapBaseOutInstruction::try_from_slice(payload)?),
+            SWAP_BASE_IN => Self::SwapBaseIn(SwapBaseInInstruction::try_from_slice(&payload[0..SWAP_LEN])?),
+            SWAP_BASE_OUT => Self::SwapBaseOut(SwapBaseOutInstruction::try_from_slice(&payload[0..SWAP_LEN])?),
             other => return Err(ParseError::RaydiumUnknown(other)),
         })
     }
