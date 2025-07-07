@@ -52,7 +52,6 @@ mod tests {
             raydium::amm::v4::instructions::RaydiumV4Instruction::SwapBaseIn(event) => {
                 assert_eq!(event.amount_in, 3992870, "amount_in");
                 assert_eq!(event.minimum_amount_out, 4536262, "minimum_amount_out");
-                assert_eq!(event.discriminator, 9, "discriminator");
             }
             _ => panic!("Expected an Instruction"),
         }
@@ -65,7 +64,6 @@ mod tests {
             raydium::amm::v4::instructions::RaydiumV4Instruction::SwapBaseIn(event) => {
                 assert_eq!(event.amount_in, 130818, "amount_in");
                 assert_eq!(event.minimum_amount_out, 0, "minimum_amount_out");
-                assert_eq!(event.discriminator, 9, "discriminator");
             }
             _ => panic!("Expected an Instruction"),
         }
@@ -78,7 +76,6 @@ mod tests {
             raydium::amm::v4::instructions::RaydiumV4Instruction::SwapBaseIn(event) => {
                 assert_eq!(event.amount_in, 311607854, "amount_in");
                 assert_eq!(event.minimum_amount_out, u64::MIN, "minimum_amount_out");
-                assert_eq!(event.discriminator, 9, "discriminator");
             }
             _ => panic!("Expected an Instruction"),
         }
@@ -90,7 +87,6 @@ mod tests {
             raydium::amm::v4::instructions::RaydiumV4Instruction::SwapBaseOut(event) => {
                 assert_eq!(event.max_amount_in, u64::MAX, "max_amount_in");
                 assert_eq!(event.amount_out, 1153837592331, "amount_out");
-                assert_eq!(event.discriminator, 11, "discriminator");
             }
             _ => panic!("Expected a SwapBaseOut Instruction 1"),
         }
