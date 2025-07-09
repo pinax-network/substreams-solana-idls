@@ -4,6 +4,31 @@ mod tests {
     use substreams_solana_idls::pumpfun;
 
     #[test]
+    fn anchor_self_cpi_trade_v0() {
+        // https://solscan.io/tx/5ACPkdP5WFFps4cdEpMzHg7AdFBNaNoKvGHBZ5HnSQTb9XFTVpoycYn1fuietoBhctfQ1SwKAZxsSeb2WFjg11i9
+        let bytes = hex!("e445a52e51cb9a1dbddb7fd34ee661ee9ae6f4d1b5271dbbb19844c73fb4172c19213721baa83fb90fd735b4acd988ec88f05ba70000000095992b081053000000229ae01a3b1a817a51f81694e23afdf94e4d97efa01928f7abd98015220d552f4bdd50660000000017464701070000000861345717cd0300");
+
+        match pumpfun::bonding_curve::anchor_self_cpi::unpack(&bytes).expect("decode event") {
+            pumpfun::bonding_curve::anchor_self_cpi::PumpFunEvent::TradeV0(event) => {
+                assert_eq!(
+                    event,
+                    pumpfun::bonding_curve::anchor_self_cpi::TradeEventV0 {
+                        mint: "BRg3aMvmWjQKHetK9FQL62PnKBe9hPPSr6Z5yY7zkTVd".parse().unwrap(),
+                        sol_amount: 2807820424,
+                        token_amount: 91328321657237,
+                        is_buy: false,
+                        user: "3L5qPdUadqvwydY95Bf8mH75FTfuao8yLeBNAyLnac9U".parse().unwrap(),
+                        timestamp: 1716575563,
+                        virtual_sol_reserves: 30086219287,
+                        virtual_token_reserves: 1069925061124360
+                    }
+                );
+            }
+            _ => panic!("Expected a TradeEvent"),
+        }
+    }
+
+    #[test]
     fn anchor_self_cpi_trade_v1() {
         // https://solscan.io/tx/285JxcUbpFMiBQkB3GQGdykYEyAxy4tswTrLFuctTPcdiCdtkSiBDkpX97VbP2Dibw657PVakGt4h6qz3NZqgstP
         let bytes = hex!("e445a52e51cb9a1dbddb7fd34ee661eed1eccc2b2d1ae4e554365084d2e506be491327246a3eb013188a1f7904a7cfbf64079b5d0000000080bd8289782e000000f9e4e232fe0ef74bd1a1c1c3d678748dcc382ae18715020e2e58a0469a91dd9de31952670000000023ba9b24070000009cc72a594aba0300230e7828000000009c2f180db9bb0200");
