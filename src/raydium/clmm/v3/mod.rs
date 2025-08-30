@@ -1,5 +1,6 @@
 use substreams_solana::b58;
 
+pub mod accounts;
 pub mod events;
 pub mod instructions;
 
