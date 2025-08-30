@@ -13,8 +13,10 @@ mod tests {
                 assert_eq!(
                     event,
                     bonkswap::instructions::SwapInstruction {
-                        delta_in: 155544178,
-                        price_limit: 340282366920938463463374607431768211455,
+                        delta_in: bonkswap::instructions::Token { v: 155544178 },
+                        price_limit: bonkswap::instructions::FixedPoint {
+                            v: 340282366920938463463374607431768211455,
+                        },
                         x_to_y: false
                     }
                 );
