@@ -1,6 +1,6 @@
 [package]
 name = "substreams-solana-idls"
-version = "0.4.5"
+version = "0.5.0"
 description = "Type-safe Solana IDLs & instruction/event decoders for Substreams modules."
 license = "Apache-2.0"
 edition = "2021"
@@ -15,5 +15,5 @@ substreams-solana = "0.14.1"
 solana-program = "2.3.0"
 borsh = { version = "1.5.7", features = ["derive"] }
 serde = { version = "1.0.215", features = ["derive"] }
-serde_json = "1.0.132"
-thiserror = "2.0.12"
+serde_json = "1.0.143"
+thiserror = "2.0.16"

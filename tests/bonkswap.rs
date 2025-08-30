@@ -1,27 +1,25 @@
 #[cfg(test)]
 mod tests {
-    use borsh::BorshSerialize;
+    use substreams::hex;
     use substreams_solana_idls::bonkswap;
 
     #[test]
-    fn unpack_swap_instruction() {
-        use bonkswap::instructions::{unpack, BonkSwapInstruction, SwapInstruction, SWAP};
+    fn unpack_swap_event() {
+        // https://solscan.io/tx/V8eadAratmZPPwZP8aJJDCS6ZBQkNMN9KqVQefVubkCZKyw7ofT1DnunVJRTk8yiwkyyuGMjTv5MJzrAfAT9VxX
+        let bytes = hex!("f8c69e91e17587c8726a450900000000ffffffffffffffffffffffffffffffff00");
 
-        let payload = SwapInstruction {
-            delta_in: 1,
-            price_limit: 2,
-            x_to_y: true,
-        };
-        let mut data = SWAP.to_vec();
-        payload.serialize(&mut data).unwrap();
-
-        match unpack(&data).expect("decode") {
-            BonkSwapInstruction::Swap(ix) => {
-                assert_eq!(ix.delta_in, 1);
-                assert_eq!(ix.price_limit, 2);
-                assert!(ix.x_to_y);
+        match bonkswap::instructions::unpack(&bytes).expect("decode instruction") {
+            bonkswap::instructions::BonkSwapInstruction::Swap(event) => {
+                assert_eq!(
+                    event,
+                    bonkswap::instructions::SwapInstruction {
+                        delta_in: 155544178,
+                        price_limit: 340282366920938463463374607431768211455,
+                        x_to_y: false
+                    }
+                );
             }
-            _ => panic!("expected swap"),
+            _ => panic!("Expected a SwapInstruction"),
         }
     }
 }
