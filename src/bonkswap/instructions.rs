@@ -194,4 +194,3 @@ impl<'a> TryFrom<&'a [u8]> for BonkSwapInstruction {
 pub fn unpack(data: &[u8]) -> Result<BonkSwapInstruction, ParseError> {
     BonkSwapInstruction::try_from(data)
 }
-
