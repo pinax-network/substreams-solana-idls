@@ -1,3 +1,4 @@
+pub mod bonkswap;
 pub mod jupiter;
 pub mod pumpfun;
 pub mod raydium;
