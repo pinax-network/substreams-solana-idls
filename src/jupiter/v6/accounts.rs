@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
-use crate::accounts::AccountsError;
+use crate::accounts::{to_pubkey, AccountsError};
 
 // -----------------------------------------------------------------------------
 // Simple instructions
@@ -94,7 +94,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ExactOutRouteAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(ExactOutRouteAccounts {
@@ -148,7 +148,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RouteAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(RouteAccounts {
@@ -202,7 +202,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RouteWithTokenLedgerAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(RouteWithTokenLedgerAccounts {
@@ -263,7 +263,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SharedAccountsExactOutRouteAccounts
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(SharedAccountsExactOutRouteAccounts {
@@ -313,7 +313,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SharedAccountsRouteAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(SharedAccountsRouteAccounts {
@@ -366,7 +366,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SharedAccountsRouteWithTokenLedgerA
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(SharedAccountsRouteWithTokenLedgerAccounts {
