@@ -1,6 +1,7 @@
 #![allow(deprecated)]
 pub mod bonkswap;
 pub mod jupiter;
+pub mod orca;
 pub mod pumpfun;
 pub mod raydium;
 
