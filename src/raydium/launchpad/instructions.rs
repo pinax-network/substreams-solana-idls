@@ -27,31 +27,47 @@ pub enum RaydiumLaunchpadInstruction {
 // -----------------------------------------------------------------------------
 // Payload structs
 // -----------------------------------------------------------------------------
+/// Use the given amount of quote tokens to purchase base tokens.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct BuyExactInInstruction {
+    /// Amount of quote token to purchase
     pub amount_in: u64,
+    /// Minimum amount of base token to receive (slippage protection)
     pub minimum_amount_out: u64,
+    /// Fee rate for the share
     pub share_fee_rate: u64,
 }
 
+/// Use quote tokens to purchase the given amount of base tokens.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct BuyExactOutInstruction {
+    /// Amount of base token to receive
     pub amount_out: u64,
+    /// Maximum amount of quote token to purchase (slippage protection)
     pub maximum_amount_in: u64,
+    /// Fee rate for the share
     pub share_fee_rate: u64,
 }
 
+/// Use the given amount of base tokens to sell for quote tokens.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct SellExactInInstruction {
+    /// Amount of base token to sell
     pub amount_in: u64,
+    /// Minimum amount of quote token to receive (slippage protection)
     pub minimum_amount_out: u64,
+    /// Fee rate for the share
     pub share_fee_rate: u64,
 }
 
+/// Sell base tokens for the given amount of quote tokens.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct SellExactOutInstruction {
+    /// Amount of quote token to receive
     pub amount_out: u64,
+    /// Maximum amount of base token to purchase (slippage protection)
     pub maximum_amount_in: u64,
+    /// Fee rate for the share
     pub share_fee_rate: u64,
 }
 
