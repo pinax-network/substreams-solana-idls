@@ -8,8 +8,8 @@ mod tests {
         // https://solscan.io/tx/5UWUzgvMGRrEBKqaPYDnSpSKTYsVYaaBsThoPVbSTMvGFTFa6P3ykQodcp3ShL9o1yUuuqix3wgHR74fHAj5q2HB
         let bytes = hex!("e445a52e51cb9a1d3e2f370aa503dc2a4545656800000000af28f004000000003c07deae14000000af28f00400000000ca938dcb04000000af0bdef97f000000ee1ef9689423020007103a201500000014000000000000001b03d10a000000000500000000000000c740b40200000000ec0c69151500000025ccb41215000000c40660072ddc79037ded460ba50e7db938f85e3cffdee2a1a443e0a544331255bd1f448d9dae5b6c1de2d05b043b7de51c4f56eedda06a074cc97e3db2700bbf8556d31ff821ffe7f4b72a466984b85eb850c5e389e07ac038836ac8ef37a9921072df16318f56050eab0292c03aa99d531d627d4c5147d5d403a9f109c665a7608ccc1dfce961b43b779c191505a6e2d3bf45d5a4db4618ad76c82d61754535ac96cbb25e6d405dfc5b494cc53c574d9e2e9e513c0f1216f5108edf7f3c82ec000000000000000000000000000000000000000000000000000000000000000005000000000000000000000000000000");
 
-        match pumpfun::amm::anchor_self_cpi::unpack(&bytes).expect("decode event") {
-            pumpfun::amm::anchor_self_cpi::PumpFunAmmEvent::SellEventV2(event) => {
+        match pumpfun::amm::events::unpack(&bytes).expect("decode event") {
+            pumpfun::amm::events::PumpFunAmmEvent::SellEventV2(event) => {
                 assert_eq!(event.timestamp, 1751467333, "timestamp");
                 assert_eq!(event.base_amount_in, 82847919, "base_amount_in");
                 assert_eq!(event.min_quote_amount_out, 88833132348, "min_quote_amount_out");
@@ -59,8 +59,8 @@ mod tests {
         // https://solscan.io/tx/3AvQDp1ZTdCPLLaf6zMC49gT6JwP7k21wPsTiitpGAS9kL6cKPTCSCKUtbv7No13i3XrbcRHWBLa2D2zrUjY9H5s
         let bytes = hex!("e445a52e51cb9a1d67f4521f2cf57777454565680000000068a95a0200000000fb2bd87a0a0000000000000000000000ebc54a1a1a0000005e34cefe7f000000021290537f23020045e90e120a000000140000000000000041f72705000000000500000000000000d1fd49010000000086e036170a00000057de80180a000000c40660072ddc79037ded460ba50e7db938f85e3cffdee2a1a443e0a544331255f771b015b5c0053e9f90450062b4af29076439be95be43461bacf21986db6c27b102664f7e7e0b85a6cd023a1af27c7fba5b3960e2730a11e5a9c25f014b72b874daca6974a5f667fd13d7c1edaa1a0e7105ee3e3691641ef09baaeee8c8b72d608ccc1dfce961b43b779c191505a6e2d3bf45d5a4db4618ad76c82d61754535ac96cbb25e6d405dfc5b494cc53c574d9e2e9e513c0f1216f5108edf7f3c82ec000000000000000000000000000000000000000000000000000000000000000005000000000000000000000000000000");
 
-        match pumpfun::amm::anchor_self_cpi::unpack(&bytes).expect("decode event") {
-            pumpfun::amm::anchor_self_cpi::PumpFunAmmEvent::BuyEventV2(event) => {
+        match pumpfun::amm::events::unpack(&bytes).expect("decode event") {
+            pumpfun::amm::events::PumpFunAmmEvent::BuyEventV2(event) => {
                 assert_eq!(event.timestamp, 1751467333, "timestamp");
                 assert_eq!(event.base_amount_out, 39496040, "base_amount_out");
                 assert_eq!(event.max_quote_amount_in, 45010660347, "max_quote_amount_in");
@@ -154,8 +154,8 @@ mod tests {
         // https://solscan.io/tx/bm6VNDbKhrZqXsrC297FNWX9EscSiFawEg2zKHmnBPT8WLJW92xdrh1Xhrb2KNEgRNSTPV9myHDWkxLoWe1voyx
         let bytes = hex!("e445a52e51cb9a1db1310cd2a076a7749969656800000000000096c4e2ab2ea0b7c2f093a905be19705a6a761f8d4c3115cb43338a314f8ae05b069b8857feab8184fb687f634618c035dac439dc1aeb3b5598a0f00000000001915f49b31a963278b23a8674bf218caeb2b0dfdc7c1c04c2623f9a742485535f09060024ca94270000000080c6a47e8d03000024ca94270000000080c6a47e8d03006400000000000000a5b67cbddb0b000041b67cbddb0b0000fec430179d65d3520de4fb25593a097803004bd24f9f7e44a1fc3b1cff3a82698e62656ca724fa17df29301afa7dbdef55588a2c09f270d1db5f8c99f5ce47b8643bc49a393fb897bf94f3c4a295b1be1dbf18752a2d84fd6f7bacbe66f63be840093a5ad265034d3e6bb2c7bffbae0478b359bca217afb634cd172d292c5827260000000000000000000000000000000000000000000000000000000000000000");
 
-        match pumpfun::amm::anchor_self_cpi::unpack(&bytes).expect("decode event") {
-            pumpfun::amm::anchor_self_cpi::PumpFunAmmEvent::CreatePoolEventV2(event) => {
+        match pumpfun::amm::events::unpack(&bytes).expect("decode event") {
+            pumpfun::amm::events::PumpFunAmmEvent::CreatePoolEventV2(event) => {
                 // assert_eq!(event.timestamp, 1751476633, "timestamp");
                 assert_eq!(event.index, 0, "index");
                 assert_eq!(event.creator, "B9YHJjB71MuL8aPjFtWc9kpaKH4KJD4CFgovEh5xaAVg".parse().unwrap(), "creator");

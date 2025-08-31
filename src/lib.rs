@@ -3,6 +3,7 @@
 pub mod accounts;
 pub mod bonkswap;
 pub mod jupiter;
+pub mod meteora;
 pub mod orca;
 pub mod pumpfun;
 pub mod raydium;

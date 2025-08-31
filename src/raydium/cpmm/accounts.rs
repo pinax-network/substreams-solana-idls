@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
-use crate::accounts::{self as _, AccountsError};
+use crate::accounts::AccountsError;
 
 /// Accounts for the `close_permission_pda` instruction.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
@@ -356,7 +356,7 @@ pub struct InitializeAccounts {
     /// token_0_mint.key().as_ref(),
     /// token_1_mint.key().as_ref(),
     /// ],
-    /// 
+    ///
     /// Or random account: must be signed by cli
     pub pool_state: Pubkey,
     /// Token_0 mint, the key must smaller than token_1 mint.
@@ -446,7 +446,7 @@ pub struct InitializeWithPermissionAccounts {
     /// token_0_mint.key().as_ref(),
     /// token_1_mint.key().as_ref(),
     /// ],
-    /// 
+    ///
     /// Or random account: must be signed by cli
     pub pool_state: Pubkey,
     /// Token_0 mint, the key must smaller than token_1 mint.

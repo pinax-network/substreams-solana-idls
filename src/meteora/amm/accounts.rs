@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
-use crate::accounts::{self as _, AccountsError};
+use crate::accounts::AccountsError;
 
 // -----------------------------------------------------------------------------
 // Accounts structs
@@ -63,7 +63,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionedPoolAccounts 
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -157,7 +157,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionlessPoolAccount
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -253,7 +253,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionlessPoolWithFee
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -288,7 +288,9 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionlessPoolWithFee
     }
 }
 
-pub fn get_initialize_permissionless_pool_with_fee_tier_accounts(ix: &InstructionView) -> Result<InitializePermissionlessPoolWithFeeTierAccounts, AccountsError> {
+pub fn get_initialize_permissionless_pool_with_fee_tier_accounts(
+    ix: &InstructionView,
+) -> Result<InitializePermissionlessPoolWithFeeTierAccounts, AccountsError> {
     InitializePermissionlessPoolWithFeeTierAccounts::try_from(ix)
 }
 
@@ -305,7 +307,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for EnableOrDisablePoolAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -359,7 +361,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -426,7 +428,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveLiquiditySingleSideAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -495,7 +497,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddImbalanceLiquidityAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -565,7 +567,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveBalanceLiquidityAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -635,7 +637,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddBalanceLiquidityAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -677,7 +679,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SetPoolFeesAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -706,7 +708,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for OverrideCurveParamAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -746,7 +748,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for GetPoolInfoAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -808,7 +810,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for BootstrapLiquidityAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -858,7 +860,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateMintMetadataAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -898,7 +900,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateLockEscrowAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -952,7 +954,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for LockAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -1023,7 +1025,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimFeeAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -1066,7 +1068,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateConfigAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -1094,7 +1096,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CloseConfigAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -1167,7 +1169,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionlessConstantPro
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -1202,7 +1204,9 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionlessConstantPro
     }
 }
 
-pub fn get_initialize_permissionless_constant_product_pool_with_config_accounts(ix: &InstructionView) -> Result<InitializePermissionlessConstantProductPoolWithConfigAccounts, AccountsError> {
+pub fn get_initialize_permissionless_constant_product_pool_with_config_accounts(
+    ix: &InstructionView,
+) -> Result<InitializePermissionlessConstantProductPoolWithConfigAccounts, AccountsError> {
     InitializePermissionlessConstantProductPoolWithConfigAccounts::try_from(ix)
 }
 
@@ -1263,7 +1267,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionlessConstantPro
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -1298,7 +1302,9 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionlessConstantPro
     }
 }
 
-pub fn get_initialize_permissionless_constant_product_pool_with_config2_accounts(ix: &InstructionView) -> Result<InitializePermissionlessConstantProductPoolWithConfig2Accounts, AccountsError> {
+pub fn get_initialize_permissionless_constant_product_pool_with_config2_accounts(
+    ix: &InstructionView,
+) -> Result<InitializePermissionlessConstantProductPoolWithConfig2Accounts, AccountsError> {
     InitializePermissionlessConstantProductPoolWithConfig2Accounts::try_from(ix)
 }
 
@@ -1358,7 +1364,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeCustomizablePermissionles
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -1392,7 +1398,9 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeCustomizablePermissionles
     }
 }
 
-pub fn get_initialize_customizable_permissionless_constant_product_pool_accounts(ix: &InstructionView) -> Result<InitializeCustomizablePermissionlessConstantProductPoolAccounts, AccountsError> {
+pub fn get_initialize_customizable_permissionless_constant_product_pool_accounts(
+    ix: &InstructionView,
+) -> Result<InitializeCustomizablePermissionlessConstantProductPoolAccounts, AccountsError> {
     InitializeCustomizablePermissionlessConstantProductPoolAccounts::try_from(ix)
 }
 
@@ -1409,7 +1417,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdateActivationPointAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -1441,7 +1449,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for WithdrawProtocolFeesAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -1472,7 +1480,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SetWhitelistedVaultAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
@@ -1505,7 +1513,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for PartnerClaimFeeAccounts {
     type Error = AccountsError;
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
-        let get = |index: usize, name: &"static str| -> Result<Pubkey, AccountsError> {
+        let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };

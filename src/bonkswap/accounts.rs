@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
-use crate::accounts::{self as _, AccountsError};
+use crate::accounts::AccountsError;
 
 // -----------------------------------------------------------------------------
 // Swap accounts (with optional referrer)
@@ -59,12 +59,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapAccounts {
             crate::accounts::to_pubkey(name, index, &a.0)
         };
 
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts
-                .get(index)
-                .and_then(|a| a.0.as_slice().try_into().ok())
-                .map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
 
         Ok(SwapAccounts {
             state: get_req(IDX_STATE, "state")?,
@@ -487,4 +482,3 @@ accounts!(
         token_program
     }
 );
-

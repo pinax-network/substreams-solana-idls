@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
-use crate::accounts::{self as _, AccountsError};
+use crate::accounts::AccountsError;
 
 // -----------------------------------------------------------------------------
 // AddLiquidity accounts
@@ -60,9 +60,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
             position: get_req(IDX_POSITION, "position")?,
@@ -137,9 +135,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimPartnerFeeAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
             pool: get_req(IDX_POOL, "pool")?,
@@ -219,9 +215,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimPositionFeeAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
             pool: get_req(IDX_POOL, "pool")?,
@@ -301,9 +295,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimProtocolFeeAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
             pool: get_req(IDX_POOL, "pool")?,
@@ -369,9 +361,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimRewardAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
             pool: get_req(IDX_POOL, "pool")?,
@@ -419,9 +409,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CloseClaimFeeOperatorAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             claim_fee_operator: get_req(IDX_CLAIM_FEE_OPERATOR, "claim_fee_operator")?,
             rent_receiver: get_req(IDX_RENT_RECEIVER, "rent_receiver")?,
@@ -463,9 +451,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CloseConfigAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             config: get_req(IDX_CONFIG, "config")?,
             admin: get_req(IDX_ADMIN, "admin")?,
@@ -521,9 +507,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClosePositionAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             position_nft_mint: get_req(IDX_POSITION_NFT_MINT, "position_nft_mint")?,
             position_nft_account: get_req(IDX_POSITION_NFT_ACCOUNT, "position_nft_account")?,
@@ -570,9 +554,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CloseTokenBadgeAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             token_badge: get_req(IDX_TOKEN_BADGE, "token_badge")?,
             admin: get_req(IDX_ADMIN, "admin")?,
@@ -616,9 +598,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateClaimFeeOperatorAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             claim_fee_operator: get_req(IDX_CLAIM_FEE_OPERATOR, "claim_fee_operator")?,
             operator: get_req(IDX_OPERATOR, "operator")?,
@@ -661,9 +641,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateConfigAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             config: get_req(IDX_CONFIG, "config")?,
             admin: get_req(IDX_ADMIN, "admin")?,
@@ -705,9 +683,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateDynamicConfigAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             config: get_req(IDX_CONFIG, "config")?,
             admin: get_req(IDX_ADMIN, "admin")?,
@@ -765,9 +741,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreatePositionAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             owner: get_req(IDX_OWNER, "owner")?,
             position_nft_mint: get_req(IDX_POSITION_NFT_MINT, "position_nft_mint")?,
@@ -817,9 +791,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateTokenBadgeAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             token_badge: get_req(IDX_TOKEN_BADGE, "token_badge")?,
             token_mint: get_req(IDX_TOKEN_MINT, "token_mint")?,
@@ -868,9 +840,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for FundRewardAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
             reward_vault: get_req(IDX_REWARD_VAULT, "reward_vault")?,
@@ -956,9 +926,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeCustomizablePoolAccounts 
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             creator: get_req(IDX_CREATOR, "creator")?,
             position_nft_mint: get_req(IDX_POSITION_NFT_MINT, "position_nft_mint")?,
@@ -1058,9 +1026,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePoolAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             creator: get_req(IDX_CREATOR, "creator")?,
             position_nft_mint: get_req(IDX_POSITION_NFT_MINT, "position_nft_mint")?,
@@ -1163,9 +1129,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePoolWithDynamicConfigAcco
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             creator: get_req(IDX_CREATOR, "creator")?,
             position_nft_mint: get_req(IDX_POSITION_NFT_MINT, "position_nft_mint")?,
@@ -1233,9 +1197,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeRewardAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
             pool: get_req(IDX_POOL, "pool")?,
@@ -1292,9 +1254,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for LockPositionAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
             position: get_req(IDX_POSITION, "position")?,
@@ -1344,9 +1304,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for PermanentLockPositionAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
             position: get_req(IDX_POSITION, "position")?,
@@ -1388,9 +1346,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RefreshVestingAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
             position: get_req(IDX_POSITION, "position")?,
@@ -1461,9 +1417,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveAllLiquidityAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
             pool: get_req(IDX_POOL, "pool")?,
@@ -1545,9 +1499,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveLiquidityAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
             pool: get_req(IDX_POOL, "pool")?,
@@ -1597,9 +1549,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SetPoolStatusAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
             admin: get_req(IDX_ADMIN, "admin")?,
@@ -1654,9 +1604,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SplitPositionAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
             first_position: get_req(IDX_FIRST_POSITION, "first_position")?,
@@ -1731,9 +1679,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
             pool: get_req(IDX_POOL, "pool")?,
@@ -1782,9 +1728,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdateRewardDurationAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
             signer: get_req(IDX_SIGNER, "signer")?,
@@ -1823,9 +1767,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdateRewardFunderAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
             signer: get_req(IDX_SIGNER, "signer")?,
@@ -1874,9 +1816,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for WithdrawIneligibleRewardAccounts {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::accounts::to_pubkey(name, index, &a.0)
         };
-        let get_opt = |index: usize| -> Option<Pubkey> {
-            accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
-        };
+        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
             pool: get_req(IDX_POOL, "pool")?,

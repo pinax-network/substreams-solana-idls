@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
-use crate::accounts::{self as _, AccountsError};
+use crate::accounts::AccountsError;
 
 // -----------------------------------------------------------------------------
 // Simple instructions
