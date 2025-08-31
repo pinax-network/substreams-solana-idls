@@ -8,11 +8,11 @@ mod tests {
         // https://solscan.io/tx/5ACPkdP5WFFps4cdEpMzHg7AdFBNaNoKvGHBZ5HnSQTb9XFTVpoycYn1fuietoBhctfQ1SwKAZxsSeb2WFjg11i9
         let bytes = hex!("e445a52e51cb9a1dbddb7fd34ee661ee9ae6f4d1b5271dbbb19844c73fb4172c19213721baa83fb90fd735b4acd988ec88f05ba70000000095992b081053000000229ae01a3b1a817a51f81694e23afdf94e4d97efa01928f7abd98015220d552f4bdd50660000000017464701070000000861345717cd0300");
 
-        match pumpfun::bonding_curve::anchor_self_cpi::unpack(&bytes).expect("decode event") {
-            pumpfun::bonding_curve::anchor_self_cpi::PumpFunEvent::TradeV0(event) => {
+        match pumpfun::bonding_curve::events::unpack(&bytes).expect("decode event") {
+            pumpfun::bonding_curve::events::PumpFunEvent::TradeV0(event) => {
                 assert_eq!(
                     event,
-                    pumpfun::bonding_curve::anchor_self_cpi::TradeEventV0 {
+                    pumpfun::bonding_curve::events::TradeEventV0 {
                         mint: "BRg3aMvmWjQKHetK9FQL62PnKBe9hPPSr6Z5yY7zkTVd".parse().unwrap(),
                         sol_amount: 2807820424,
                         token_amount: 91328321657237,
@@ -33,11 +33,11 @@ mod tests {
         // https://solscan.io/tx/285JxcUbpFMiBQkB3GQGdykYEyAxy4tswTrLFuctTPcdiCdtkSiBDkpX97VbP2Dibw657PVakGt4h6qz3NZqgstP
         let bytes = hex!("e445a52e51cb9a1dbddb7fd34ee661eed1eccc2b2d1ae4e554365084d2e506be491327246a3eb013188a1f7904a7cfbf64079b5d0000000080bd8289782e000000f9e4e232fe0ef74bd1a1c1c3d678748dcc382ae18715020e2e58a0469a91dd9de31952670000000023ba9b24070000009cc72a594aba0300230e7828000000009c2f180db9bb0200");
 
-        match pumpfun::bonding_curve::anchor_self_cpi::unpack(&bytes).expect("decode event") {
-            pumpfun::bonding_curve::anchor_self_cpi::PumpFunEvent::TradeV1(event) => {
+        match pumpfun::bonding_curve::events::unpack(&bytes).expect("decode event") {
+            pumpfun::bonding_curve::events::PumpFunEvent::TradeV1(event) => {
                 assert_eq!(
                     event,
-                    pumpfun::bonding_curve::anchor_self_cpi::TradeEventV1 {
+                    pumpfun::bonding_curve::events::TradeEventV1 {
                         mint: "F8Tdm1Qo1HXiHAnCm6e3XpjDa2MejBxWn2RWK7nvpump".parse().unwrap(),
                         sol_amount: 1570441060,
                         token_amount: 51095238000000,
@@ -60,11 +60,11 @@ mod tests {
         // https://solscan.io/tx/sK44CDg4qzi9jvTgA32dCTNh6Y3CgXki2kj9XtpaXRr83BipzpWPjnENzJR3TjLegAfDfPDG5Z8GZDkbrXDQk3w
         let bytes = hex!("e445a52e51cb9a1dbddb7fd34ee661ee1506533f60e64c4528916a7b404296ac72a1b1b65e817505f94b02b46d1969be46b1f416000000000076c04f9a040000013cd2f118afae78c0d0a91f649ff048b4a16749e82caac521286d90a6085cdd1026b2466800000000e7329a910b0000009d11034a374d0200e7867695040000009d79f0fda54e0100ad11e6a4fc2944a4fa8251bef815426e1bfb28c6b6646677607c6ad9f566a6465f000000000000001ed4370000000000deed67d04e125b1a2d7c6933fec6c7b08bce5763a576c88dcd36697d38298183050000000000000038f0020000000000");
 
-        match pumpfun::bonding_curve::anchor_self_cpi::unpack(&bytes).expect("decode event") {
-            pumpfun::bonding_curve::anchor_self_cpi::PumpFunEvent::TradeV2(event) => {
+        match pumpfun::bonding_curve::events::unpack(&bytes).expect("decode event") {
+            pumpfun::bonding_curve::events::PumpFunEvent::TradeV2(event) => {
                 assert_eq!(
                     event,
-                    pumpfun::bonding_curve::anchor_self_cpi::TradeEventV2 {
+                    pumpfun::bonding_curve::events::TradeEventV2 {
                         mint: "2R5A2hvHqKUQE2sDpBQhPpCS5psiFFurPWfKazAnE8oX".parse().unwrap(),
                         sol_amount: 385_134_918,
                         token_amount: 5_060_809_487_872,
@@ -133,11 +133,11 @@ mod tests {
         // https://solscan.io/tx/XzPzYUbKHHrG6gyKciKW2yHWqzjF1cbuiJzN6bwYQy3oQLwaFwc5ErKpMc1QHr9BLxuLzfqKaSosetgXgREyqc9
         let bytes = hex!("e445a52e51cb9a1d1b72a94ddeeb637604000000474f424f04000000474f424f5000000068747470733a2f2f697066732e696f2f697066732f6261666b7265696470357362746f346d76757472367463646b713574763262357a70336f727a706264646d767a3262786279747463336b6969326d019addad130b2c4c6faa205f451f60bd9a4eed16747a5ad0d9850cb1a57fd1cf1fef544e81fab23ff34eb85c781e4b6bd8115fd5294e36dcadc99e7b0675decd77b855e4b353e62f466ee300057240ca099fc08b16e82dc80ab252b6d0c3b8bc77b855e4b353e62f466ee300057240ca099fc08b16e82dc80ab252b6d0c3b8bc66bd5968000000000010d847e3cf030000ac23fc060000000078c5fb51d102000080c6a47e8d0300");
 
-        match pumpfun::bonding_curve::anchor_self_cpi::unpack(&bytes).expect("decode instruction") {
-            pumpfun::bonding_curve::anchor_self_cpi::PumpFunEvent::Create(event) => {
+        match pumpfun::bonding_curve::events::unpack(&bytes).expect("decode instruction") {
+            pumpfun::bonding_curve::events::PumpFunEvent::Create(event) => {
                 assert_eq!(
                     event,
-                    pumpfun::bonding_curve::anchor_self_cpi::CreateEvent {
+                    pumpfun::bonding_curve::events::CreateEvent {
                         name: "GOBO".to_string(),
                         symbol: "GOBO".to_string(),
                         uri: "https://ipfs.io/ipfs/bafkreidp5sbto4mvutr6tcdkq5tv2b5zp3orzpbddmvz2bxbyttc3kii2m".to_string(),
