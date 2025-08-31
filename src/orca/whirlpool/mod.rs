@@ -1,5 +1,9 @@
 use substreams_solana::b58;
 
+pub mod accounts;
+pub mod events;
+pub mod instructions;
+
 /// Orca Whirlpool (CLMM model)
 ///
 /// https://solscan.io/account/whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc
