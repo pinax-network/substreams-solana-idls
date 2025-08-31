@@ -1,4 +1,4 @@
-//! Pump.fun on-chain **events** and their Borsh-deserialisation helpers.
+//! Jupiter Aggregator v4 on-chain **events** and their Borsh-deserialisation helpers.
 
 use crate::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
@@ -8,7 +8,8 @@ use solana_program::pubkey::Pubkey;
 // -----------------------------------------------------------------------------
 // Discriminators (first 8 bytes of the emitted log’s data)
 // -----------------------------------------------------------------------------
-const SWAP: [u8; 8] = [81, 108, 227, 190, 205, 208, 10, 196]; // 516ce3becdd00ac4
+const SWAP: [u8; 8] = [81, 108, 227, 190, 205, 208, 10, 196];
+const FEE: [u8; 8] = [6, 220, 131, 59, 240, 71, 51, 96];
 
 // -----------------------------------------------------------------------------
 // High-level event enum (concise; rich docs live in each struct)
@@ -17,7 +18,8 @@ const SWAP: [u8; 8] = [81, 108, 227, 190, 205, 208, 10, 196]; // 516ce3becdd00ac
 pub enum JupiterV4Event {
     /// Swap. See [`SwapEvent`].
     Swap(SwapEvent),
-
+    /// Fee taken by platform. See [`FeeEvent`].
+    Fee(FeeEvent),
     /// Discriminator did not match any known event.
     Unknown,
 }
@@ -25,8 +27,6 @@ pub enum JupiterV4Event {
 // -----------------------------------------------------------------------------
 // Payload structs (inline field comments instead of tables)
 // -----------------------------------------------------------------------------
-
-/// Emitted once when a new bonding-curve pool is created.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct SwapEvent {
     pub amm: Pubkey,
@@ -34,6 +34,13 @@ pub struct SwapEvent {
     pub input_amount: u64,
     pub output_mint: Pubkey,
     pub output_amount: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+pub struct FeeEvent {
+    pub account: Pubkey,
+    pub mint: Pubkey,
+    pub amount: u64,
 }
 
 // -----------------------------------------------------------------------------
@@ -44,15 +51,13 @@ impl<'a> TryFrom<&'a [u8]> for JupiterV4Event {
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
         if data.len() < 8 {
-            // 8 bytes discriminator + 8 bytes Anchor discriminator
             return Err(ParseError::TooShort(data.len()));
         }
-
         let disc: [u8; 8] = data[0..8].try_into().expect("slice len 8");
-        let payload = &data[8..]; // skip both discriminators
-
+        let payload = &data[8..];
         Ok(match disc {
             SWAP => Self::Swap(SwapEvent::try_from_slice(payload)?),
+            FEE => Self::Fee(FeeEvent::try_from_slice(payload)?),
             other => return Err(ParseError::Unknown(other)),
         })
     }
