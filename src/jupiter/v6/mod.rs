@@ -1,5 +1,5 @@
 use substreams_solana::b58;
-pub mod anchor_self_cpi;
+pub mod events;
 
 /// Jupiter Aggregator v6
 ///
