@@ -2,24 +2,8 @@ use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
-use thiserror::Error;
 
-// -----------------------------------------------------------------------------
-// Error type
-// -----------------------------------------------------------------------------
-#[derive(Debug, Error)]
-pub enum AccountsError {
-    #[error("missing required account `{name}` at index {index}")]
-    Missing { name: &'static str, index: usize },
-    #[error("invalid key length for `{name}` at index {index}: got {got}, want 32")]
-    InvalidLen { name: &'static str, index: usize, got: usize },
-}
-
-#[inline]
-fn to_pubkey(name: &'static str, index: usize, bytes: &[u8]) -> Result<Pubkey, AccountsError> {
-    let arr: [u8; 32] = bytes.try_into().map_err(|_| AccountsError::InvalidLen { name, index, got: bytes.len() })?;
-    Ok(Pubkey::new_from_array(arr))
-}
+use crate::accounts::{self as _, AccountsError};
 
 /// Accounts for the `close_permission_pda` instruction.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
@@ -38,7 +22,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClosePermissionPdaAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         Ok(ClosePermissionPdaAccounts {
             owner: get_req(0, "owner")?,
@@ -92,7 +76,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CollectCreatorFeeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         Ok(CollectCreatorFeeAccounts {
             creator: get_req(0, "creator")?,
@@ -152,7 +136,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CollectFundFeeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         Ok(CollectFundFeeAccounts {
             owner: get_req(0, "owner")?,
@@ -210,7 +194,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CollectProtocolFeeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         Ok(CollectProtocolFeeAccounts {
             owner: get_req(0, "owner")?,
@@ -250,7 +234,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateAmmConfigAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         Ok(CreateAmmConfigAccounts {
             owner: get_req(0, "owner")?,
@@ -281,7 +265,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreatePermissionPdaAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         Ok(CreatePermissionPdaAccounts {
             owner: get_req(0, "owner")?,
@@ -332,7 +316,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for DepositAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         Ok(DepositAccounts {
             owner: get_req(0, "owner")?,
@@ -414,7 +398,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         Ok(InitializeAccounts {
             creator: get_req(0, "creator")?,
@@ -503,7 +487,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeWithPermissionAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         Ok(InitializeWithPermissionAccounts {
             payer: get_req(0, "payer")?,
@@ -572,7 +556,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapBaseInputAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         Ok(SwapBaseInputAccounts {
             payer: get_req(0, "payer")?,
@@ -633,7 +617,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapBaseOutputAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         Ok(SwapBaseOutputAccounts {
             payer: get_req(0, "payer")?,
@@ -673,7 +657,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdateAmmConfigAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         Ok(UpdateAmmConfigAccounts {
             owner: get_req(0, "owner")?,
@@ -700,7 +684,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdatePoolStatusAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         Ok(UpdatePoolStatusAccounts {
             authority: get_req(0, "authority")?,
@@ -752,7 +736,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for WithdrawAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         Ok(WithdrawAccounts {
             owner: get_req(0, "owner")?,
