@@ -2,59 +2,8 @@ use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
-use thiserror::Error;
 
-// -----------------------------------------------------------------------------
-// Error type
-// -----------------------------------------------------------------------------
-#[derive(Debug, Error)]
-pub enum AccountsError {
-    #[error("missing required account `{name}` at index {index}")]
-    Missing { name: &'static str, index: usize },
-    #[error("invalid key length for `{name}` at index {index}: got {got}, want 32")]
-    InvalidLen { name: &'static str, index: usize, got: usize },
-}
-
-#[inline]
-fn to_pubkey(name: &'static str, index: usize, bytes: &[u8]) -> Result<Pubkey, AccountsError> {
-    let arr: [u8; 32] = bytes.try_into().map_err(|_| AccountsError::InvalidLen { name, index, got: bytes.len() })?;
-    Ok(Pubkey::new_from_array(arr))
-}
-
-// -----------------------------------------------------------------------------
-// Helper macro for required-only account structs
-// -----------------------------------------------------------------------------
-macro_rules! accounts {
-    ($name:ident, $getter:ident, { $( $(#[$doc:meta])* $field:ident ),+ $(,)? }) => {
-        #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
-        pub struct $name {
-            $( $(#[$doc])* pub $field: Pubkey,)+
-        }
-
-        impl<'ix> TryFrom<&InstructionView<'ix>> for $name {
-            type Error = AccountsError;
-            fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
-                let accounts = ix.accounts();
-                let mut idx = 0;
-                $(
-                    let $field = {
-                        let name = stringify!($field);
-                        let a = accounts.get(idx).ok_or(AccountsError::Missing { name, index: idx })?;
-                        let pk = to_pubkey(name, idx, &a.0)?;
-                        idx += 1;
-                        pk
-                    };
-                )+
-                let _ = idx;
-                Ok(Self { $($field,)+ })
-            }
-        }
-
-        pub fn $getter(ix: &InstructionView) -> Result<$name, AccountsError> {
-            $name::try_from(ix)
-        }
-    };
-}
+use crate::accounts::{self as _, AccountsError};
 
 /// Accounts for the `add_liquidity` instruction.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
@@ -83,7 +32,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityAccounts {
@@ -136,7 +85,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidity2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidity2Accounts {
@@ -189,7 +138,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityByStrategyAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityByStrategyAccounts {
@@ -242,7 +191,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityByStrategy2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityByStrategy2Accounts {
@@ -291,7 +240,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityByStrategyOneSideAccoun
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityByStrategyOneSideAccounts {
@@ -342,7 +291,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityByWeightAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityByWeightAccounts {
@@ -393,7 +342,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityOneSideAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityOneSideAccounts {
@@ -440,7 +389,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityOneSidePreciseAccounts 
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityOneSidePreciseAccounts {
@@ -485,7 +434,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityOneSidePrecise2Accounts
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityOneSidePrecise2Accounts {
@@ -718,7 +667,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for GoToABinAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(GoToABinAccounts {
@@ -811,7 +760,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeCustomizablePermissionles
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(InitializeCustomizablePermissionlessLbPairAccounts {
@@ -867,7 +816,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeCustomizablePermissionles
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(InitializeCustomizablePermissionlessLbPair2Accounts {
@@ -923,7 +872,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeLbPairAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(InitializeLbPairAccounts {
@@ -976,7 +925,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeLbPair2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(InitializeLbPair2Accounts {
@@ -1032,7 +981,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionLbPairAccounts 
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(InitializePermissionLbPairAccounts {
@@ -1154,7 +1103,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeRewardAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(InitializeRewardAccounts {
@@ -1240,7 +1189,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RebalanceLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(RebalanceLiquidityAccounts {
@@ -1296,7 +1245,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveAllLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(RemoveAllLiquidityAccounts {
@@ -1351,7 +1300,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(RemoveLiquidityAccounts {
@@ -1405,7 +1354,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveLiquidity2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(RemoveLiquidity2Accounts {
@@ -1459,7 +1408,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveLiquidityByRangeAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(RemoveLiquidityByRangeAccounts {
@@ -1513,7 +1462,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveLiquidityByRange2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(RemoveLiquidityByRange2Accounts {
@@ -1611,7 +1560,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(SwapAccounts {
@@ -1665,7 +1614,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for Swap2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Swap2Accounts {
@@ -1719,7 +1668,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapExactOutAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(SwapExactOutAccounts {
@@ -1773,7 +1722,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapExactOut2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(SwapExactOut2Accounts {
@@ -1827,7 +1776,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapWithPriceImpactAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(SwapWithPriceImpactAccounts {
@@ -1881,7 +1830,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapWithPriceImpact2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            to_pubkey(name, i, &a.0)
+            crate::accounts::to_pubkey(name, i, &a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(SwapWithPriceImpact2Accounts {

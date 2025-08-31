@@ -1,4 +1,6 @@
 #![allow(deprecated)]
+#[macro_use]
+pub mod accounts;
 pub mod bonkswap;
 pub mod jupiter;
 pub mod orca;

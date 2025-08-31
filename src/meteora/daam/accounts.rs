@@ -2,26 +2,8 @@ use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
-use thiserror::Error;
 
-// -----------------------------------------------------------------------------
-// Error type
-// -----------------------------------------------------------------------------
-#[derive(Debug, Error)]
-pub enum AccountsError {
-    #[error("missing required account `{name}` at index {index}")]
-    Missing { name: &'static str, index: usize },
-    #[error("invalid key length for `{name}` at index {index}: got {got}, want 32")]
-    InvalidLen { name: &'static str, index: usize, got: usize },
-}
-
-#[inline]
-fn to_pubkey(name: &'static str, index: usize, bytes: &[u8]) -> Result<Pubkey, AccountsError> {
-    let arr: [u8; 32] = bytes
-        .try_into()
-        .map_err(|_| AccountsError::InvalidLen { name, index, got: bytes.len() })?;
-    Ok(Pubkey::new_from_array(arr))
-}
+use crate::accounts::{self as _, AccountsError};
 
 // -----------------------------------------------------------------------------
 // AddLiquidity accounts
@@ -76,7 +58,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -153,7 +135,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimPartnerFeeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -235,7 +217,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimPositionFeeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -317,7 +299,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimProtocolFeeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -385,7 +367,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimRewardAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -435,7 +417,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CloseClaimFeeOperatorAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -479,7 +461,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CloseConfigAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -537,7 +519,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClosePositionAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -586,7 +568,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CloseTokenBadgeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -632,7 +614,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateClaimFeeOperatorAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -677,7 +659,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateConfigAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -721,7 +703,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateDynamicConfigAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -781,7 +763,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreatePositionAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -833,7 +815,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateTokenBadgeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -884,7 +866,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for FundRewardAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -972,7 +954,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeCustomizablePoolAccounts 
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -1074,7 +1056,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePoolAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -1179,7 +1161,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePoolWithDynamicConfigAcco
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -1249,7 +1231,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeRewardAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -1308,7 +1290,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for LockPositionAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -1360,7 +1342,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for PermanentLockPositionAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -1404,7 +1386,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RefreshVestingAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -1477,7 +1459,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveAllLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -1561,7 +1543,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -1613,7 +1595,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SetPoolStatusAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -1670,7 +1652,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SplitPositionAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -1747,7 +1729,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -1798,7 +1780,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdateRewardDurationAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -1839,7 +1821,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdateRewardFunderAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
@@ -1890,7 +1872,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for WithdrawIneligibleRewardAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, &a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> {
             accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array)
