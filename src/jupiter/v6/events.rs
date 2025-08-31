@@ -1,4 +1,4 @@
-//! Pump.fun on-chain **events** and their Borsh-deserialisation helpers.
+//! Jupiter v6 on-chain **events** and their Borsh-deserialisation helpers.
 
 use crate::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
