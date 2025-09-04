@@ -8,20 +8,6 @@ use crate::accounts::AccountsError;
 // -----------------------------------------------------------------------------
 // AddLiquidity accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL: usize = 0;
-const IDX_POSITION: usize = 1;
-const IDX_TOKEN_A_ACCOUNT: usize = 2;
-const IDX_TOKEN_B_ACCOUNT: usize = 3;
-const IDX_TOKEN_A_VAULT: usize = 4;
-const IDX_TOKEN_B_VAULT: usize = 5;
-const IDX_TOKEN_A_MINT: usize = 6;
-const IDX_TOKEN_B_MINT: usize = 7;
-const IDX_POSITION_NFT_ACCOUNT: usize = 8;
-const IDX_OWNER: usize = 9;
-const IDX_TOKEN_A_PROGRAM: usize = 10;
-const IDX_TOKEN_B_PROGRAM: usize = 11;
-const IDX_EVENT_AUTHORITY: usize = 12;
-const IDX_PROGRAM: usize = 13;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct AddLiquidityAccounts {
@@ -55,6 +41,20 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL: usize = 0;
+        const IDX_POSITION: usize = 1;
+        const IDX_TOKEN_A_ACCOUNT: usize = 2;
+        const IDX_TOKEN_B_ACCOUNT: usize = 3;
+        const IDX_TOKEN_A_VAULT: usize = 4;
+        const IDX_TOKEN_B_VAULT: usize = 5;
+        const IDX_TOKEN_A_MINT: usize = 6;
+        const IDX_TOKEN_B_MINT: usize = 7;
+        const IDX_POSITION_NFT_ACCOUNT: usize = 8;
+        const IDX_OWNER: usize = 9;
+        const IDX_TOKEN_A_PROGRAM: usize = 10;
+        const IDX_TOKEN_B_PROGRAM: usize = 11;
+        const IDX_EVENT_AUTHORITY: usize = 12;
+        const IDX_PROGRAM: usize = 13;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -87,19 +87,6 @@ pub fn get_add_liquidity_accounts(ix: &InstructionView) -> Result<AddLiquidityAc
 // -----------------------------------------------------------------------------
 // ClaimPartnerFee accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL_AUTHORITY: usize = 0;
-const IDX_POOL: usize = 1;
-const IDX_TOKEN_A_ACCOUNT: usize = 2;
-const IDX_TOKEN_B_ACCOUNT: usize = 3;
-const IDX_TOKEN_A_VAULT: usize = 4;
-const IDX_TOKEN_B_VAULT: usize = 5;
-const IDX_TOKEN_A_MINT: usize = 6;
-const IDX_TOKEN_B_MINT: usize = 7;
-const IDX_PARTNER: usize = 8;
-const IDX_TOKEN_A_PROGRAM: usize = 9;
-const IDX_TOKEN_B_PROGRAM: usize = 10;
-const IDX_EVENT_AUTHORITY: usize = 11;
-const IDX_PROGRAM: usize = 12;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct ClaimPartnerFeeAccounts {
@@ -130,6 +117,19 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimPartnerFeeAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL_AUTHORITY: usize = 0;
+        const IDX_POOL: usize = 1;
+        const IDX_TOKEN_A_ACCOUNT: usize = 2;
+        const IDX_TOKEN_B_ACCOUNT: usize = 3;
+        const IDX_TOKEN_A_VAULT: usize = 4;
+        const IDX_TOKEN_B_VAULT: usize = 5;
+        const IDX_TOKEN_A_MINT: usize = 6;
+        const IDX_TOKEN_B_MINT: usize = 7;
+        const IDX_PARTNER: usize = 8;
+        const IDX_TOKEN_A_PROGRAM: usize = 9;
+        const IDX_TOKEN_B_PROGRAM: usize = 10;
+        const IDX_EVENT_AUTHORITY: usize = 11;
+        const IDX_PROGRAM: usize = 12;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -161,21 +161,6 @@ pub fn get_claim_partner_fee_accounts(ix: &InstructionView) -> Result<ClaimPartn
 // -----------------------------------------------------------------------------
 // ClaimPositionFee accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL_AUTHORITY: usize = 0;
-const IDX_POOL: usize = 1;
-const IDX_POSITION: usize = 2;
-const IDX_TOKEN_A_ACCOUNT: usize = 3;
-const IDX_TOKEN_B_ACCOUNT: usize = 4;
-const IDX_TOKEN_A_VAULT: usize = 5;
-const IDX_TOKEN_B_VAULT: usize = 6;
-const IDX_TOKEN_A_MINT: usize = 7;
-const IDX_TOKEN_B_MINT: usize = 8;
-const IDX_POSITION_NFT_ACCOUNT: usize = 9;
-const IDX_OWNER: usize = 10;
-const IDX_TOKEN_A_PROGRAM: usize = 11;
-const IDX_TOKEN_B_PROGRAM: usize = 12;
-const IDX_EVENT_AUTHORITY: usize = 13;
-const IDX_PROGRAM: usize = 14;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct ClaimPositionFeeAccounts {
@@ -210,6 +195,21 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimPositionFeeAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL_AUTHORITY: usize = 0;
+        const IDX_POOL: usize = 1;
+        const IDX_POSITION: usize = 2;
+        const IDX_TOKEN_A_ACCOUNT: usize = 3;
+        const IDX_TOKEN_B_ACCOUNT: usize = 4;
+        const IDX_TOKEN_A_VAULT: usize = 5;
+        const IDX_TOKEN_B_VAULT: usize = 6;
+        const IDX_TOKEN_A_MINT: usize = 7;
+        const IDX_TOKEN_B_MINT: usize = 8;
+        const IDX_POSITION_NFT_ACCOUNT: usize = 9;
+        const IDX_OWNER: usize = 10;
+        const IDX_TOKEN_A_PROGRAM: usize = 11;
+        const IDX_TOKEN_B_PROGRAM: usize = 12;
+        const IDX_EVENT_AUTHORITY: usize = 13;
+        const IDX_PROGRAM: usize = 14;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -243,20 +243,6 @@ pub fn get_claim_position_fee_accounts(ix: &InstructionView) -> Result<ClaimPosi
 // -----------------------------------------------------------------------------
 // ClaimProtocolFee accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL_AUTHORITY: usize = 0;
-const IDX_POOL: usize = 1;
-const IDX_TOKEN_A_VAULT: usize = 2;
-const IDX_TOKEN_B_VAULT: usize = 3;
-const IDX_TOKEN_A_MINT: usize = 4;
-const IDX_TOKEN_B_MINT: usize = 5;
-const IDX_TOKEN_A_ACCOUNT: usize = 6;
-const IDX_TOKEN_B_ACCOUNT: usize = 7;
-const IDX_CLAIM_FEE_OPERATOR: usize = 8;
-const IDX_OPERATOR: usize = 9;
-const IDX_TOKEN_A_PROGRAM: usize = 10;
-const IDX_TOKEN_B_PROGRAM: usize = 11;
-const IDX_EVENT_AUTHORITY: usize = 12;
-const IDX_PROGRAM: usize = 13;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct ClaimProtocolFeeAccounts {
@@ -290,6 +276,20 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimProtocolFeeAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL_AUTHORITY: usize = 0;
+        const IDX_POOL: usize = 1;
+        const IDX_TOKEN_A_VAULT: usize = 2;
+        const IDX_TOKEN_B_VAULT: usize = 3;
+        const IDX_TOKEN_A_MINT: usize = 4;
+        const IDX_TOKEN_B_MINT: usize = 5;
+        const IDX_TOKEN_A_ACCOUNT: usize = 6;
+        const IDX_TOKEN_B_ACCOUNT: usize = 7;
+        const IDX_CLAIM_FEE_OPERATOR: usize = 8;
+        const IDX_OPERATOR: usize = 9;
+        const IDX_TOKEN_A_PROGRAM: usize = 10;
+        const IDX_TOKEN_B_PROGRAM: usize = 11;
+        const IDX_EVENT_AUTHORITY: usize = 12;
+        const IDX_PROGRAM: usize = 13;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -322,17 +322,6 @@ pub fn get_claim_protocol_fee_accounts(ix: &InstructionView) -> Result<ClaimProt
 // -----------------------------------------------------------------------------
 // ClaimReward accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL_AUTHORITY: usize = 0;
-const IDX_POOL: usize = 1;
-const IDX_POSITION: usize = 2;
-const IDX_REWARD_VAULT: usize = 3;
-const IDX_REWARD_MINT: usize = 4;
-const IDX_USER_TOKEN_ACCOUNT: usize = 5;
-const IDX_POSITION_NFT_ACCOUNT: usize = 6;
-const IDX_OWNER: usize = 7;
-const IDX_TOKEN_PROGRAM: usize = 8;
-const IDX_EVENT_AUTHORITY: usize = 9;
-const IDX_PROGRAM: usize = 10;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct ClaimRewardAccounts {
@@ -356,6 +345,17 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimRewardAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL_AUTHORITY: usize = 0;
+        const IDX_POOL: usize = 1;
+        const IDX_POSITION: usize = 2;
+        const IDX_REWARD_VAULT: usize = 3;
+        const IDX_REWARD_MINT: usize = 4;
+        const IDX_USER_TOKEN_ACCOUNT: usize = 5;
+        const IDX_POSITION_NFT_ACCOUNT: usize = 6;
+        const IDX_OWNER: usize = 7;
+        const IDX_TOKEN_PROGRAM: usize = 8;
+        const IDX_EVENT_AUTHORITY: usize = 9;
+        const IDX_PROGRAM: usize = 10;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -385,11 +385,6 @@ pub fn get_claim_reward_accounts(ix: &InstructionView) -> Result<ClaimRewardAcco
 // -----------------------------------------------------------------------------
 // CloseClaimFeeOperator accounts
 // -----------------------------------------------------------------------------
-const IDX_CLAIM_FEE_OPERATOR: usize = 0;
-const IDX_RENT_RECEIVER: usize = 1;
-const IDX_ADMIN: usize = 2;
-const IDX_EVENT_AUTHORITY: usize = 3;
-const IDX_PROGRAM: usize = 4;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CloseClaimFeeOperatorAccounts {
@@ -404,6 +399,11 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CloseClaimFeeOperatorAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_CLAIM_FEE_OPERATOR: usize = 0;
+        const IDX_RENT_RECEIVER: usize = 1;
+        const IDX_ADMIN: usize = 2;
+        const IDX_EVENT_AUTHORITY: usize = 3;
+        const IDX_PROGRAM: usize = 4;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -427,11 +427,6 @@ pub fn get_close_claim_fee_operator_accounts(ix: &InstructionView) -> Result<Clo
 // -----------------------------------------------------------------------------
 // CloseConfig accounts
 // -----------------------------------------------------------------------------
-const IDX_CONFIG: usize = 0;
-const IDX_ADMIN: usize = 1;
-const IDX_RENT_RECEIVER: usize = 2;
-const IDX_EVENT_AUTHORITY: usize = 3;
-const IDX_PROGRAM: usize = 4;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CloseConfigAccounts {
@@ -446,6 +441,11 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CloseConfigAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_CONFIG: usize = 0;
+        const IDX_ADMIN: usize = 1;
+        const IDX_RENT_RECEIVER: usize = 2;
+        const IDX_EVENT_AUTHORITY: usize = 3;
+        const IDX_PROGRAM: usize = 4;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -469,16 +469,6 @@ pub fn get_close_config_accounts(ix: &InstructionView) -> Result<CloseConfigAcco
 // -----------------------------------------------------------------------------
 // ClosePosition accounts
 // -----------------------------------------------------------------------------
-const IDX_POSITION_NFT_MINT: usize = 0;
-const IDX_POSITION_NFT_ACCOUNT: usize = 1;
-const IDX_POOL: usize = 2;
-const IDX_POSITION: usize = 3;
-const IDX_POOL_AUTHORITY: usize = 4;
-const IDX_RENT_RECEIVER: usize = 5;
-const IDX_OWNER: usize = 6;
-const IDX_TOKEN_PROGRAM: usize = 7;
-const IDX_EVENT_AUTHORITY: usize = 8;
-const IDX_PROGRAM: usize = 9;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct ClosePositionAccounts {
@@ -502,6 +492,16 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClosePositionAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POSITION_NFT_MINT: usize = 0;
+        const IDX_POSITION_NFT_ACCOUNT: usize = 1;
+        const IDX_POOL: usize = 2;
+        const IDX_POSITION: usize = 3;
+        const IDX_POOL_AUTHORITY: usize = 4;
+        const IDX_RENT_RECEIVER: usize = 5;
+        const IDX_OWNER: usize = 6;
+        const IDX_TOKEN_PROGRAM: usize = 7;
+        const IDX_EVENT_AUTHORITY: usize = 8;
+        const IDX_PROGRAM: usize = 9;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -530,11 +530,6 @@ pub fn get_close_position_accounts(ix: &InstructionView) -> Result<ClosePosition
 // -----------------------------------------------------------------------------
 // CloseTokenBadge accounts
 // -----------------------------------------------------------------------------
-const IDX_TOKEN_BADGE: usize = 0;
-const IDX_ADMIN: usize = 1;
-const IDX_RENT_RECEIVER: usize = 2;
-const IDX_EVENT_AUTHORITY: usize = 3;
-const IDX_PROGRAM: usize = 4;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CloseTokenBadgeAccounts {
@@ -549,6 +544,11 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CloseTokenBadgeAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_TOKEN_BADGE: usize = 0;
+        const IDX_ADMIN: usize = 1;
+        const IDX_RENT_RECEIVER: usize = 2;
+        const IDX_EVENT_AUTHORITY: usize = 3;
+        const IDX_PROGRAM: usize = 4;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -572,12 +572,6 @@ pub fn get_close_token_badge_accounts(ix: &InstructionView) -> Result<CloseToken
 // -----------------------------------------------------------------------------
 // CreateClaimFeeOperator accounts
 // -----------------------------------------------------------------------------
-const IDX_CLAIM_FEE_OPERATOR: usize = 0;
-const IDX_OPERATOR: usize = 1;
-const IDX_ADMIN: usize = 2;
-const IDX_SYSTEM_PROGRAM: usize = 3;
-const IDX_EVENT_AUTHORITY: usize = 4;
-const IDX_PROGRAM: usize = 5;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CreateClaimFeeOperatorAccounts {
@@ -593,6 +587,12 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateClaimFeeOperatorAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_CLAIM_FEE_OPERATOR: usize = 0;
+        const IDX_OPERATOR: usize = 1;
+        const IDX_ADMIN: usize = 2;
+        const IDX_SYSTEM_PROGRAM: usize = 3;
+        const IDX_EVENT_AUTHORITY: usize = 4;
+        const IDX_PROGRAM: usize = 5;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -617,11 +617,6 @@ pub fn get_create_claim_fee_operator_accounts(ix: &InstructionView) -> Result<Cr
 // -----------------------------------------------------------------------------
 // CreateConfig accounts
 // -----------------------------------------------------------------------------
-const IDX_CONFIG: usize = 0;
-const IDX_ADMIN: usize = 1;
-const IDX_SYSTEM_PROGRAM: usize = 2;
-const IDX_EVENT_AUTHORITY: usize = 3;
-const IDX_PROGRAM: usize = 4;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CreateConfigAccounts {
@@ -636,6 +631,11 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateConfigAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_CONFIG: usize = 0;
+        const IDX_ADMIN: usize = 1;
+        const IDX_SYSTEM_PROGRAM: usize = 2;
+        const IDX_EVENT_AUTHORITY: usize = 3;
+        const IDX_PROGRAM: usize = 4;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -659,11 +659,6 @@ pub fn get_create_config_accounts(ix: &InstructionView) -> Result<CreateConfigAc
 // -----------------------------------------------------------------------------
 // CreateDynamicConfig accounts
 // -----------------------------------------------------------------------------
-const IDX_CONFIG: usize = 0;
-const IDX_ADMIN: usize = 1;
-const IDX_SYSTEM_PROGRAM: usize = 2;
-const IDX_EVENT_AUTHORITY: usize = 3;
-const IDX_PROGRAM: usize = 4;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CreateDynamicConfigAccounts {
@@ -678,6 +673,11 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateDynamicConfigAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_CONFIG: usize = 0;
+        const IDX_ADMIN: usize = 1;
+        const IDX_SYSTEM_PROGRAM: usize = 2;
+        const IDX_EVENT_AUTHORITY: usize = 3;
+        const IDX_PROGRAM: usize = 4;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -701,17 +701,6 @@ pub fn get_create_dynamic_config_accounts(ix: &InstructionView) -> Result<Create
 // -----------------------------------------------------------------------------
 // CreatePosition accounts
 // -----------------------------------------------------------------------------
-const IDX_OWNER: usize = 0;
-const IDX_POSITION_NFT_MINT: usize = 1;
-const IDX_POSITION_NFT_ACCOUNT: usize = 2;
-const IDX_POOL: usize = 3;
-const IDX_POSITION: usize = 4;
-const IDX_POOL_AUTHORITY: usize = 5;
-const IDX_PAYER: usize = 6;
-const IDX_TOKEN_PROGRAM: usize = 7;
-const IDX_SYSTEM_PROGRAM: usize = 8;
-const IDX_EVENT_AUTHORITY: usize = 9;
-const IDX_PROGRAM: usize = 10;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CreatePositionAccounts {
@@ -736,6 +725,17 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreatePositionAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_OWNER: usize = 0;
+        const IDX_POSITION_NFT_MINT: usize = 1;
+        const IDX_POSITION_NFT_ACCOUNT: usize = 2;
+        const IDX_POOL: usize = 3;
+        const IDX_POSITION: usize = 4;
+        const IDX_POOL_AUTHORITY: usize = 5;
+        const IDX_PAYER: usize = 6;
+        const IDX_TOKEN_PROGRAM: usize = 7;
+        const IDX_SYSTEM_PROGRAM: usize = 8;
+        const IDX_EVENT_AUTHORITY: usize = 9;
+        const IDX_PROGRAM: usize = 10;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -765,12 +765,6 @@ pub fn get_create_position_accounts(ix: &InstructionView) -> Result<CreatePositi
 // -----------------------------------------------------------------------------
 // CreateTokenBadge accounts
 // -----------------------------------------------------------------------------
-const IDX_TOKEN_BADGE: usize = 0;
-const IDX_TOKEN_MINT: usize = 1;
-const IDX_ADMIN: usize = 2;
-const IDX_SYSTEM_PROGRAM: usize = 3;
-const IDX_EVENT_AUTHORITY: usize = 4;
-const IDX_PROGRAM: usize = 5;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CreateTokenBadgeAccounts {
@@ -786,6 +780,12 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateTokenBadgeAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_TOKEN_BADGE: usize = 0;
+        const IDX_TOKEN_MINT: usize = 1;
+        const IDX_ADMIN: usize = 2;
+        const IDX_SYSTEM_PROGRAM: usize = 3;
+        const IDX_EVENT_AUTHORITY: usize = 4;
+        const IDX_PROGRAM: usize = 5;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -810,14 +810,6 @@ pub fn get_create_token_badge_accounts(ix: &InstructionView) -> Result<CreateTok
 // -----------------------------------------------------------------------------
 // FundReward accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL: usize = 0;
-const IDX_REWARD_VAULT: usize = 1;
-const IDX_REWARD_MINT: usize = 2;
-const IDX_FUNDER_TOKEN_ACCOUNT: usize = 3;
-const IDX_FUNDER: usize = 4;
-const IDX_TOKEN_PROGRAM: usize = 5;
-const IDX_EVENT_AUTHORITY: usize = 6;
-const IDX_PROGRAM: usize = 7;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct FundRewardAccounts {
@@ -835,6 +827,14 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for FundRewardAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL: usize = 0;
+        const IDX_REWARD_VAULT: usize = 1;
+        const IDX_REWARD_MINT: usize = 2;
+        const IDX_FUNDER_TOKEN_ACCOUNT: usize = 3;
+        const IDX_FUNDER: usize = 4;
+        const IDX_TOKEN_PROGRAM: usize = 5;
+        const IDX_EVENT_AUTHORITY: usize = 6;
+        const IDX_PROGRAM: usize = 7;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -861,25 +861,6 @@ pub fn get_fund_reward_accounts(ix: &InstructionView) -> Result<FundRewardAccoun
 // -----------------------------------------------------------------------------
 // InitializeCustomizablePool accounts
 // -----------------------------------------------------------------------------
-const IDX_CREATOR: usize = 0;
-const IDX_POSITION_NFT_MINT: usize = 1;
-const IDX_POSITION_NFT_ACCOUNT: usize = 2;
-const IDX_PAYER: usize = 3;
-const IDX_POOL_AUTHORITY: usize = 4;
-const IDX_POOL: usize = 5;
-const IDX_POSITION: usize = 6;
-const IDX_TOKEN_A_MINT: usize = 7;
-const IDX_TOKEN_B_MINT: usize = 8;
-const IDX_TOKEN_A_VAULT: usize = 9;
-const IDX_TOKEN_B_VAULT: usize = 10;
-const IDX_PAYER_TOKEN_A: usize = 11;
-const IDX_PAYER_TOKEN_B: usize = 12;
-const IDX_TOKEN_A_PROGRAM: usize = 13;
-const IDX_TOKEN_B_PROGRAM: usize = 14;
-const IDX_TOKEN_2022_PROGRAM: usize = 15;
-const IDX_SYSTEM_PROGRAM: usize = 16;
-const IDX_EVENT_AUTHORITY: usize = 17;
-const IDX_PROGRAM: usize = 18;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct InitializeCustomizablePoolAccounts {
@@ -921,6 +902,25 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeCustomizablePoolAccounts 
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_CREATOR: usize = 0;
+        const IDX_POSITION_NFT_MINT: usize = 1;
+        const IDX_POSITION_NFT_ACCOUNT: usize = 2;
+        const IDX_PAYER: usize = 3;
+        const IDX_POOL_AUTHORITY: usize = 4;
+        const IDX_POOL: usize = 5;
+        const IDX_POSITION: usize = 6;
+        const IDX_TOKEN_A_MINT: usize = 7;
+        const IDX_TOKEN_B_MINT: usize = 8;
+        const IDX_TOKEN_A_VAULT: usize = 9;
+        const IDX_TOKEN_B_VAULT: usize = 10;
+        const IDX_PAYER_TOKEN_A: usize = 11;
+        const IDX_PAYER_TOKEN_B: usize = 12;
+        const IDX_TOKEN_A_PROGRAM: usize = 13;
+        const IDX_TOKEN_B_PROGRAM: usize = 14;
+        const IDX_TOKEN_2022_PROGRAM: usize = 15;
+        const IDX_SYSTEM_PROGRAM: usize = 16;
+        const IDX_EVENT_AUTHORITY: usize = 17;
+        const IDX_PROGRAM: usize = 18;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -958,26 +958,6 @@ pub fn get_initialize_customizable_pool_accounts(ix: &InstructionView) -> Result
 // -----------------------------------------------------------------------------
 // InitializePool accounts
 // -----------------------------------------------------------------------------
-const IDX_CREATOR: usize = 0;
-const IDX_POSITION_NFT_MINT: usize = 1;
-const IDX_POSITION_NFT_ACCOUNT: usize = 2;
-const IDX_PAYER: usize = 3;
-const IDX_CONFIG: usize = 4;
-const IDX_POOL_AUTHORITY: usize = 5;
-const IDX_POOL: usize = 6;
-const IDX_POSITION: usize = 7;
-const IDX_TOKEN_A_MINT: usize = 8;
-const IDX_TOKEN_B_MINT: usize = 9;
-const IDX_TOKEN_A_VAULT: usize = 10;
-const IDX_TOKEN_B_VAULT: usize = 11;
-const IDX_PAYER_TOKEN_A: usize = 12;
-const IDX_PAYER_TOKEN_B: usize = 13;
-const IDX_TOKEN_A_PROGRAM: usize = 14;
-const IDX_TOKEN_B_PROGRAM: usize = 15;
-const IDX_TOKEN_2022_PROGRAM: usize = 16;
-const IDX_SYSTEM_PROGRAM: usize = 17;
-const IDX_EVENT_AUTHORITY: usize = 18;
-const IDX_PROGRAM: usize = 19;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct InitializePoolAccounts {
@@ -1021,6 +1001,26 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePoolAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_CREATOR: usize = 0;
+        const IDX_POSITION_NFT_MINT: usize = 1;
+        const IDX_POSITION_NFT_ACCOUNT: usize = 2;
+        const IDX_PAYER: usize = 3;
+        const IDX_CONFIG: usize = 4;
+        const IDX_POOL_AUTHORITY: usize = 5;
+        const IDX_POOL: usize = 6;
+        const IDX_POSITION: usize = 7;
+        const IDX_TOKEN_A_MINT: usize = 8;
+        const IDX_TOKEN_B_MINT: usize = 9;
+        const IDX_TOKEN_A_VAULT: usize = 10;
+        const IDX_TOKEN_B_VAULT: usize = 11;
+        const IDX_PAYER_TOKEN_A: usize = 12;
+        const IDX_PAYER_TOKEN_B: usize = 13;
+        const IDX_TOKEN_A_PROGRAM: usize = 14;
+        const IDX_TOKEN_B_PROGRAM: usize = 15;
+        const IDX_TOKEN_2022_PROGRAM: usize = 16;
+        const IDX_SYSTEM_PROGRAM: usize = 17;
+        const IDX_EVENT_AUTHORITY: usize = 18;
+        const IDX_PROGRAM: usize = 19;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -1059,27 +1059,6 @@ pub fn get_initialize_pool_accounts(ix: &InstructionView) -> Result<InitializePo
 // -----------------------------------------------------------------------------
 // InitializePoolWithDynamicConfig accounts
 // -----------------------------------------------------------------------------
-const IDX_CREATOR: usize = 0;
-const IDX_POSITION_NFT_MINT: usize = 1;
-const IDX_POSITION_NFT_ACCOUNT: usize = 2;
-const IDX_PAYER: usize = 3;
-const IDX_POOL_CREATOR_AUTHORITY: usize = 4;
-const IDX_CONFIG: usize = 5;
-const IDX_POOL_AUTHORITY: usize = 6;
-const IDX_POOL: usize = 7;
-const IDX_POSITION: usize = 8;
-const IDX_TOKEN_A_MINT: usize = 9;
-const IDX_TOKEN_B_MINT: usize = 10;
-const IDX_TOKEN_A_VAULT: usize = 11;
-const IDX_TOKEN_B_VAULT: usize = 12;
-const IDX_PAYER_TOKEN_A: usize = 13;
-const IDX_PAYER_TOKEN_B: usize = 14;
-const IDX_TOKEN_A_PROGRAM: usize = 15;
-const IDX_TOKEN_B_PROGRAM: usize = 16;
-const IDX_TOKEN_2022_PROGRAM: usize = 17;
-const IDX_SYSTEM_PROGRAM: usize = 18;
-const IDX_EVENT_AUTHORITY: usize = 19;
-const IDX_PROGRAM: usize = 20;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct InitializePoolWithDynamicConfigAccounts {
@@ -1124,6 +1103,27 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePoolWithDynamicConfigAcco
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_CREATOR: usize = 0;
+        const IDX_POSITION_NFT_MINT: usize = 1;
+        const IDX_POSITION_NFT_ACCOUNT: usize = 2;
+        const IDX_PAYER: usize = 3;
+        const IDX_POOL_CREATOR_AUTHORITY: usize = 4;
+        const IDX_CONFIG: usize = 5;
+        const IDX_POOL_AUTHORITY: usize = 6;
+        const IDX_POOL: usize = 7;
+        const IDX_POSITION: usize = 8;
+        const IDX_TOKEN_A_MINT: usize = 9;
+        const IDX_TOKEN_B_MINT: usize = 10;
+        const IDX_TOKEN_A_VAULT: usize = 11;
+        const IDX_TOKEN_B_VAULT: usize = 12;
+        const IDX_PAYER_TOKEN_A: usize = 13;
+        const IDX_PAYER_TOKEN_B: usize = 14;
+        const IDX_TOKEN_A_PROGRAM: usize = 15;
+        const IDX_TOKEN_B_PROGRAM: usize = 16;
+        const IDX_TOKEN_2022_PROGRAM: usize = 17;
+        const IDX_SYSTEM_PROGRAM: usize = 18;
+        const IDX_EVENT_AUTHORITY: usize = 19;
+        const IDX_PROGRAM: usize = 20;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -1163,16 +1163,6 @@ pub fn get_initialize_pool_with_dynamic_config_accounts(ix: &InstructionView) ->
 // -----------------------------------------------------------------------------
 // InitializeReward accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL_AUTHORITY: usize = 0;
-const IDX_POOL: usize = 1;
-const IDX_REWARD_VAULT: usize = 2;
-const IDX_REWARD_MINT: usize = 3;
-const IDX_SIGNER: usize = 4;
-const IDX_PAYER: usize = 5;
-const IDX_TOKEN_PROGRAM: usize = 6;
-const IDX_SYSTEM_PROGRAM: usize = 7;
-const IDX_EVENT_AUTHORITY: usize = 8;
-const IDX_PROGRAM: usize = 9;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct InitializeRewardAccounts {
@@ -1192,6 +1182,16 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeRewardAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL_AUTHORITY: usize = 0;
+        const IDX_POOL: usize = 1;
+        const IDX_REWARD_VAULT: usize = 2;
+        const IDX_REWARD_MINT: usize = 3;
+        const IDX_SIGNER: usize = 4;
+        const IDX_PAYER: usize = 5;
+        const IDX_TOKEN_PROGRAM: usize = 6;
+        const IDX_SYSTEM_PROGRAM: usize = 7;
+        const IDX_EVENT_AUTHORITY: usize = 8;
+        const IDX_PROGRAM: usize = 9;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -1220,15 +1220,6 @@ pub fn get_initialize_reward_accounts(ix: &InstructionView) -> Result<Initialize
 // -----------------------------------------------------------------------------
 // LockPosition accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL: usize = 0;
-const IDX_POSITION: usize = 1;
-const IDX_VESTING: usize = 2;
-const IDX_POSITION_NFT_ACCOUNT: usize = 3;
-const IDX_OWNER: usize = 4;
-const IDX_PAYER: usize = 5;
-const IDX_SYSTEM_PROGRAM: usize = 6;
-const IDX_EVENT_AUTHORITY: usize = 7;
-const IDX_PROGRAM: usize = 8;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct LockPositionAccounts {
@@ -1249,6 +1240,15 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for LockPositionAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL: usize = 0;
+        const IDX_POSITION: usize = 1;
+        const IDX_VESTING: usize = 2;
+        const IDX_POSITION_NFT_ACCOUNT: usize = 3;
+        const IDX_OWNER: usize = 4;
+        const IDX_PAYER: usize = 5;
+        const IDX_SYSTEM_PROGRAM: usize = 6;
+        const IDX_EVENT_AUTHORITY: usize = 7;
+        const IDX_PROGRAM: usize = 8;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -1276,12 +1276,6 @@ pub fn get_lock_position_accounts(ix: &InstructionView) -> Result<LockPositionAc
 // -----------------------------------------------------------------------------
 // PermanentLockPosition accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL: usize = 0;
-const IDX_POSITION: usize = 1;
-const IDX_POSITION_NFT_ACCOUNT: usize = 2;
-const IDX_OWNER: usize = 3;
-const IDX_EVENT_AUTHORITY: usize = 4;
-const IDX_PROGRAM: usize = 5;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct PermanentLockPositionAccounts {
@@ -1299,6 +1293,12 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for PermanentLockPositionAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL: usize = 0;
+        const IDX_POSITION: usize = 1;
+        const IDX_POSITION_NFT_ACCOUNT: usize = 2;
+        const IDX_OWNER: usize = 3;
+        const IDX_EVENT_AUTHORITY: usize = 4;
+        const IDX_PROGRAM: usize = 5;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -1323,10 +1323,6 @@ pub fn get_permanent_lock_position_accounts(ix: &InstructionView) -> Result<Perm
 // -----------------------------------------------------------------------------
 // RefreshVesting accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL: usize = 0;
-const IDX_POSITION: usize = 1;
-const IDX_POSITION_NFT_ACCOUNT: usize = 2;
-const IDX_OWNER: usize = 3;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct RefreshVestingAccounts {
@@ -1341,6 +1337,10 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RefreshVestingAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL: usize = 0;
+        const IDX_POSITION: usize = 1;
+        const IDX_POSITION_NFT_ACCOUNT: usize = 2;
+        const IDX_OWNER: usize = 3;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -1363,21 +1363,6 @@ pub fn get_refresh_vesting_accounts(ix: &InstructionView) -> Result<RefreshVesti
 // -----------------------------------------------------------------------------
 // RemoveAllLiquidity accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL_AUTHORITY: usize = 0;
-const IDX_POOL: usize = 1;
-const IDX_POSITION: usize = 2;
-const IDX_TOKEN_A_ACCOUNT: usize = 3;
-const IDX_TOKEN_B_ACCOUNT: usize = 4;
-const IDX_TOKEN_A_VAULT: usize = 5;
-const IDX_TOKEN_B_VAULT: usize = 6;
-const IDX_TOKEN_A_MINT: usize = 7;
-const IDX_TOKEN_B_MINT: usize = 8;
-const IDX_POSITION_NFT_ACCOUNT: usize = 9;
-const IDX_OWNER: usize = 10;
-const IDX_TOKEN_A_PROGRAM: usize = 11;
-const IDX_TOKEN_B_PROGRAM: usize = 12;
-const IDX_EVENT_AUTHORITY: usize = 13;
-const IDX_PROGRAM: usize = 14;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct RemoveAllLiquidityAccounts {
@@ -1412,6 +1397,21 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveAllLiquidityAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL_AUTHORITY: usize = 0;
+        const IDX_POOL: usize = 1;
+        const IDX_POSITION: usize = 2;
+        const IDX_TOKEN_A_ACCOUNT: usize = 3;
+        const IDX_TOKEN_B_ACCOUNT: usize = 4;
+        const IDX_TOKEN_A_VAULT: usize = 5;
+        const IDX_TOKEN_B_VAULT: usize = 6;
+        const IDX_TOKEN_A_MINT: usize = 7;
+        const IDX_TOKEN_B_MINT: usize = 8;
+        const IDX_POSITION_NFT_ACCOUNT: usize = 9;
+        const IDX_OWNER: usize = 10;
+        const IDX_TOKEN_A_PROGRAM: usize = 11;
+        const IDX_TOKEN_B_PROGRAM: usize = 12;
+        const IDX_EVENT_AUTHORITY: usize = 13;
+        const IDX_PROGRAM: usize = 14;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -1445,21 +1445,6 @@ pub fn get_remove_all_liquidity_accounts(ix: &InstructionView) -> Result<RemoveA
 // -----------------------------------------------------------------------------
 // RemoveLiquidity accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL_AUTHORITY: usize = 0;
-const IDX_POOL: usize = 1;
-const IDX_POSITION: usize = 2;
-const IDX_TOKEN_A_ACCOUNT: usize = 3;
-const IDX_TOKEN_B_ACCOUNT: usize = 4;
-const IDX_TOKEN_A_VAULT: usize = 5;
-const IDX_TOKEN_B_VAULT: usize = 6;
-const IDX_TOKEN_A_MINT: usize = 7;
-const IDX_TOKEN_B_MINT: usize = 8;
-const IDX_POSITION_NFT_ACCOUNT: usize = 9;
-const IDX_OWNER: usize = 10;
-const IDX_TOKEN_A_PROGRAM: usize = 11;
-const IDX_TOKEN_B_PROGRAM: usize = 12;
-const IDX_EVENT_AUTHORITY: usize = 13;
-const IDX_PROGRAM: usize = 14;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct RemoveLiquidityAccounts {
@@ -1494,6 +1479,21 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveLiquidityAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL_AUTHORITY: usize = 0;
+        const IDX_POOL: usize = 1;
+        const IDX_POSITION: usize = 2;
+        const IDX_TOKEN_A_ACCOUNT: usize = 3;
+        const IDX_TOKEN_B_ACCOUNT: usize = 4;
+        const IDX_TOKEN_A_VAULT: usize = 5;
+        const IDX_TOKEN_B_VAULT: usize = 6;
+        const IDX_TOKEN_A_MINT: usize = 7;
+        const IDX_TOKEN_B_MINT: usize = 8;
+        const IDX_POSITION_NFT_ACCOUNT: usize = 9;
+        const IDX_OWNER: usize = 10;
+        const IDX_TOKEN_A_PROGRAM: usize = 11;
+        const IDX_TOKEN_B_PROGRAM: usize = 12;
+        const IDX_EVENT_AUTHORITY: usize = 13;
+        const IDX_PROGRAM: usize = 14;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -1527,10 +1527,6 @@ pub fn get_remove_liquidity_accounts(ix: &InstructionView) -> Result<RemoveLiqui
 // -----------------------------------------------------------------------------
 // SetPoolStatus accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL: usize = 0;
-const IDX_ADMIN: usize = 1;
-const IDX_EVENT_AUTHORITY: usize = 2;
-const IDX_PROGRAM: usize = 3;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct SetPoolStatusAccounts {
@@ -1544,6 +1540,10 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SetPoolStatusAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL: usize = 0;
+        const IDX_ADMIN: usize = 1;
+        const IDX_EVENT_AUTHORITY: usize = 2;
+        const IDX_PROGRAM: usize = 3;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -1566,15 +1566,6 @@ pub fn get_set_pool_status_accounts(ix: &InstructionView) -> Result<SetPoolStatu
 // -----------------------------------------------------------------------------
 // SplitPosition accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL: usize = 0;
-const IDX_FIRST_POSITION: usize = 1;
-const IDX_FIRST_POSITION_NFT_ACCOUNT: usize = 2;
-const IDX_SECOND_POSITION: usize = 3;
-const IDX_SECOND_POSITION_NFT_ACCOUNT: usize = 4;
-const IDX_FIRST_OWNER: usize = 5;
-const IDX_SECOND_OWNER: usize = 6;
-const IDX_EVENT_AUTHORITY: usize = 7;
-const IDX_PROGRAM: usize = 8;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct SplitPositionAccounts {
@@ -1599,6 +1590,15 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SplitPositionAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL: usize = 0;
+        const IDX_FIRST_POSITION: usize = 1;
+        const IDX_FIRST_POSITION_NFT_ACCOUNT: usize = 2;
+        const IDX_SECOND_POSITION: usize = 3;
+        const IDX_SECOND_POSITION_NFT_ACCOUNT: usize = 4;
+        const IDX_FIRST_OWNER: usize = 5;
+        const IDX_SECOND_OWNER: usize = 6;
+        const IDX_EVENT_AUTHORITY: usize = 7;
+        const IDX_PROGRAM: usize = 8;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -1626,20 +1626,6 @@ pub fn get_split_position_accounts(ix: &InstructionView) -> Result<SplitPosition
 // -----------------------------------------------------------------------------
 // Swap accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL_AUTHORITY: usize = 0;
-const IDX_POOL: usize = 1;
-const IDX_INPUT_TOKEN_ACCOUNT: usize = 2;
-const IDX_OUTPUT_TOKEN_ACCOUNT: usize = 3;
-const IDX_TOKEN_A_VAULT: usize = 4;
-const IDX_TOKEN_B_VAULT: usize = 5;
-const IDX_TOKEN_A_MINT: usize = 6;
-const IDX_TOKEN_B_MINT: usize = 7;
-const IDX_PAYER: usize = 8;
-const IDX_TOKEN_A_PROGRAM: usize = 9;
-const IDX_TOKEN_B_PROGRAM: usize = 10;
-const IDX_REFERRAL_TOKEN_ACCOUNT: usize = 11;
-const IDX_EVENT_AUTHORITY: usize = 12;
-const IDX_PROGRAM: usize = 13;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct SwapAccounts {
@@ -1674,6 +1660,20 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL_AUTHORITY: usize = 0;
+        const IDX_POOL: usize = 1;
+        const IDX_INPUT_TOKEN_ACCOUNT: usize = 2;
+        const IDX_OUTPUT_TOKEN_ACCOUNT: usize = 3;
+        const IDX_TOKEN_A_VAULT: usize = 4;
+        const IDX_TOKEN_B_VAULT: usize = 5;
+        const IDX_TOKEN_A_MINT: usize = 6;
+        const IDX_TOKEN_B_MINT: usize = 7;
+        const IDX_PAYER: usize = 8;
+        const IDX_TOKEN_A_PROGRAM: usize = 9;
+        const IDX_TOKEN_B_PROGRAM: usize = 10;
+        const IDX_REFERRAL_TOKEN_ACCOUNT: usize = 11;
+        const IDX_EVENT_AUTHORITY: usize = 12;
+        const IDX_PROGRAM: usize = 13;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -1706,10 +1706,6 @@ pub fn get_swap_accounts(ix: &InstructionView) -> Result<SwapAccounts, AccountsE
 // -----------------------------------------------------------------------------
 // UpdateRewardDuration accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL: usize = 0;
-const IDX_SIGNER: usize = 1;
-const IDX_EVENT_AUTHORITY: usize = 2;
-const IDX_PROGRAM: usize = 3;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct UpdateRewardDurationAccounts {
@@ -1723,6 +1719,10 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdateRewardDurationAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL: usize = 0;
+        const IDX_SIGNER: usize = 1;
+        const IDX_EVENT_AUTHORITY: usize = 2;
+        const IDX_PROGRAM: usize = 3;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -1745,10 +1745,6 @@ pub fn get_update_reward_duration_accounts(ix: &InstructionView) -> Result<Updat
 // -----------------------------------------------------------------------------
 // UpdateRewardFunder accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL: usize = 0;
-const IDX_SIGNER: usize = 1;
-const IDX_EVENT_AUTHORITY: usize = 2;
-const IDX_PROGRAM: usize = 3;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct UpdateRewardFunderAccounts {
@@ -1762,6 +1758,10 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdateRewardFunderAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL: usize = 0;
+        const IDX_SIGNER: usize = 1;
+        const IDX_EVENT_AUTHORITY: usize = 2;
+        const IDX_PROGRAM: usize = 3;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
@@ -1784,15 +1784,6 @@ pub fn get_update_reward_funder_accounts(ix: &InstructionView) -> Result<UpdateR
 // -----------------------------------------------------------------------------
 // WithdrawIneligibleReward accounts
 // -----------------------------------------------------------------------------
-const IDX_POOL_AUTHORITY: usize = 0;
-const IDX_POOL: usize = 1;
-const IDX_REWARD_VAULT: usize = 2;
-const IDX_REWARD_MINT: usize = 3;
-const IDX_FUNDER_TOKEN_ACCOUNT: usize = 4;
-const IDX_FUNDER: usize = 5;
-const IDX_TOKEN_PROGRAM: usize = 6;
-const IDX_EVENT_AUTHORITY: usize = 7;
-const IDX_PROGRAM: usize = 8;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct WithdrawIneligibleRewardAccounts {
@@ -1811,6 +1802,15 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for WithdrawIneligibleRewardAccounts {
     type Error = AccountsError;
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        const IDX_POOL_AUTHORITY: usize = 0;
+        const IDX_POOL: usize = 1;
+        const IDX_REWARD_VAULT: usize = 2;
+        const IDX_REWARD_MINT: usize = 3;
+        const IDX_FUNDER_TOKEN_ACCOUNT: usize = 4;
+        const IDX_FUNDER: usize = 5;
+        const IDX_TOKEN_PROGRAM: usize = 6;
+        const IDX_EVENT_AUTHORITY: usize = 7;
+        const IDX_PROGRAM: usize = 8;
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
