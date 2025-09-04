@@ -1,0 +1,182 @@
+use borsh::{BorshDeserialize, BorshSerialize};
+use serde::{Deserialize, Serialize};
+use solana_program::pubkey::Pubkey;
+use substreams_solana::block_view::InstructionView;
+
+// -----------------------------------------------------------------------------
+// Account structs
+// -----------------------------------------------------------------------------
+accounts!(
+    BuyAccounts,
+    get_buy_accounts,
+    {
+        pool,
+        user,
+        global_config,
+        base_mint,
+        quote_mint,
+        user_base_token_account,
+        user_quote_token_account,
+        pool_base_token_account,
+        pool_quote_token_account,
+        protocol_fee_recipient,
+        protocol_fee_recipient_token_account,
+        base_token_program,
+        quote_token_program,
+        system_program,
+        associated_token_program,
+        event_authority,
+        program
+    }
+);
+
+accounts!(
+    CreateConfigAccounts,
+    get_create_config_accounts,
+    {
+        admin,
+        global_config,
+        system_program,
+        event_authority,
+        program
+    }
+);
+
+accounts!(
+    CreatePoolAccounts,
+    get_create_pool_accounts,
+    {
+        pool,
+        global_config,
+        creator,
+        base_mint,
+        quote_mint,
+        lp_mint,
+        user_base_token_account,
+        user_quote_token_account,
+        user_pool_token_account,
+        pool_base_token_account,
+        pool_quote_token_account,
+        system_program,
+        token_2022_program,
+        base_token_program,
+        quote_token_program,
+        associated_token_program,
+        event_authority,
+        program
+    }
+);
+
+accounts!(
+    DepositAccounts,
+    get_deposit_accounts,
+    {
+        pool,
+        global_config,
+        user,
+        base_mint,
+        quote_mint,
+        lp_mint,
+        user_base_token_account,
+        user_quote_token_account,
+        user_pool_token_account,
+        pool_base_token_account,
+        pool_quote_token_account,
+        token_program,
+        token_2022_program,
+        event_authority,
+        program
+    }
+);
+
+accounts!(
+    DisableAccounts,
+    get_disable_accounts,
+    {
+        admin,
+        global_config,
+        event_authority,
+        program
+    }
+);
+
+accounts!(
+    ExtendAccountAccounts,
+    get_extend_account_accounts,
+    {
+        account,
+        user,
+        system_program,
+        event_authority,
+        program
+    }
+);
+
+accounts!(
+    SellAccounts,
+    get_sell_accounts,
+    {
+        pool,
+        user,
+        global_config,
+        base_mint,
+        quote_mint,
+        user_base_token_account,
+        user_quote_token_account,
+        pool_base_token_account,
+        pool_quote_token_account,
+        protocol_fee_recipient,
+        protocol_fee_recipient_token_account,
+        base_token_program,
+        quote_token_program,
+        system_program,
+        associated_token_program,
+        event_authority,
+        program
+    }
+);
+
+accounts!(
+    UpdateAdminAccounts,
+    get_update_admin_accounts,
+    {
+        admin,
+        global_config,
+        new_admin,
+        event_authority,
+        program
+    }
+);
+
+accounts!(
+    UpdateFeeConfigAccounts,
+    get_update_fee_config_accounts,
+    {
+        admin,
+        global_config,
+        event_authority,
+        program
+    }
+);
+
+accounts!(
+    WithdrawAccounts,
+    get_withdraw_accounts,
+    {
+        pool,
+        global_config,
+        user,
+        base_mint,
+        quote_mint,
+        lp_mint,
+        user_base_token_account,
+        user_quote_token_account,
+        user_pool_token_account,
+        pool_base_token_account,
+        pool_quote_token_account,
+        token_program,
+        token_2022_program,
+        event_authority,
+        program
+    }
+);
