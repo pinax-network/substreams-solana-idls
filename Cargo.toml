@@ -10,7 +10,7 @@ authors = ["Denis <denis@pinax.network>"]
 crate-type = ["rlib"]
 
 [dependencies]
-substreams = "0.6.1"
+substreams = "0.6.2"
 substreams-solana = "0.14.1"
 solana-program = "2.3.0"
 borsh = { version = "1.5.7", features = ["derive"] }
