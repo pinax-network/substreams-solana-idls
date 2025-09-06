@@ -3,6 +3,7 @@
 use crate::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
+use serde_big_array::BigArray;
 use solana_program::pubkey::Pubkey;
 
 /// Multiplier for the pool token. Used to normalized token with different decimal into the same precision.
@@ -68,6 +69,7 @@ pub struct CustomizableParams {
     /// Activation type
     pub activation_type: u8,
     /// Padding
+    #[serde(with = "BigArray")]
     pub padding: [u8; 90],
 }
 
@@ -204,7 +206,7 @@ const CLOSE_CONFIG: [u8; 8] = [249, 181, 108, 89, 4, 150, 90, 174];
 const WITHDRAW_PROTOCOL_FEES: [u8; 8] = [30, 240, 207, 196, 139, 239, 79, 28];
 const PARTNER_CLAIM_FEES: [u8; 8] = [135, 131, 10, 94, 119, 209, 202, 48];
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum AmmEvent {
     AddLiquidity(AddLiquidity),
     RemoveLiquidity(RemoveLiquidity),
@@ -267,7 +269,7 @@ pub struct SetPoolFees {
     pub pool: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct PoolInfo {
     pub token_a_amount: u64,
     pub token_b_amount: u64,

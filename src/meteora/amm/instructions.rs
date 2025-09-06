@@ -3,6 +3,7 @@
 use crate::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
+use serde_big_array::BigArray;
 use solana_program::pubkey::Pubkey;
 
 /// Multiplier for the pool token. Used to normalized token with different decimal into the same precision.
@@ -68,6 +69,7 @@ pub struct CustomizableParams {
     /// Activation type
     pub activation_type: u8,
     /// Padding
+    #[serde(with = "BigArray")]
     pub padding: [u8; 90],
 }
 
@@ -412,7 +414,9 @@ impl<'a> TryFrom<&'a [u8]> for AmmInstruction {
         Ok(match discriminator {
             INITIALIZE_PERMISSIONED_POOL => Self::InitializePermissionedPool(InitializePermissionedPoolInstruction::try_from_slice(payload)?),
             INITIALIZE_PERMISSIONLESS_POOL => Self::InitializePermissionlessPool(InitializePermissionlessPoolInstruction::try_from_slice(payload)?),
-            INITIALIZE_PERMISSIONLESS_POOL_WITH_FEE_TIER => Self::InitializePermissionlessPoolWithFeeTier(InitializePermissionlessPoolWithFeeTierInstruction::try_from_slice(payload)?),
+            INITIALIZE_PERMISSIONLESS_POOL_WITH_FEE_TIER => {
+                Self::InitializePermissionlessPoolWithFeeTier(InitializePermissionlessPoolWithFeeTierInstruction::try_from_slice(payload)?)
+            }
             ENABLE_OR_DISABLE_POOL => Self::EnableOrDisablePool(EnableOrDisablePoolInstruction::try_from_slice(payload)?),
             SWAP => Self::Swap(SwapInstruction::try_from_slice(payload)?),
             REMOVE_LIQUIDITY_SINGLE_SIDE => Self::RemoveLiquiditySingleSide(RemoveLiquiditySingleSideInstruction::try_from_slice(payload)?),
@@ -429,9 +433,15 @@ impl<'a> TryFrom<&'a [u8]> for AmmInstruction {
             CLAIM_FEE => Self::ClaimFee(ClaimFeeInstruction::try_from_slice(payload)?),
             CREATE_CONFIG => Self::CreateConfig(CreateConfigInstruction::try_from_slice(payload)?),
             CLOSE_CONFIG => Self::CloseConfig,
-            INITIALIZE_PERMISSIONLESS_CONSTANT_PRODUCT_POOL_WITH_CONFIG => Self::InitializePermissionlessConstantProductPoolWithConfig(InitializePermissionlessConstantProductPoolWithConfigInstruction::try_from_slice(payload)?),
-            INITIALIZE_PERMISSIONLESS_CONSTANT_PRODUCT_POOL_WITH_CONFIG2 => Self::InitializePermissionlessConstantProductPoolWithConfig2(InitializePermissionlessConstantProductPoolWithConfig2Instruction::try_from_slice(payload)?),
-            INITIALIZE_CUSTOMIZABLE_PERMISSIONLESS_CONSTANT_PRODUCT_POOL => Self::InitializeCustomizablePermissionlessConstantProductPool(InitializeCustomizablePermissionlessConstantProductPoolInstruction::try_from_slice(payload)?),
+            INITIALIZE_PERMISSIONLESS_CONSTANT_PRODUCT_POOL_WITH_CONFIG => Self::InitializePermissionlessConstantProductPoolWithConfig(
+                InitializePermissionlessConstantProductPoolWithConfigInstruction::try_from_slice(payload)?,
+            ),
+            INITIALIZE_PERMISSIONLESS_CONSTANT_PRODUCT_POOL_WITH_CONFIG2 => Self::InitializePermissionlessConstantProductPoolWithConfig2(
+                InitializePermissionlessConstantProductPoolWithConfig2Instruction::try_from_slice(payload)?,
+            ),
+            INITIALIZE_CUSTOMIZABLE_PERMISSIONLESS_CONSTANT_PRODUCT_POOL => Self::InitializeCustomizablePermissionlessConstantProductPool(
+                InitializeCustomizablePermissionlessConstantProductPoolInstruction::try_from_slice(payload)?,
+            ),
             UPDATE_ACTIVATION_POINT => Self::UpdateActivationPoint(UpdateActivationPointInstruction::try_from_slice(payload)?),
             WITHDRAW_PROTOCOL_FEES => Self::WithdrawProtocolFees,
             SET_WHITELISTED_VAULT => Self::SetWhitelistedVault(SetWhitelistedVaultInstruction::try_from_slice(payload)?),

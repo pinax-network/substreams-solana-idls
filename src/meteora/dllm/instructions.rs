@@ -3,6 +3,7 @@
 use crate::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
+use serde_big_array::BigArray;
 use solana_program::pubkey::Pubkey;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
@@ -118,6 +119,7 @@ pub struct CustomizableParams {
     /// Base fee power factor
     pub base_fee_power_factor: u8,
     /// Padding, for future use
+    #[serde(with = "BigArray")]
     pub padding: [u8; 62],
 }
 
@@ -213,6 +215,7 @@ pub struct InitializeLbPair2Params {
     /// Pool price
     pub active_id: i32,
     /// Padding, for future use
+    #[serde(with = "BigArray")]
     pub padding: [u8; 96],
 }
 
@@ -365,6 +368,7 @@ pub struct StrategyParameters {
     /// strategy type
     pub strategy_type: StrategyType,
     /// parameters
+    #[serde(with = "BigArray")]
     pub parameteres: [u8; 64],
 }
 
