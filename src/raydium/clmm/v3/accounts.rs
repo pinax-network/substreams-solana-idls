@@ -28,7 +28,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClosePositionAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(ClosePositionAccounts {
             nft_owner: get_req(0, "nft_owner")?,
@@ -79,7 +79,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CollectFundFeeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(CollectFundFeeAccounts {
             owner: get_req(0, "owner")?,
@@ -135,7 +135,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CollectProtocolFeeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(CollectProtocolFeeAccounts {
             owner: get_req(0, "owner")?,
@@ -184,7 +184,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CollectRemainingRewardsAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(CollectRemainingRewardsAccounts {
             reward_funder: get_req(0, "reward_funder")?,
@@ -220,7 +220,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateAmmConfigAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(CreateAmmConfigAccounts {
             owner: get_req(0, "owner")?,
@@ -251,7 +251,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateOperationAccountAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(CreateOperationAccountAccounts {
             owner: get_req(0, "owner")?,
@@ -303,7 +303,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreatePoolAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(CreatePoolAccounts {
             pool_creator: get_req(0, "pool_creator")?,
@@ -346,7 +346,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateSupportMintAssociatedAccounts
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(CreateSupportMintAssociatedAccounts {
             owner: get_req(0, "owner")?,
@@ -395,7 +395,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for DecreaseLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(DecreaseLiquidityAccounts {
             nft_owner: get_req(0, "nft_owner")?,
@@ -460,7 +460,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for DecreaseLiquidityV2Accounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(DecreaseLiquidityV2Accounts {
             nft_owner: get_req(0, "nft_owner")?,
@@ -521,7 +521,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for IncreaseLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(IncreaseLiquidityAccounts {
             nft_owner: get_req(0, "nft_owner")?,
@@ -584,7 +584,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for IncreaseLiquidityV2Accounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(IncreaseLiquidityV2Accounts {
             nft_owner: get_req(0, "nft_owner")?,
@@ -638,7 +638,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeRewardAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(InitializeRewardAccounts {
             reward_funder: get_req(0, "reward_funder")?,
@@ -707,7 +707,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for OpenPositionAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(OpenPositionAccounts {
             payer: get_req(0, "payer")?,
@@ -790,7 +790,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for OpenPositionV2Accounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(OpenPositionV2Accounts {
             payer: get_req(0, "payer")?,
@@ -871,7 +871,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for OpenPositionWithToken22NftAccounts 
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(OpenPositionWithToken22NftAccounts {
             payer: get_req(0, "payer")?,
@@ -924,7 +924,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SetRewardParamsAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(SetRewardParamsAccounts {
             authority: get_req(0, "authority")?,
@@ -972,7 +972,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(SwapAccounts {
             payer: get_req(0, "payer")?,
@@ -1017,7 +1017,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapRouterBaseInAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(SwapRouterBaseInAccounts {
             payer: get_req(0, "payer")?,
@@ -1072,7 +1072,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapV2Accounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(SwapV2Accounts {
             payer: get_req(0, "payer")?,
@@ -1111,7 +1111,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for TransferRewardOwnerAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(TransferRewardOwnerAccounts {
             authority: get_req(0, "authority")?,
@@ -1140,7 +1140,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdateAmmConfigAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(UpdateAmmConfigAccounts {
             owner: get_req(0, "owner")?,
@@ -1170,7 +1170,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdateOperationAccountAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(UpdateOperationAccountAccounts {
             owner: get_req(0, "owner")?,
@@ -1198,7 +1198,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdatePoolStatusAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(UpdatePoolStatusAccounts {
             authority: get_req(0, "authority")?,
@@ -1225,7 +1225,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdateRewardInfosAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            crate::accounts::to_pubkey(name, index, &a.0)
+            crate::accounts::to_pubkey(name, index, a.0)
         };
         Ok(UpdateRewardInfosAccounts {
             pool_state: get_req(0, "pool_state")?,

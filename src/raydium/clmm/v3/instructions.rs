@@ -144,7 +144,7 @@ pub struct CreateAmmConfigInstruction {
 ///
 /// * `ctx`- The context of accounts
 /// * `sqrt_price_x64` - the initial sqrt price (amount_token_1 / amount_token_0) of the pool as a Q64.64
-/// Note: The open_time must be smaller than the current block_timestamp on chain.
+///   Note: The open_time must be smaller than the current block_timestamp on chain.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CreatePoolInstruction {
     pub sqrt_price_x64: u128,
@@ -323,7 +323,7 @@ pub struct OpenPositionWithToken22NftInstruction {
 /// * `ctx` - The context of accounts
 /// * `reward_index` - The index of reward token in the pool.
 /// * `emissions_per_second_x64` - The per second emission reward, when extend the current cycle,
-/// new value can't be less than old value
+///   new value can't be less than old value
 /// * `open_time` - reward open timestamp, must be set when starting a new cycle
 /// * `end_time` - reward end timestamp
 ///
@@ -406,9 +406,9 @@ pub struct UpdateAmmConfigInstruction {
 /// * `ctx`- The context of accounts
 /// * `param`- The value can be 0 | 1 | 2 | 3, otherwise will report a error
 /// * `keys`- update operation owner when the `param` is 0
-/// remove operation owner when the `param` is 1
-/// update whitelist mint when the `param` is 2
-/// remove whitelist mint when the `param` is 3
+///   remove operation owner when the `param` is 1
+///   update whitelist mint when the `param` is 2
+///   remove whitelist mint when the `param` is 3
 ///
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct UpdateOperationAccountInstruction {

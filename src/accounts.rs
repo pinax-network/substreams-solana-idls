@@ -14,9 +14,7 @@ pub enum AccountsError {
 
 #[inline]
 pub fn to_pubkey(name: &'static str, index: usize, bytes: &[u8]) -> Result<Pubkey, AccountsError> {
-    let arr: [u8; 32] = bytes
-        .try_into()
-        .map_err(|_| AccountsError::InvalidLen { name, index, got: bytes.len() })?;
+    let arr: [u8; 32] = bytes.try_into().map_err(|_| AccountsError::InvalidLen { name, index, got: bytes.len() })?;
     Ok(Pubkey::new_from_array(arr))
 }
 
@@ -42,7 +40,7 @@ macro_rules! accounts {
                         let a = accounts
                             .get(idx)
                             .ok_or($crate::accounts::AccountsError::Missing { name, index: idx })?;
-                        let pk = $crate::accounts::to_pubkey(name, idx, &a.0)?;
+                        let pk = $crate::accounts::to_pubkey(name, idx, a.0)?;
                         idx += 1;
                         pk
                     };
@@ -57,4 +55,3 @@ macro_rules! accounts {
         }
     };
 }
-

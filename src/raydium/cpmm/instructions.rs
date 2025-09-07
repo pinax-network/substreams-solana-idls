@@ -48,13 +48,13 @@ pub enum RaydiumCpmmInstruction {
 // Payload structs
 // -----------------------------------------------------------------------------
 /// Collect the fund fee accrued to the pool
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `ctx` - The context of accounts
 /// * `amount_0_requested` - The maximum amount of token_0 to send, can be 0 to collect fees in only token_1
 /// * `amount_1_requested` - The maximum amount of token_1 to send, can be 0 to collect fees in only token_0
-/// 
+///
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CollectFundFeeInstruction {
     pub amount_0_requested: u64,
@@ -62,13 +62,13 @@ pub struct CollectFundFeeInstruction {
 }
 
 /// Collect the protocol fee accrued to the pool
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `ctx` - The context of accounts
 /// * `amount_0_requested` - The maximum amount of token_0 to send, can be 0 to collect fees in only token_1
 /// * `amount_1_requested` - The maximum amount of token_1 to send, can be 0 to collect fees in only token_0
-/// 
+///
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CollectProtocolFeeInstruction {
     pub amount_0_requested: u64,
@@ -76,13 +76,13 @@ pub struct CollectProtocolFeeInstruction {
 }
 
 /// # Arguments
-/// 
+///
 /// * `ctx`- The accounts needed by instruction.
 /// * `index` - The index of amm config, there may be multiple config.
 /// * `trade_fee_rate` - Trade fee rate, can be changed.
 /// * `protocol_fee_rate` - The rate of protocol fee within trade fee.
 /// * `fund_fee_rate` - The rate of fund fee within trade fee.
-/// 
+///
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct CreateAmmConfigInstruction {
     pub index: u16,
@@ -94,14 +94,14 @@ pub struct CreateAmmConfigInstruction {
 }
 
 /// Deposit lp token to the pool
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `ctx`- The context of accounts
 /// * `lp_token_amount` - Increased number of LPs
 /// * `maximum_token_0_amount` -  Maximum token 0 amount to deposit, prevents excessive slippage
 /// * `maximum_token_1_amount` - Maximum token 1 amount to deposit, prevents excessive slippage
-/// 
+///
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct DepositInstruction {
     pub lp_token_amount: u64,
@@ -110,14 +110,14 @@ pub struct DepositInstruction {
 }
 
 /// Creates a pool for the given token pair and the initial price
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `ctx`- The context of accounts
 /// * `init_amount_0` - the initial amount_0 to deposit
 /// * `init_amount_1` - the initial amount_1 to deposit
 /// * `open_time` - the timestamp allowed for swap
-/// 
+///
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct InitializeInstruction {
     pub init_amount_0: u64,
@@ -126,15 +126,15 @@ pub struct InitializeInstruction {
 }
 
 /// Create a pool with permission
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `ctx`- The context of accounts
 /// * `init_amount_0` - the initial amount_0 to deposit
 /// * `init_amount_1` - the initial amount_1 to deposit
 /// * `open_time` - the timestamp allowed for swap
 /// * `creator_fee_on` - creator fee model, 0：both token0 and token1 (depends on the input), 1: only token0, 2: only token1
-/// 
+///
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct InitializeWithPermissionInstruction {
     pub init_amount_0: u64,
@@ -144,13 +144,13 @@ pub struct InitializeWithPermissionInstruction {
 }
 
 /// Swap the tokens in the pool base input amount
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `ctx`- The context of accounts
 /// * `amount_in` -  input amount to transfer, output to DESTINATION is based on the exchange rate
 /// * `minimum_amount_out` -  Minimum amount of output token, prevents excessive slippage
-/// 
+///
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct SwapBaseInputInstruction {
     pub amount_in: u64,
@@ -158,13 +158,13 @@ pub struct SwapBaseInputInstruction {
 }
 
 /// Swap the tokens in the pool base output amount
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `ctx`- The context of accounts
 /// * `max_amount_in` -  input amount prevents excessive slippage
 /// * `amount_out` -  amount of output token
-/// 
+///
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct SwapBaseOutputInstruction {
     pub max_amount_in: u64,
@@ -173,9 +173,9 @@ pub struct SwapBaseOutputInstruction {
 
 /// Updates the owner of the amm config
 /// Must be called by the current owner or admin
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `ctx`- The context of accounts
 /// * `trade_fee_rate`- The new trade fee rate of amm config, be set when `param` is 0
 /// * `protocol_fee_rate`- The new protocol fee rate of amm config, be set when `param` is 1
@@ -183,7 +183,7 @@ pub struct SwapBaseOutputInstruction {
 /// * `new_owner`- The config's new owner, be set when `param` is 3
 /// * `new_fund_owner`- The config's new fund owner, be set when `param` is 4
 /// * `param`- The value can be 0 | 1 | 2 | 3 | 4, otherwise will report a error
-/// 
+///
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct UpdateAmmConfigInstruction {
     pub param: u8,
@@ -191,26 +191,26 @@ pub struct UpdateAmmConfigInstruction {
 }
 
 /// Update pool status for given value
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `ctx`- The context of accounts
 /// * `status` - The value of status
-/// 
+///
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct UpdatePoolStatusInstruction {
     pub status: u8,
 }
 
 /// Withdraw lp for token0 and token1
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `ctx`- The context of accounts
 /// * `lp_token_amount` - Amount of pool tokens to burn. User receives an output of token a and b based on the percentage of the pool tokens that are returned.
 /// * `minimum_token_0_amount` -  Minimum amount of token 0 to receive, prevents excessive slippage
 /// * `minimum_token_1_amount` -  Minimum amount of token 1 to receive, prevents excessive slippage
-/// 
+///
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct WithdrawInstruction {
     pub lp_token_amount: u64,
