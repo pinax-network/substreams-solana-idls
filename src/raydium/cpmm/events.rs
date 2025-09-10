@@ -56,13 +56,8 @@ pub struct SwapEvent {
     pub output_amount: u64,
     pub input_transfer_fee: u64,
     pub output_transfer_fee: u64,
+    /// `true` if the swap was performed with the base token as input.
     pub base_input: bool,
-    pub input_mint: Pubkey,
-    pub output_mint: Pubkey,
-    pub trade_fee: u64,
-    /// Amount of fee tokens going to creator
-    pub creator_fee: u64,
-    pub creator_fee_on_input: bool,
 }
 
 // -----------------------------------------------------------------------------
