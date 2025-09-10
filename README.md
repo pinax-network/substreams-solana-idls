@@ -10,25 +10,25 @@ This crate bundles thin, `no_std`‑friendly byte‑codecs that turn on‑chain 
 
 | Status | Ecosystem | Protocol / App | Program ID |
 | ------ | --------- | -------------- | ---------- |
-| ✅ | Pump.fun | **Bonding‑Curve** | `6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P` |
-| ✅ | Pump.fun | **PumpSwap AMM** | `pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA` |
-| ✅ | Jupiter | Swap Aggregator V6 | `JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4` |
-| ✅ | Jupiter | Swap Aggregator V4 | `JUP4Fb2cqiRUcaTHdrPC8h2gNsA2ETXiPDD33WcGuJB` |
-| ✅ | Raydium | **AMM V4** | `675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8` |
-| ✅ | Raydium | AMM CP | `CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C` |
-| ✅ | Raydium | CLMM V3 | `CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK` |
-| ✅ | Raydium | LaunchPad | `LanMV9sAd7wArD4vJFi2qDdfnVhFxYSUg6eADduJ3uj` |
-| ✅ | Stabble | Stable Swap | `swapNyd8XiQwJ6ianp9snpu4brUqFxadzvHebnAXjJZ` |
-| ✅ | Orca | Whirlpool (CLMM) | `whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc` |
-| ✅  | Meteora | Pools | `Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB` |
-| ✅  | Meteora | DAMM V2 | `cpamdpZCGKUy5JxQXB4dcpGPiikHawvSWAd6mEn1sGG` |
-| ✅  | Meteora | DLLM | `LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo` |
-| ✅  | BonkSwap | AMM | `BSwp6bEBihVLdqJRKGgzjcGLHkcTuzmSo1TQkHepzH8p` |
-| 🚧 | Jupiter | Limit Order | `jupoNjAxXgZ4rjzxzPMP4oxduvQsQtZzyknqvzYNrNu` |
-| 🚧 | Jupiter | DCA | `DCA265Vj8a9CEuX1eb1LWRnDT7uK6q1xMipnNyatn23M` |
-| 🚧 | Phoenix | on-chain CLOB | `PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY` |
-| 💀 | Orca | Token Swap ("Classic") | ~~`9W959DqEETiGZocYWCQPaJ6sBmUzgfxXfqGeTEdp3aQP`~~|
-| 💀 | Raydium | Stable AMM Anchor | ~~`5quBtoiQqxF9Jv6KYKctB59NT3gtJD2Y65kdnB1Uev3h`~~|
+| ✅ | Pump.fun | Bonding‑Curve | [`6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P`](https://solscan.io/account/6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P) |
+| ✅ | Pump.fun | PumpSwap AMM | [`pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA`](https://solscan.io/account/pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA) |
+| ✅ | Jupiter | Swap Aggregator V6 | [`JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4`](https://solscan.io/account/JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4) |
+| ✅ | Jupiter | Swap Aggregator V4 | [`JUP4Fb2cqiRUcaTHdrPC8h2gNsA2ETXiPDD33WcGuJB`](https://solscan.io/account/JUP4Fb2cqiRUcaTHdrPC8h2gNsA2ETXiPDD33WcGuJB) |
+| ✅ | Raydium | AMM V4 | [`675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8`](https://solscan.io/account/675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8) |
+| ✅ | Raydium | AMM CP | [`CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C`](https://solscan.io/account/CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C) |
+| ✅ | Raydium | CLMM V3 | [`CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK`](https://solscan.io/account/CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK) |
+| ✅ | Raydium | LaunchPad | [`LanMV9sAd7wArD4vJFi2qDdfnVhFxYSUg6eADduJ3uj`](https://solscan.io/account/LanMV9sAd7wArD4vJFi2qDdfnVhFxYSUg6eADduJ3uj) |
+| ✅ | Stabble | Stable Swap | [`swapNyd8XiQwJ6ianp9snpu4brUqFxadzvHebnAXjJZ`](https://solscan.io/account/swapNyd8XiQwJ6ianp9snpu4brUqFxadzvHebnAXjJZ) |
+| ✅ | Orca | Whirlpool (CLMM) | [`whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc`](https://solscan.io/account/whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc) |
+| ✅  | Meteora | Pools | [`Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB`](https://solscan.io/account/Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB) |
+| ✅  | Meteora | DAMM V2 | [`cpamdpZCGKUy5JxQXB4dcpGPiikHawvSWAd6mEn1sGG`](https://solscan.io/account/cpamdpZCGKUy5JxQXB4dcpGPiikHawvSWAd6mEn1sGG) |
+| ✅  | Meteora | DLLM | [`LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo`](https://solscan.io/account/LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo) |
+| ✅  | BonkSwap | AMM | [`BSwp6bEBihVLdqJRKGgzjcGLHkcTuzmSo1TQkHepzH8p`](https://solscan.io/account/BSwp6bEBihVLdqJRKGgzjcGLHkcTuzmSo1TQkHepzH8p) |
+| 🚧 | Jupiter | Limit Order | [`jupoNjAxXgZ4rjzxzPMP4oxduvQsQtZzyknqvzYNrNu`](https://solscan.io/account/jupoNjAxXgZ4rjzxzPMP4oxduvQsQtZzyknqvzYNrNu) |
+| 🚧 | Jupiter | DCA | [`DCA265Vj8a9CEuX1eb1LWRnDT7uK6q1xMipnNyatn23M`](https://solscan.io/account/DCA265Vj8a9CEuX1eb1LWRnDT7uK6q1xMipnNyatn23M) |
+| 🚧 | Phoenix | on-chain CLOB | [`PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY`](https://solscan.io/account/PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY) |
+| 💀 | Orca | Token Swap ("Classic") | [~~`9W959DqEETiGZocYWCQPaJ6sBmUzgfxXfqGeTEdp3aQP`~~](https://solscan.io/account/9W959DqEETiGZocYWCQPaJ6sBmUzgfxXfqGeTEdp3aQP) |
+| 💀 | Raydium | Stable AMM Anchor | [~~`5quBtoiQqxF9Jv6KYKctB59NT3gtJD2Y65kdnB1Uev3h`~~](https://solscan.io/account/5quBtoiQqxF9Jv6KYKctB59NT3gtJD2Y65kdnB1Uev3h) |
 
 **Legend**   ✅ done · 🚧 in progress · ❌ planned / help wanted · 💀 no IDL
 
