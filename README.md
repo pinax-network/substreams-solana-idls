@@ -42,6 +42,7 @@ This crate bundles thin, `no_std`‑friendly byte‑codecs that turn on‑chain 
 substreams_solana_idls::
 ├── <protocol>::PROGRAM_ID        // Program ID constant
 ├── <protocol>::instructions      // Instruction enum + `unpack(&[u8])`
+├── <protocol>::accounts          // Account structs + `get_*_accounts`
 └── <protocol>::events            // Event enum + `unpack(&[u8])`
 ```
 

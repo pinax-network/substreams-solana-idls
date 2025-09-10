@@ -102,12 +102,8 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumCpmmEvent {
         Ok(match discriminator {
             LP_CHANGE_EVENT => Self::LpChangeEvent(LpChangeEvent::try_from_slice(payload)?),
             SWAP_EVENT => match payload.len() {
-                SWAP_EVENT_V1_PAYLOAD_LEN => {
-                    Self::SwapEventV1(SwapEventV1::try_from_slice(payload)?)
-                }
-                SWAP_EVENT_V2_PAYLOAD_LEN => {
-                    Self::SwapEventV2(SwapEventV2::try_from_slice(payload)?)
-                }
+                SWAP_EVENT_V1_PAYLOAD_LEN => Self::SwapEventV1(SwapEventV1::try_from_slice(payload)?),
+                SWAP_EVENT_V2_PAYLOAD_LEN => Self::SwapEventV2(SwapEventV2::try_from_slice(payload)?),
                 _ => Self::Unknown,
             },
             _ => Self::Unknown,
@@ -116,6 +112,6 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumCpmmEvent {
 }
 
 /// Convenience wrapper that forwards to `TryFrom`.
-pub fn unpack_event(data: &[u8]) -> Result<RaydiumCpmmEvent, ParseError> {
+pub fn unpack(data: &[u8]) -> Result<RaydiumCpmmEvent, ParseError> {
     RaydiumCpmmEvent::try_from(data)
 }
