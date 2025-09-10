@@ -10,6 +10,8 @@ use solana_program::pubkey::Pubkey;
 // -----------------------------------------------------------------------------
 pub const LP_CHANGE_EVENT: [u8; 8] = [121, 163, 205, 201, 57, 218, 117, 60];
 pub const SWAP_EVENT: [u8; 8] = [64, 198, 205, 232, 38, 8, 113, 226];
+const SWAP_EVENT_V1_PAYLOAD_LEN: usize = 32 + 8 * 6 + 1;
+const SWAP_EVENT_V2_PAYLOAD_LEN: usize = SWAP_EVENT_V1_PAYLOAD_LEN + 32 + 32 + 8 + 8 + 1;
 
 // -----------------------------------------------------------------------------
 // Event enumeration
@@ -99,7 +101,15 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumCpmmEvent {
 
         Ok(match discriminator {
             LP_CHANGE_EVENT => Self::LpChangeEvent(LpChangeEvent::try_from_slice(payload)?),
-            SWAP_EVENT => Self::SwapEventV2(SwapEventV2::try_from_slice(payload)?),
+            SWAP_EVENT => match payload.len() {
+                SWAP_EVENT_V1_PAYLOAD_LEN => {
+                    Self::SwapEventV1(SwapEventV1::try_from_slice(payload)?)
+                }
+                SWAP_EVENT_V2_PAYLOAD_LEN => {
+                    Self::SwapEventV2(SwapEventV2::try_from_slice(payload)?)
+                }
+                _ => Self::Unknown,
+            },
             _ => Self::Unknown,
         })
     }
