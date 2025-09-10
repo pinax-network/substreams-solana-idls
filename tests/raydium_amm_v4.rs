@@ -1,13 +1,16 @@
 #[cfg(test)]
 mod tests {
+    use base64::Engine;
     use substreams::hex;
     use substreams_solana_idls::raydium;
 
     #[test]
     fn unpack_amm_v4_swap_event() {
         // https://solscan.io/tx/57d3uDBdPyrHX44aPzWVznDn39qx3ixFdRVieEfvhKtYErtgbYUpetApiZaYDSHCsfQWmqJryjknyFYT2U21oqrU
-        // let base64 = "AwBOclMAAAAAmOUFnQ4AAAACAAAAAAAAAABOclMAAAAAfTDHRyEBAAAR7JIChTUAAIVC62EPAAAA";
-        let bytes = hex!("03004e72530000000098e5059d0e0000000200000000000000004e7253000000007d30c7472101000011ec9202853500008542eb610f000000");
+        let base64 = "AwBOclMAAAAAmOUFnQ4AAAACAAAAAAAAAABOclMAAAAAfTDHRyEBAAAR7JIChTUAAIVC62EPAAAA";
+        let bytes = base64::engine::general_purpose::STANDARD
+            .decode(base64)
+            .expect("decode base64");
 
         match raydium::amm::v4::logs::unpack(&bytes).expect("decode event") {
             raydium::amm::v4::logs::RaydiumV4Log::SwapBaseIn(event) => {
@@ -27,8 +30,10 @@ mod tests {
     #[test]
     fn unpack_amm_v4_swap_event_2() {
         // https://solscan.io/tx/3GTW94fNv4JF4LeWNXCd6mQhxcZjNic9D1UoY9Qenf2S2t7gcgj7z58KwmHMHAYPqKVe812rrnpf2SKw8MdbNW7m
-        // let base64 = "AwL/AQAAAAAAAAAAAAAAAAACAAAAAAAAAAL/AQAAAAAA4VSaQlgAAADuOE6EHwAAAAS2AAAAAAAA";
-        let bytes = hex!("0302ff0100000000000000000000000000020000000000000002ff010000000000e1549a4258000000ee384e841f00000004b6000000000000");
+        let base64 = "AwL/AQAAAAAAAAAAAAAAAAACAAAAAAAAAAL/AQAAAAAA4VSaQlgAAADuOE6EHwAAAAS2AAAAAAAA";
+        let bytes = base64::engine::general_purpose::STANDARD
+            .decode(base64)
+            .expect("decode base64");
 
         match raydium::amm::v4::logs::unpack(&bytes).expect("decode event") {
             raydium::amm::v4::logs::RaydiumV4Log::SwapBaseIn(event) => {
