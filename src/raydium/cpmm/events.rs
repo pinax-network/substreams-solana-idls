@@ -17,7 +17,8 @@ pub const SWAP_EVENT: [u8; 8] = [64, 198, 205, 232, 38, 8, 113, 226];
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum RaydiumCpmmEvent {
     LpChangeEvent(LpChangeEvent),
-    SwapEvent(SwapEvent),
+    SwapEventV1(SwapEventV1),
+    SwapEventV2(SwapEventV2),
     Unknown,
 }
 
@@ -41,10 +42,9 @@ pub struct LpChangeEvent {
     pub token_1_transfer_fee: u64,
     pub change_type: u8,
 }
-
 /// Emitted when swap
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
-pub struct SwapEvent {
+pub struct SwapEventV1 {
     pub pool_id: Pubkey,
     /// pool vault sub trade fees
     pub input_vault_before: u64,
@@ -58,6 +58,29 @@ pub struct SwapEvent {
     pub output_transfer_fee: u64,
     /// `true` if the swap was performed with the base token as input.
     pub base_input: bool,
+}
+
+/// Emitted when swap
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+pub struct SwapEventV2 {
+    pub pool_id: Pubkey,
+    /// pool vault sub trade fees
+    pub input_vault_before: u64,
+    /// pool vault sub trade fees
+    pub output_vault_before: u64,
+    /// calculate result without transfer fee
+    pub input_amount: u64,
+    /// calculate result without transfer fee
+    pub output_amount: u64,
+    pub input_transfer_fee: u64,
+    pub output_transfer_fee: u64,
+    pub base_input: bool,
+    pub input_mint: Pubkey,
+    pub output_mint: Pubkey,
+    pub trade_fee: u64,
+    /// Amount of fee tokens going to creator
+    pub creator_fee: u64,
+    pub creator_fee_on_input: bool,
 }
 
 // -----------------------------------------------------------------------------
@@ -76,7 +99,7 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumCpmmEvent {
 
         Ok(match discriminator {
             LP_CHANGE_EVENT => Self::LpChangeEvent(LpChangeEvent::try_from_slice(payload)?),
-            SWAP_EVENT => Self::SwapEvent(SwapEvent::try_from_slice(payload)?),
+            SWAP_EVENT => Self::SwapEventV2(SwapEventV2::try_from_slice(payload)?),
             _ => Self::Unknown,
         })
     }
