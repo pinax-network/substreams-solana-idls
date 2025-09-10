@@ -7,6 +7,7 @@ pub mod meteora;
 pub mod orca;
 pub mod pumpfun;
 pub mod raydium;
+pub mod stabble;
 
 use thiserror::Error;
 
