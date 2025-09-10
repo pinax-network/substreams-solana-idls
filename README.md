@@ -27,8 +27,8 @@ This crate bundles thin, `no_std`‑friendly byte‑codecs that turn on‑chain 
 | 🚧 | Jupiter | Limit Order | `jupoNjAxXgZ4rjzxzPMP4oxduvQsQtZzyknqvzYNrNu` |
 | 🚧 | Jupiter | DCA | `DCA265Vj8a9CEuX1eb1LWRnDT7uK6q1xMipnNyatn23M` |
 | 🚧 | Phoenix | on-chain CLOB | `PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY` |
-| 💀 | Orca | Token Swap ("Classic") | ~~ `9W959DqEETiGZocYWCQPaJ6sBmUzgfxXfqGeTEdp3aQP` ~~|
-| 💀 | Raydium | Stable AMM Anchor | ~~ `5quBtoiQqxF9Jv6KYKctB59NT3gtJD2Y65kdnB1Uev3h` ~~|
+| 💀 | Orca | Token Swap ("Classic") | ~~`9W959DqEETiGZocYWCQPaJ6sBmUzgfxXfqGeTEdp3aQP`~~|
+| 💀 | Raydium | Stable AMM Anchor | ~~`5quBtoiQqxF9Jv6KYKctB59NT3gtJD2Y65kdnB1Uev3h`~~|
 
 **Legend**   ✅ done · 🚧 in progress · ❌ planned / help wanted · 💀 no IDL
 
