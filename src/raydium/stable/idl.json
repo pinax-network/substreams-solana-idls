@@ -1,0 +1,52 @@
+{
+  "version": "0.1.0",
+  "name": "raydium_stable",
+  "instructions": [
+    {
+      "name": "preInitialize",
+      "discriminant": 10,
+      "accounts": [],
+      "args": [ {"name": "nonce", "type": "u8"} ]
+    },
+    {
+      "name": "initialize",
+      "discriminant": 0,
+      "accounts": [],
+      "args": [ {"name": "nonce", "type": "u8"}, {"name": "open_time", "type": "u64"} ]
+    },
+    {
+      "name": "deposit",
+      "discriminant": 3,
+      "accounts": [],
+      "args": [
+        {"name": "max_coin_amount", "type": "u64"},
+        {"name": "max_pc_amount", "type": "u64"},
+        {"name": "base_side", "type": "u64"}
+      ]
+    },
+    {
+      "name": "withdraw",
+      "discriminant": 4,
+      "accounts": [],
+      "args": [ {"name": "amount", "type": "u64"} ]
+    },
+    {
+      "name": "swapBaseIn",
+      "discriminant": 9,
+      "accounts": [],
+      "args": [
+        {"name": "amount_in", "type": "u64"},
+        {"name": "minimum_amount_out", "type": "u64"}
+      ]
+    },
+    {
+      "name": "swapBaseOut",
+      "discriminant": 11,
+      "accounts": [],
+      "args": [
+        {"name": "max_amount_in", "type": "u64"},
+        {"name": "amount_out", "type": "u64"}
+      ]
+    }
+  ]
+}
