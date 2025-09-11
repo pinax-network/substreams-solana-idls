@@ -9,6 +9,7 @@ use solana_program::pubkey::Pubkey;
 // Discriminators (first 8 bytes of the emitted log’s data)
 // -----------------------------------------------------------------------------
 const SWAP: [u8; 8] = [81, 108, 227, 190, 205, 208, 10, 196];
+const ANCHOR_DISC: [u8; 8] = [0xe4, 0x45, 0xa5, 0x2e, 0x51, 0xcb, 0x9a, 0x1d];
 // const ADD_LIQUIDITY: [u8; 8] = [31, 94, 125, 90, 227, 52, 61, 186];
 // const CLAIM_FEE: [u8; 8] = [75, 122, 154, 48, 140, 74, 123, 163];
 // const CLAIM_FEE2: [u8; 8] = [232, 171, 242, 97, 58, 77, 35, 45];
@@ -94,8 +95,13 @@ impl<'a> TryFrom<&'a [u8]> for MeteoraDllmEvent {
             return Err(ParseError::TooShort(data.len()));
         }
 
-        let (disc, payload) = data.split_at(8);
-        let disc: [u8; 8] = disc.try_into().expect("slice len 8");
+        let (disc, payload) = if data.len() >= 16 && &data[0..8] == ANCHOR_DISC {
+            let disc: [u8; 8] = data[8..16].try_into().expect("slice len 8");
+            (disc, &data[16..])
+        } else {
+            let disc: [u8; 8] = data[0..8].try_into().expect("slice len 8");
+            (disc, &data[8..])
+        };
         Ok(match disc {
             SWAP => Self::Swap(SwapEvent::try_from_slice(payload)?),
             // ADD_LIQUIDITY => Self::AddLiquidity,

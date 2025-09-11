@@ -37,6 +37,7 @@ pub const EVTSWAP: [u8; 8] = [27, 60, 21, 213, 138, 170, 187, 147];
 pub const EVTUPDATEREWARDDURATION: [u8; 8] = [149, 135, 65, 231, 129, 153, 65, 57];
 pub const EVTUPDATEREWARDFUNDER: [u8; 8] = [76, 154, 208, 13, 40, 115, 246, 146];
 pub const EVTWITHDRAWINELIGIBLEREWARD: [u8; 8] = [248, 215, 184, 78, 31, 180, 179, 168];
+const ANCHOR_DISC: [u8; 8] = [0xe4, 0x45, 0xa5, 0x2e, 0x51, 0xcb, 0x9a, 0x1d];
 
 // -----------------------------------------------------------------------------
 // Event enumeration
@@ -322,8 +323,13 @@ impl<'a> TryFrom<&'a [u8]> for MeteoraDammEvent {
         if data.len() < 8 {
             return Err(ParseError::TooShort(data.len()));
         }
-        let disc: [u8; 8] = data[0..8].try_into().expect("slice len 8");
-        let payload = &data[8..];
+        let (disc, payload) = if data.len() >= 16 && &data[0..8] == ANCHOR_DISC {
+            let disc: [u8; 8] = data[8..16].try_into().expect("slice len 8");
+            (disc, &data[16..])
+        } else {
+            let disc: [u8; 8] = data[0..8].try_into().expect("slice len 8");
+            (disc, &data[8..])
+        };
         Ok(match disc {
             EVTADDLIQUIDITY => Self::EvtAddLiquidity(EvtAddLiquidity::try_from_slice(payload)?),
             EVTCLAIMPARTNERFEE => Self::EvtClaimPartnerFee(EvtClaimPartnerFee::try_from_slice(payload)?),
