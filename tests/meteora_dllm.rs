@@ -8,8 +8,7 @@ mod tests {
     fn unpack_dllm_swap_event() {
         // https://solscan.io/tx/<unknown? maybe but not necessary>. Maybe not.
         let bytes = hex!("e445a52e51cb9a1d516ce3becdd00ac471739c6f45944a0e56b3a0f9b2399f421b0a82b56c5b87acc78023b8ed27cc7cf74ba51f6820a847117a8fad48c80ae298e20bf37ff35e7ae8c7b85272b5010701feffff01feffff1f660a0000000000702c000000000000016037000000000000c40200000000000000623d010000000000000000000000000000000000000000");
-        let bytes = &bytes[8..];
-        match dllm::events::unpack(bytes).expect("decode event") {
+        match dllm::events::unpack(&bytes).expect("decode event") {
             dllm::events::MeteoraDllmEvent::Swap(event) => {
                 assert_eq!(event.lb_pair.to_string(), "8dsKNwMDMh1Vfr4YevzRY9oDS7N29fRHpPXcoDmUVSBd", "lb_pair");
                 assert_eq!(event.from.to_string(), "HeLbvj7KM5fkduCdiufTa5SmVtuuVjySPps7dnp2pDZG", "from");
