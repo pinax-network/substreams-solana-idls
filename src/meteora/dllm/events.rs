@@ -1,7 +1,9 @@
 //! Meteora DLMM on-chain events.
 
 use crate::ParseError;
+use borsh::{BorshDeserialize, BorshSerialize};
 use serde::{Deserialize, Serialize};
+use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
 // Discriminators (first 8 bytes of the emitted log’s data)
@@ -56,13 +58,29 @@ pub enum MeteoraDllmEvent {
     PositionCreate,
     Rebalancing,
     RemoveLiquidity,
-    Swap,
+    Swap(Swap),
     UpdatePositionLockReleasePoint,
     UpdatePositionOperator,
     UpdateRewardDuration,
     UpdateRewardFunder,
     WithdrawIneligibleReward,
     Unknown,
+}
+
+/// Emitted when swap occurs.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+pub struct Swap {
+    pub lb_pair: Pubkey,
+    pub from: Pubkey,
+    pub start_bin_id: i32,
+    pub end_bin_id: i32,
+    pub amount_in: u64,
+    pub amount_out: u64,
+    pub swap_for_y: bool,
+    pub fee: u64,
+    pub protocol_fee: u64,
+    pub fee_bps: u128,
+    pub host_fee: u64,
 }
 
 // -----------------------------------------------------------------------------
@@ -75,7 +93,9 @@ impl<'a> TryFrom<&'a [u8]> for MeteoraDllmEvent {
         if data.len() < 8 {
             return Err(ParseError::TooShort(data.len()));
         }
-        let disc: [u8; 8] = data[0..8].try_into().expect("slice len 8");
+
+        let (disc, payload) = data.split_at(8);
+        let disc: [u8; 8] = disc.try_into().expect("slice len 8");
         Ok(match disc {
             ADD_LIQUIDITY => Self::AddLiquidity,
             CLAIM_FEE => Self::ClaimFee,
@@ -96,7 +116,7 @@ impl<'a> TryFrom<&'a [u8]> for MeteoraDllmEvent {
             POSITION_CREATE => Self::PositionCreate,
             REBALANCING => Self::Rebalancing,
             REMOVE_LIQUIDITY => Self::RemoveLiquidity,
-            SWAP => Self::Swap,
+            SWAP => Self::Swap(Swap::try_from_slice(payload)?),
             UPDATE_POSITION_LOCK_RELEASE_POINT => Self::UpdatePositionLockReleasePoint,
             UPDATE_POSITION_OPERATOR => Self::UpdatePositionOperator,
             UPDATE_REWARD_DURATION => Self::UpdateRewardDuration,
