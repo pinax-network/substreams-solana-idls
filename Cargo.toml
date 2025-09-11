@@ -1,6 +1,6 @@
 [package]
 name = "substreams-solana-idls"
-version = "0.5.1"
+version = "0.5.2"
 description = "Type-safe Solana IDLs & instruction/event decoders for Substreams modules."
 license = "Apache-2.0"
 edition = "2021"
@@ -20,4 +20,4 @@ thiserror = "2.0.16"
 serde-big-array = "0.5"
 
 [dev-dependencies]
-base64 = "0.21"
+base64 = "0.22.1"
