@@ -28,6 +28,7 @@ This crate bundles thin, `no_std`‑friendly byte‑codecs that turn on‑chain 
 | ✅ | Jupiter | Limit Order | `jupoNjAxXgZ4rjzxzPMP4oxduvQsQtZzyknqvzYNrNu` |
 | ✅ | Jupiter | DCA | `DCA265Vj8a9CEuX1eb1LWRnDT7uK6q1xMipnNyatn23M` |
 | ✅ | Phoenix | on-chain CLOB | `PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY` |
+| ❌ | DFlow | Swap Aggregator V4 | `DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH` |
 | 💀 | Orca | Token Swap ("Classic") | `9W959DqEETiGZocYWCQPaJ6sBmUzgfxXfqGeTEdp3aQP` |
 
 **Legend**   ✅ done · 🚧 in progress · ❌ planned / help wanted · 💀 no IDL
