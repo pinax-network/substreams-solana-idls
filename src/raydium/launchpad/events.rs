@@ -12,6 +12,7 @@ pub const CLAIM_VESTED_EVENT: [u8; 8] = [21, 194, 114, 87, 120, 211, 226, 32];
 pub const CREATE_VESTING_EVENT: [u8; 8] = [201, 216, 28, 169, 227, 76, 208, 95];
 pub const POOL_CREATE_EVENT: [u8; 8] = [35, 19, 27, 213, 21, 36, 194, 123];
 pub const TRADE_EVENT: [u8; 8] = [189, 219, 127, 211, 78, 230, 97, 238];
+const ANCHOR_DISC: [u8; 8] = [0xe4, 0x45, 0xa5, 0x2e, 0x51, 0xcb, 0x9a, 0x1d];
 
 // -----------------------------------------------------------------------------
 // Event enumeration
@@ -154,9 +155,14 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumLaunchpadEvent {
         if data.len() < 8 {
             return Err(ParseError::TooShort(data.len()));
         }
-        let (disc, payload) = data.split_at(8);
-        let discriminator: [u8; 8] = disc.try_into().expect("slice len 8");
-        Ok(match discriminator {
+        let (disc, payload) = if data.len() >= 16 && &data[0..8] == ANCHOR_DISC {
+            let disc: [u8; 8] = data[8..16].try_into().expect("slice len 8");
+            (disc, &data[16..])
+        } else {
+            let disc: [u8; 8] = data[0..8].try_into().expect("slice len 8");
+            (disc, &data[8..])
+        };
+        Ok(match disc {
             CLAIM_VESTED_EVENT => Self::ClaimVestedEvent(ClaimVestedEvent::try_from_slice(payload)?),
             CREATE_VESTING_EVENT => Self::CreateVestingEvent(CreateVestingEvent::try_from_slice(payload)?),
             POOL_CREATE_EVENT => Self::PoolCreateEvent(PoolCreateEvent::try_from_slice(payload)?),
