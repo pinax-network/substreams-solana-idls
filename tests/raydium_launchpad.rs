@@ -1,0 +1,33 @@
+#![cfg(test)]
+#![allow(deprecated)]
+mod tests {
+    use substreams::hex;
+    use substreams_solana_idls::raydium::launchpad;
+
+    #[test]
+    fn unpack_launchpad_trade_event() {
+        let bytes = hex!("e445a52e51cb9a1dbddb7fd34ee661eef5e31a347d6c0ffb5c1019f78d2c2244f6c99c6e873d3928bf94d281f65888bf0078c5fb51d10200de740e3ee9cf0300d7af30fc060000005ba7ef1db2a002006c872c7f0f000000577b4148b3a00200f2a5427f0f0000001c69160000000000fcd3512a01000000590e0000000000005f39000000000000de020000000000000000000000000000000001");
+        match launchpad::events::unpack(&bytes).expect("decode event") {
+            launchpad::events::RaydiumLaunchpadEvent::TradeEvent(event) => {
+                assert_eq!(event.pool_state.to_string(), "HYqjiMv2jVE41qMoBDXAE5SEeNcyaEQMaEuVHCuisB4A", "pool_state");
+                assert_eq!(event.total_base_sell, 793_100_000_000_000, "total_base_sell");
+                assert_eq!(event.virtual_base, 1_073_025_605_596_382, "virtual_base");
+                assert_eq!(event.virtual_quote, 30_000_852_951, "virtual_quote");
+                assert_eq!(event.real_base_before, 739_636_820_289_371, "real_base_before");
+                assert_eq!(event.real_quote_before, 66_558_134_124, "real_quote_before");
+                assert_eq!(event.real_base_after, 739_641_825_262_423, "real_base_after");
+                assert_eq!(event.real_quote_after, 66_559_583_730, "real_quote_after");
+                assert_eq!(event.amount_in, 1_468_700, "amount_in");
+                assert_eq!(event.amount_out, 5_004_973_052, "amount_out");
+                assert_eq!(event.protocol_fee, 3_673, "protocol_fee");
+                assert_eq!(event.platform_fee, 14_687, "platform_fee");
+                assert_eq!(event.creator_fee, 734, "creator_fee");
+                assert_eq!(event.share_fee, 0, "share_fee");
+                assert!(matches!(event.trade_direction, launchpad::events::TradeDirection::Buy), "trade_direction");
+                assert!(matches!(event.pool_status, launchpad::events::PoolStatus::Fund), "pool_status");
+                assert!(event.exact_in, "exact_in");
+            }
+            _ => panic!("Expected TradeEvent"),
+        }
+    }
+}
