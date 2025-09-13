@@ -14,7 +14,6 @@ members = [
     "packages/meteora",
     "packages/orca",
     "packages/phoenix",
-    "packages/phonenix",
     "packages/stabble",
 ]
 
@@ -25,7 +24,6 @@ jupiter = { path = "packages/jupiter" }
 meteora = { path = "packages/meteora" }
 orca = { path = "packages/orca" }
 phoenix = { path = "packages/phoenix" }
-phonenix = { path = "packages/phonenix" }
 pumpfun = { path = "packages/pumpfun" }
 raydium = { path = "packages/raydium" }
 stabble = { path = "packages/stabble" }

@@ -4,7 +4,6 @@ pub use jupiter;
 pub use meteora;
 pub use orca;
 pub use phoenix;
-pub use phonenix;
 pub use pumpfun;
 pub use raydium;
 pub use stabble;
