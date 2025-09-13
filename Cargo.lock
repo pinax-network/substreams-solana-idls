@@ -118,6 +118,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "bonkswap"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "idls-common",
+ "serde",
+ "serde-big-array",
+ "serde_json",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+ "thiserror 2.0.16",
+]
+
+[[package]]
 name = "borsh"
 version = "0.10.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -509,6 +525,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7ebdb29d2ea9ed0083cd8cece49bbd968021bd99b0849edb4a9a7ee0fdf6a4e0"
 
 [[package]]
+name = "idls-common"
+version = "0.1.0"
+dependencies = [
+ "borsh 1.5.7",
+ "serde",
+ "serde-big-array",
+ "serde_json",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+ "thiserror 2.0.16",
+]
+
+[[package]]
 name = "indexmap"
 version = "2.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -541,6 +571,22 @@ checksum = "1cfaf33c695fc6e08064efbc1f72ec937429614f25eef83af942d0e227c3a28f"
 dependencies = [
  "once_cell",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "jupiter"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "idls-common",
+ "serde",
+ "serde-big-array",
+ "serde_json",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+ "thiserror 2.0.16",
 ]
 
 [[package]]
@@ -648,6 +694,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "meteora"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "idls-common",
+ "serde",
+ "serde-big-array",
+ "serde_json",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+ "thiserror 2.0.16",
+]
+
+[[package]]
 name = "multimap"
 version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -724,6 +786,22 @@ name = "opaque-debug"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08d65885ee38876c4f86fa503fb49d7b507c2b62552df7c70b2fce627e06381"
+
+[[package]]
+name = "orca"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "idls-common",
+ "serde",
+ "serde-big-array",
+ "serde_json",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+ "thiserror 2.0.16",
+]
 
 [[package]]
 name = "pad"
@@ -809,6 +887,38 @@ checksum = "3672b37090dbd86368a4145bc067582552b29c27377cad4e0a306c97f9bd7772"
 dependencies = [
  "fixedbitset",
  "indexmap",
+]
+
+[[package]]
+name = "phoenix"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "idls-common",
+ "serde",
+ "serde-big-array",
+ "serde_json",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+ "thiserror 2.0.16",
+]
+
+[[package]]
+name = "phonenix"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "idls-common",
+ "serde",
+ "serde-big-array",
+ "serde_json",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+ "thiserror 2.0.16",
 ]
 
 [[package]]
@@ -910,6 +1020,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "pumpfun"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "idls-common",
+ "serde",
+ "serde-big-array",
+ "serde_json",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+ "thiserror 2.0.16",
+]
+
+[[package]]
 name = "quote"
 version = "1.0.40"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -993,6 +1119,22 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ca3129af7b92a17112d59ad498c6f81eaf463253766b90396d39ea7a39d6613c"
 dependencies = [
  "rand_core 0.5.1",
+]
+
+[[package]]
+name = "raydium"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "idls-common",
+ "serde",
+ "serde-big-array",
+ "serde_json",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+ "thiserror 2.0.16",
 ]
 
 [[package]]
@@ -1969,6 +2111,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "stabble"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "idls-common",
+ "serde",
+ "serde-big-array",
+ "serde_json",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+ "thiserror 2.0.16",
+]
+
+[[package]]
 name = "substreams"
 version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2026,21 +2184,6 @@ dependencies = [
  "prost",
  "prost-build",
  "prost-types",
-]
-
-[[package]]
-name = "substreams-solana-idls"
-version = "0.5.5"
-dependencies = [
- "base64 0.22.1",
- "borsh 1.5.7",
- "serde",
- "serde-big-array",
- "serde_json",
- "solana-program",
- "substreams",
- "substreams-solana",
- "thiserror 2.0.16",
 ]
 
 [[package]]
