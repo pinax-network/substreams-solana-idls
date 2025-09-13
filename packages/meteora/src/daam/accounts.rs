@@ -1,5 +1,4 @@
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
@@ -9,7 +8,7 @@ use idls_common::accounts::AccountsError;
 // AddLiquidity accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityAccounts {
     pub pool: Pubkey,
     pub position: Pubkey,
@@ -87,7 +86,7 @@ pub fn get_add_liquidity_accounts(ix: &InstructionView) -> Result<AddLiquidityAc
 // ClaimPartnerFee accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimPartnerFeeAccounts {
     pub pool_authority: Pubkey,
     pub pool: Pubkey,
@@ -160,7 +159,7 @@ pub fn get_claim_partner_fee_accounts(ix: &InstructionView) -> Result<ClaimPartn
 // ClaimPositionFee accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimPositionFeeAccounts {
     pub pool_authority: Pubkey,
     pub pool: Pubkey,
@@ -241,7 +240,7 @@ pub fn get_claim_position_fee_accounts(ix: &InstructionView) -> Result<ClaimPosi
 // ClaimProtocolFee accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimProtocolFeeAccounts {
     pub pool_authority: Pubkey,
     pub pool: Pubkey,
@@ -319,7 +318,7 @@ pub fn get_claim_protocol_fee_accounts(ix: &InstructionView) -> Result<ClaimProt
 // ClaimReward accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimRewardAccounts {
     pub pool_authority: Pubkey,
     pub pool: Pubkey,
@@ -381,7 +380,7 @@ pub fn get_claim_reward_accounts(ix: &InstructionView) -> Result<ClaimRewardAcco
 // CloseClaimFeeOperator accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CloseClaimFeeOperatorAccounts {
     pub claim_fee_operator: Pubkey,
     pub rent_receiver: Pubkey,
@@ -422,7 +421,7 @@ pub fn get_close_claim_fee_operator_accounts(ix: &InstructionView) -> Result<Clo
 // CloseConfig accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CloseConfigAccounts {
     pub config: Pubkey,
     pub admin: Pubkey,
@@ -463,7 +462,7 @@ pub fn get_close_config_accounts(ix: &InstructionView) -> Result<CloseConfigAcco
 // ClosePosition accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClosePositionAccounts {
     /// position_nft_mint
     pub position_nft_mint: Pubkey,
@@ -523,7 +522,7 @@ pub fn get_close_position_accounts(ix: &InstructionView) -> Result<ClosePosition
 // CloseTokenBadge accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CloseTokenBadgeAccounts {
     pub token_badge: Pubkey,
     pub admin: Pubkey,
@@ -564,7 +563,7 @@ pub fn get_close_token_badge_accounts(ix: &InstructionView) -> Result<CloseToken
 // CreateClaimFeeOperator accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateClaimFeeOperatorAccounts {
     pub claim_fee_operator: Pubkey,
     pub operator: Pubkey,
@@ -608,7 +607,7 @@ pub fn get_create_claim_fee_operator_accounts(ix: &InstructionView) -> Result<Cr
 // CreateConfig accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateConfigAccounts {
     pub config: Pubkey,
     pub admin: Pubkey,
@@ -649,7 +648,7 @@ pub fn get_create_config_accounts(ix: &InstructionView) -> Result<CreateConfigAc
 // CreateDynamicConfig accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateDynamicConfigAccounts {
     pub config: Pubkey,
     pub admin: Pubkey,
@@ -690,7 +689,7 @@ pub fn get_create_dynamic_config_accounts(ix: &InstructionView) -> Result<Create
 // CreatePosition accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreatePositionAccounts {
     pub owner: Pubkey,
     /// position_nft_mint
@@ -753,7 +752,7 @@ pub fn get_create_position_accounts(ix: &InstructionView) -> Result<CreatePositi
 // CreateTokenBadge accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateTokenBadgeAccounts {
     pub token_badge: Pubkey,
     pub token_mint: Pubkey,
@@ -797,7 +796,7 @@ pub fn get_create_token_badge_accounts(ix: &InstructionView) -> Result<CreateTok
 // FundReward accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct FundRewardAccounts {
     pub pool: Pubkey,
     pub reward_vault: Pubkey,
@@ -847,7 +846,7 @@ pub fn get_fund_reward_accounts(ix: &InstructionView) -> Result<FundRewardAccoun
 // InitializeCustomizablePool accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeCustomizablePoolAccounts {
     pub creator: Pubkey,
     /// position_nft_mint
@@ -943,7 +942,7 @@ pub fn get_initialize_customizable_pool_accounts(ix: &InstructionView) -> Result
 // InitializePool accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePoolAccounts {
     pub creator: Pubkey,
     /// position_nft_mint
@@ -1043,7 +1042,7 @@ pub fn get_initialize_pool_accounts(ix: &InstructionView) -> Result<InitializePo
 // InitializePoolWithDynamicConfig accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePoolWithDynamicConfigAccounts {
     pub creator: Pubkey,
     /// position_nft_mint
@@ -1146,7 +1145,7 @@ pub fn get_initialize_pool_with_dynamic_config_accounts(ix: &InstructionView) ->
 // InitializeReward accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeRewardAccounts {
     pub pool_authority: Pubkey,
     pub pool: Pubkey,
@@ -1202,7 +1201,7 @@ pub fn get_initialize_reward_accounts(ix: &InstructionView) -> Result<Initialize
 // LockPosition accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LockPositionAccounts {
     pub pool: Pubkey,
     pub position: Pubkey,
@@ -1257,7 +1256,7 @@ pub fn get_lock_position_accounts(ix: &InstructionView) -> Result<LockPositionAc
 // PermanentLockPosition accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct PermanentLockPositionAccounts {
     pub pool: Pubkey,
     pub position: Pubkey,
@@ -1303,7 +1302,7 @@ pub fn get_permanent_lock_position_accounts(ix: &InstructionView) -> Result<Perm
 // RefreshVesting accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RefreshVestingAccounts {
     pub pool: Pubkey,
     pub position: Pubkey,
@@ -1342,7 +1341,7 @@ pub fn get_refresh_vesting_accounts(ix: &InstructionView) -> Result<RefreshVesti
 // RemoveAllLiquidity accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveAllLiquidityAccounts {
     pub pool_authority: Pubkey,
     pub pool: Pubkey,
@@ -1423,7 +1422,7 @@ pub fn get_remove_all_liquidity_accounts(ix: &InstructionView) -> Result<RemoveA
 // RemoveLiquidity accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveLiquidityAccounts {
     pub pool_authority: Pubkey,
     pub pool: Pubkey,
@@ -1504,7 +1503,7 @@ pub fn get_remove_liquidity_accounts(ix: &InstructionView) -> Result<RemoveLiqui
 // SetPoolStatus accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetPoolStatusAccounts {
     pub pool: Pubkey,
     pub admin: Pubkey,
@@ -1542,7 +1541,7 @@ pub fn get_set_pool_status_accounts(ix: &InstructionView) -> Result<SetPoolStatu
 // SplitPosition accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SplitPositionAccounts {
     pub pool: Pubkey,
     /// The first position
@@ -1601,7 +1600,7 @@ pub fn get_split_position_accounts(ix: &InstructionView) -> Result<SplitPosition
 // Swap accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapAccounts {
     pub pool_authority: Pubkey,
     /// Pool account
@@ -1681,7 +1680,7 @@ pub fn get_swap_accounts(ix: &InstructionView) -> Result<SwapAccounts, AccountsE
 // UpdateRewardDuration accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateRewardDurationAccounts {
     pub pool: Pubkey,
     pub signer: Pubkey,
@@ -1719,7 +1718,7 @@ pub fn get_update_reward_duration_accounts(ix: &InstructionView) -> Result<Updat
 // UpdateRewardFunder accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateRewardFunderAccounts {
     pub pool: Pubkey,
     pub signer: Pubkey,
@@ -1757,7 +1756,7 @@ pub fn get_update_reward_funder_accounts(ix: &InstructionView) -> Result<UpdateR
 // WithdrawIneligibleReward accounts
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawIneligibleRewardAccounts {
     pub pool_authority: Pubkey,
     pub pool: Pubkey,

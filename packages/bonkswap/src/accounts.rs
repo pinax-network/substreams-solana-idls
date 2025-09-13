@@ -1,5 +1,4 @@
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
@@ -27,7 +26,7 @@ const IDX_TOKEN_PROGRAM: usize = 14;
 const IDX_ASSOCIATED_TOKEN_PROGRAM: usize = 15;
 const IDX_RENT: usize = 16;
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapAccounts {
     pub state: Pubkey,
     pub pool: Pubkey,

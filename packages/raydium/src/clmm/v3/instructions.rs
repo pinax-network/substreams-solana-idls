@@ -2,10 +2,9 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeRewardParam {
     /// Reward open time
     pub open_time: u64,
@@ -47,7 +46,7 @@ pub const UPDATE_REWARD_INFOS: [u8; 8] = [163, 172, 224, 52, 11, 154, 106, 223];
 // -----------------------------------------------------------------------------
 // Instruction enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RaydiumClmmInstruction {
     ClosePosition,
     CollectFundFee(CollectFundFeeInstruction),
@@ -88,7 +87,7 @@ pub enum RaydiumClmmInstruction {
 /// * `amount_0_requested` - The maximum amount of token_0 to send, can be 0 to collect fees in only token_1
 /// * `amount_1_requested` - The maximum amount of token_1 to send, can be 0 to collect fees in only token_0
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CollectFundFeeInstruction {
     pub amount_0_requested: u64,
     pub amount_1_requested: u64,
@@ -102,7 +101,7 @@ pub struct CollectFundFeeInstruction {
 /// * `amount_0_requested` - The maximum amount of token_0 to send, can be 0 to collect fees in only token_1
 /// * `amount_1_requested` - The maximum amount of token_1 to send, can be 0 to collect fees in only token_0
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CollectProtocolFeeInstruction {
     pub amount_0_requested: u64,
     pub amount_1_requested: u64,
@@ -115,7 +114,7 @@ pub struct CollectProtocolFeeInstruction {
 /// * `ctx`- The context of accounts
 /// * `reward_index` - the index to reward info
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CollectRemainingRewardsInstruction {
     pub reward_index: u8,
 }
@@ -129,7 +128,7 @@ pub struct CollectRemainingRewardsInstruction {
 /// * `protocol_fee_rate` - The rate of protocol fee within trade fee.
 /// * `fund_fee_rate` - The rate of fund fee within trade fee.
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateAmmConfigInstruction {
     pub index: u16,
     pub tick_spacing: u16,
@@ -145,7 +144,7 @@ pub struct CreateAmmConfigInstruction {
 /// * `ctx`- The context of accounts
 /// * `sqrt_price_x64` - the initial sqrt price (amount_token_1 / amount_token_0) of the pool as a Q64.64
 ///   Note: The open_time must be smaller than the current block_timestamp on chain.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreatePoolInstruction {
     pub sqrt_price_x64: u128,
     pub open_time: u64,
@@ -161,7 +160,7 @@ pub struct CreatePoolInstruction {
 /// * `amount_0_min` - The minimum amount of token_0 that should be accounted for the burned liquidity
 /// * `amount_1_min` - The minimum amount of token_1 that should be accounted for the burned liquidity
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DecreaseLiquidityInstruction {
     pub liquidity: u128,
     pub amount_0_min: u64,
@@ -177,7 +176,7 @@ pub struct DecreaseLiquidityInstruction {
 /// * `amount_0_min` - The minimum amount of token_0 that should be accounted for the burned liquidity
 /// * `amount_1_min` - The minimum amount of token_1 that should be accounted for the burned liquidity
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DecreaseLiquidityV2Instruction {
     pub liquidity: u128,
     pub amount_0_min: u64,
@@ -194,7 +193,7 @@ pub struct DecreaseLiquidityV2Instruction {
 /// * `amount_0_max` - The max amount of token_0 to spend, which serves as a slippage check
 /// * `amount_1_max` - The max amount of token_1 to spend, which serves as a slippage check
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct IncreaseLiquidityInstruction {
     pub liquidity: u128,
     pub amount_0_max: u64,
@@ -211,7 +210,7 @@ pub struct IncreaseLiquidityInstruction {
 /// * `amount_1_max` - The max amount of token_1 to spend, which serves as a slippage check
 /// * `base_flag` - must be specified if liquidity is zero, true: calculate liquidity base amount_0_max otherwise base amount_1_max
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct IncreaseLiquidityV2Instruction {
     pub liquidity: u128,
     pub amount_0_max: u64,
@@ -229,7 +228,7 @@ pub struct IncreaseLiquidityV2Instruction {
 /// * `end_time` - reward end timestamp
 /// * `emissions_per_second_x64` - Token reward per second are earned per unit of liquidity.
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeRewardInstruction {
     pub param: InitializeRewardParam,
 }
@@ -248,7 +247,7 @@ pub struct InitializeRewardInstruction {
 /// * `amount_0_max` - The max amount of token_0 to spend, which serves as a slippage check
 /// * `amount_1_max` - The max amount of token_1 to spend, which serves as a slippage check
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct OpenPositionInstruction {
     pub tick_lower_index: i32,
     pub tick_upper_index: i32,
@@ -275,7 +274,7 @@ pub struct OpenPositionInstruction {
 /// * `with_metadata` - The flag indicating whether to create NFT mint metadata
 /// * `base_flag` - if the liquidity specified as zero, true: calculate liquidity base amount_0_max otherwise base amount_1_max
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct OpenPositionV2Instruction {
     pub tick_lower_index: i32,
     pub tick_upper_index: i32,
@@ -303,7 +302,7 @@ pub struct OpenPositionV2Instruction {
 /// * `with_metadata` - The flag indicating whether to create NFT mint metadata
 /// * `base_flag` - if the liquidity specified as zero, true: calculate liquidity base amount_0_max otherwise base amount_1_max
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct OpenPositionWithToken22NftInstruction {
     pub tick_lower_index: i32,
     pub tick_upper_index: i32,
@@ -327,7 +326,7 @@ pub struct OpenPositionWithToken22NftInstruction {
 /// * `open_time` - reward open timestamp, must be set when starting a new cycle
 /// * `end_time` - reward end timestamp
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetRewardParamsInstruction {
     pub reward_index: u8,
     pub emissions_per_second_x64: u128,
@@ -346,7 +345,7 @@ pub struct SetRewardParamsInstruction {
 /// * `sqrt_price_limit` - The Q64.64 sqrt price √P limit. If zero for one, the price cannot
 /// * `is_base_input` - swap base input or swap base output
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapInstruction {
     pub amount: u64,
     pub other_amount_threshold: u64,
@@ -362,7 +361,7 @@ pub struct SwapInstruction {
 /// * `amount_in` - Token amount to be swapped in
 /// * `amount_out_minimum` - Panic if output amount is below minimum amount. For slippage.
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapRouterBaseInInstruction {
     pub amount_in: u64,
     pub amount_out_minimum: u64,
@@ -375,7 +374,7 @@ pub struct SwapRouterBaseInInstruction {
 /// * `ctx`- The context of accounts
 /// * `new_owner`- new owner pubkey
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct TransferRewardOwnerInstruction {
     pub new_owner: Pubkey,
 }
@@ -393,7 +392,7 @@ pub struct TransferRewardOwnerInstruction {
 /// * `new_fund_owner`- The config's new fund owner, be set when `param` is 4
 /// * `param`- The value can be 0 | 1 | 2 | 3 | 4, otherwise will report a error
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateAmmConfigInstruction {
     pub param: u8,
     pub value: u32,
@@ -410,7 +409,7 @@ pub struct UpdateAmmConfigInstruction {
 ///   update whitelist mint when the `param` is 2
 ///   remove whitelist mint when the `param` is 3
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateOperationAccountInstruction {
     pub param: u8,
     pub keys: Vec<Pubkey>,
@@ -423,7 +422,7 @@ pub struct UpdateOperationAccountInstruction {
 /// * `ctx`- The context of accounts
 /// * `status` - The value of status
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdatePoolStatusInstruction {
     pub status: u8,
 }

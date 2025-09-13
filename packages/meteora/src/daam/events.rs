@@ -6,7 +6,6 @@ use super::instructions::{
 };
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
@@ -42,7 +41,7 @@ const ANCHOR_DISC: [u8; 8] = [0xe4, 0x45, 0xa5, 0x2e, 0x51, 0xcb, 0x9a, 0x1d];
 // -----------------------------------------------------------------------------
 // Event enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum MeteoraDammEvent {
     EvtAddLiquidity(EvtAddLiquidity),
     EvtClaimPartnerFee(EvtClaimPartnerFee),
@@ -75,7 +74,7 @@ pub enum MeteoraDammEvent {
 // -----------------------------------------------------------------------------
 // Payload structs
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtAddLiquidity {
     pub pool: Pubkey,
     pub position: Pubkey,
@@ -87,14 +86,14 @@ pub struct EvtAddLiquidity {
     pub total_amount_b: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtClaimPartnerFee {
     pub pool: Pubkey,
     pub token_a_amount: u64,
     pub token_b_amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtClaimPositionFee {
     pub pool: Pubkey,
     pub position: Pubkey,
@@ -103,14 +102,14 @@ pub struct EvtClaimPositionFee {
     pub fee_b_claimed: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtClaimProtocolFee {
     pub pool: Pubkey,
     pub token_a_amount: u64,
     pub token_b_amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtClaimReward {
     pub pool: Pubkey,
     pub position: Pubkey,
@@ -120,13 +119,13 @@ pub struct EvtClaimReward {
     pub total_reward: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtCloseClaimFeeOperator {
     pub claim_fee_operator: Pubkey,
     pub operator: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtCloseConfig {
     /// Config pubkey
     pub config: Pubkey,
@@ -134,7 +133,7 @@ pub struct EvtCloseConfig {
     pub admin: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtClosePosition {
     pub pool: Pubkey,
     pub owner: Pubkey,
@@ -142,12 +141,12 @@ pub struct EvtClosePosition {
     pub position_nft_mint: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtCreateClaimFeeOperator {
     pub operator: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtCreateConfig {
     pub pool_fees: PoolFeeParameters,
     pub vault_config_key: Pubkey,
@@ -160,14 +159,14 @@ pub struct EvtCreateConfig {
     pub config: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtCreateDynamicConfig {
     pub config: Pubkey,
     pub pool_creator_authority: Pubkey,
     pub index: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtCreatePosition {
     pub pool: Pubkey,
     pub owner: Pubkey,
@@ -175,12 +174,12 @@ pub struct EvtCreatePosition {
     pub position_nft_mint: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtCreateTokenBadge {
     pub token_mint: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtFundReward {
     pub pool: Pubkey,
     pub funder: Pubkey,
@@ -193,7 +192,7 @@ pub struct EvtFundReward {
     pub post_reward_rate: u128,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtInitializePool {
     pub pool: Pubkey,
     pub token_a_mint: Pubkey,
@@ -218,7 +217,7 @@ pub struct EvtInitializePool {
     pub pool_type: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtInitializeReward {
     pub pool: Pubkey,
     pub reward_mint: Pubkey,
@@ -228,7 +227,7 @@ pub struct EvtInitializeReward {
     pub reward_duration: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtLockPosition {
     pub pool: Pubkey,
     pub position: Pubkey,
@@ -241,7 +240,7 @@ pub struct EvtLockPosition {
     pub number_of_period: u16,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtPermanentLockPosition {
     pub pool: Pubkey,
     pub position: Pubkey,
@@ -249,7 +248,7 @@ pub struct EvtPermanentLockPosition {
     pub total_permanent_locked_liquidity: u128,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtRemoveLiquidity {
     pub pool: Pubkey,
     pub position: Pubkey,
@@ -259,13 +258,13 @@ pub struct EvtRemoveLiquidity {
     pub token_b_amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtSetPoolStatus {
     pub pool: Pubkey,
     pub status: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtSplitPosition {
     pub pool: Pubkey,
     pub first_owner: Pubkey,
@@ -279,7 +278,7 @@ pub struct EvtSplitPosition {
     pub split_position_parameters: SplitPositionParameters,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtSwap {
     pub pool: Pubkey,
     pub trade_direction: u8,
@@ -290,7 +289,7 @@ pub struct EvtSwap {
     pub current_timestamp: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtUpdateRewardDuration {
     pub pool: Pubkey,
     pub reward_index: u8,
@@ -298,7 +297,7 @@ pub struct EvtUpdateRewardDuration {
     pub new_reward_duration: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtUpdateRewardFunder {
     pub pool: Pubkey,
     pub reward_index: u8,
@@ -306,7 +305,7 @@ pub struct EvtUpdateRewardFunder {
     pub new_funder: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtWithdrawIneligibleReward {
     pub pool: Pubkey,
     pub reward_mint: Pubkey,

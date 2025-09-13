@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 
 // -----------------------------------------------------------------------------
 // Discriminators
@@ -14,7 +13,7 @@ pub const SWAP: [u8; 8] = [248, 198, 158, 145, 225, 117, 135, 200];
 // -----------------------------------------------------------------------------
 // Instruction enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum StabbleInstruction {
     Deposit(DepositInstruction),
     Withdraw(WithdrawInstruction),
@@ -26,21 +25,21 @@ pub enum StabbleInstruction {
 // Payload structs
 // -----------------------------------------------------------------------------
 /// Add liquidity to the pool.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DepositInstruction {
     pub amounts: Vec<u64>,
     pub minimum_amount_out: u64,
 }
 
 /// Remove liquidity from the pool.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawInstruction {
     pub amount: u64,
     pub minimum_amounts_out: Vec<u64>,
 }
 
 /// Swap tokens through the pool.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapInstruction {
     pub amount_in: Option<u64>,
     pub minimum_amount_out: u64,

@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
@@ -16,7 +15,7 @@ const SWAP_EVENT_V2_PAYLOAD_LEN: usize = SWAP_EVENT_V1_PAYLOAD_LEN + 32 + 32 + 8
 // -----------------------------------------------------------------------------
 // Event enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RaydiumCpmmEvent {
     LpChangeEvent(LpChangeEvent),
     SwapEventV1(SwapEventV1),
@@ -28,7 +27,7 @@ pub enum RaydiumCpmmEvent {
 // Payload structs
 // -----------------------------------------------------------------------------
 /// Emitted when deposit and withdraw
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LpChangeEvent {
     pub pool_id: Pubkey,
     pub lp_amount_before: u64,
@@ -45,7 +44,7 @@ pub struct LpChangeEvent {
     pub change_type: u8,
 }
 /// Emitted when swap
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapEventV1 {
     pub pool_id: Pubkey,
     /// pool vault sub trade fees
@@ -63,7 +62,7 @@ pub struct SwapEventV1 {
 }
 
 /// Emitted when swap
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapEventV2 {
     pub pool_id: Pubkey,
     /// pool vault sub trade fees

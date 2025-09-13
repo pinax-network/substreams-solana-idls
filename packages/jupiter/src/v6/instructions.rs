@@ -2,39 +2,38 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 
 // -----------------------------------------------------------------------------
 // Payload structs
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimInstruction {
     pub id: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimTokenInstruction {
     pub id: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CloseTokenInstruction {
     pub id: u8,
     pub burn_all: bool,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateProgramOpenOrdersInstruction {
     pub id: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateTokenAccountInstruction {
     pub bump: u8,
 }
 
 /// Route by using program owned token accounts and open orders accounts.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SharedAccountsExactOutRouteInstruction {
     pub id: u8,
     /// Raw remaining instruction data (route plan and amounts).
@@ -42,14 +41,14 @@ pub struct SharedAccountsExactOutRouteInstruction {
 }
 
 /// Route by using program owned token accounts and open orders accounts.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SharedAccountsRouteInstruction {
     pub id: u8,
     /// Raw remaining instruction data (route plan and amounts).
     pub data: Vec<u8>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SharedAccountsRouteWithTokenLedgerInstruction {
     pub id: u8,
     /// Raw remaining instruction data (route plan and amounts).
@@ -57,18 +56,18 @@ pub struct SharedAccountsRouteWithTokenLedgerInstruction {
 }
 
 /// `route_plan` Topologically sorted trade DAG
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RouteInstruction {
     pub data: Vec<u8>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ExactOutRouteInstruction {
     /// Raw route plan and arguments.
     pub data: Vec<u8>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RouteWithTokenLedgerInstruction {
     /// Raw route plan and arguments.
     pub data: Vec<u8>,
@@ -95,7 +94,7 @@ pub const SHARED_ACCOUNTS_ROUTE_WITH_TOKEN_LEDGER: [u8; 8] = [230, 121, 143, 80,
 // -----------------------------------------------------------------------------
 // Instruction enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum JupiterV6Instruction {
     Claim(ClaimInstruction),
     ClaimToken(ClaimTokenInstruction),

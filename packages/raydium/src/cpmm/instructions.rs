@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 
 // -----------------------------------------------------------------------------
 // Discriminators
@@ -25,7 +24,7 @@ pub const WITHDRAW: [u8; 8] = [183, 18, 70, 156, 148, 109, 161, 34];
 // -----------------------------------------------------------------------------
 // Instruction enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RaydiumCpmmInstruction {
     ClosePermissionPda,
     CollectCreatorFee,
@@ -55,7 +54,7 @@ pub enum RaydiumCpmmInstruction {
 /// * `amount_0_requested` - The maximum amount of token_0 to send, can be 0 to collect fees in only token_1
 /// * `amount_1_requested` - The maximum amount of token_1 to send, can be 0 to collect fees in only token_0
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CollectFundFeeInstruction {
     pub amount_0_requested: u64,
     pub amount_1_requested: u64,
@@ -69,7 +68,7 @@ pub struct CollectFundFeeInstruction {
 /// * `amount_0_requested` - The maximum amount of token_0 to send, can be 0 to collect fees in only token_1
 /// * `amount_1_requested` - The maximum amount of token_1 to send, can be 0 to collect fees in only token_0
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CollectProtocolFeeInstruction {
     pub amount_0_requested: u64,
     pub amount_1_requested: u64,
@@ -83,7 +82,7 @@ pub struct CollectProtocolFeeInstruction {
 /// * `protocol_fee_rate` - The rate of protocol fee within trade fee.
 /// * `fund_fee_rate` - The rate of fund fee within trade fee.
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateAmmConfigInstruction {
     pub index: u16,
     pub trade_fee_rate: u64,
@@ -102,7 +101,7 @@ pub struct CreateAmmConfigInstruction {
 /// * `maximum_token_0_amount` -  Maximum token 0 amount to deposit, prevents excessive slippage
 /// * `maximum_token_1_amount` - Maximum token 1 amount to deposit, prevents excessive slippage
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DepositInstruction {
     pub lp_token_amount: u64,
     pub maximum_token_0_amount: u64,
@@ -118,7 +117,7 @@ pub struct DepositInstruction {
 /// * `init_amount_1` - the initial amount_1 to deposit
 /// * `open_time` - the timestamp allowed for swap
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeInstruction {
     pub init_amount_0: u64,
     pub init_amount_1: u64,
@@ -135,7 +134,7 @@ pub struct InitializeInstruction {
 /// * `open_time` - the timestamp allowed for swap
 /// * `creator_fee_on` - creator fee model, 0：both token0 and token1 (depends on the input), 1: only token0, 2: only token1
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeWithPermissionInstruction {
     pub init_amount_0: u64,
     pub init_amount_1: u64,
@@ -151,7 +150,7 @@ pub struct InitializeWithPermissionInstruction {
 /// * `amount_in` -  input amount to transfer, output to DESTINATION is based on the exchange rate
 /// * `minimum_amount_out` -  Minimum amount of output token, prevents excessive slippage
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapBaseInputInstruction {
     pub amount_in: u64,
     pub minimum_amount_out: u64,
@@ -165,7 +164,7 @@ pub struct SwapBaseInputInstruction {
 /// * `max_amount_in` -  input amount prevents excessive slippage
 /// * `amount_out` -  amount of output token
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapBaseOutputInstruction {
     pub max_amount_in: u64,
     pub amount_out: u64,
@@ -184,7 +183,7 @@ pub struct SwapBaseOutputInstruction {
 /// * `new_fund_owner`- The config's new fund owner, be set when `param` is 4
 /// * `param`- The value can be 0 | 1 | 2 | 3 | 4, otherwise will report a error
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateAmmConfigInstruction {
     pub param: u8,
     pub value: u64,
@@ -197,7 +196,7 @@ pub struct UpdateAmmConfigInstruction {
 /// * `ctx`- The context of accounts
 /// * `status` - The value of status
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdatePoolStatusInstruction {
     pub status: u8,
 }
@@ -211,14 +210,14 @@ pub struct UpdatePoolStatusInstruction {
 /// * `minimum_token_0_amount` -  Minimum amount of token 0 to receive, prevents excessive slippage
 /// * `minimum_token_1_amount` -  Minimum amount of token 1 to receive, prevents excessive slippage
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawInstruction {
     pub lp_token_amount: u64,
     pub minimum_token_0_amount: u64,
     pub minimum_token_1_amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum CreatorFeeOn {
     BothToken,
     OnlyToken0,

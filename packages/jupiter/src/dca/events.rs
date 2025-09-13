@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
@@ -18,7 +17,7 @@ const DEPOSIT: [u8; 8] = [62, 205, 242, 175, 244, 169, 136, 52];
 // -----------------------------------------------------------------------------
 // High-level event enum
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum JupiterDcaEvent {
     CollectedFee(CollectedFeeEvent),
     Filled(FilledEvent),
@@ -32,7 +31,7 @@ pub enum JupiterDcaEvent {
 // -----------------------------------------------------------------------------
 // Payload structs
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CollectedFeeEvent {
     pub user_key: Pubkey,
     pub dca_key: Pubkey,
@@ -40,7 +39,7 @@ pub struct CollectedFeeEvent {
     pub amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct FilledEvent {
     pub user_key: Pubkey,
     pub dca_key: Pubkey,
@@ -52,7 +51,7 @@ pub struct FilledEvent {
     pub fee: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct OpenedEvent {
     pub user_key: Pubkey,
     pub dca_key: Pubkey,
@@ -64,7 +63,7 @@ pub struct OpenedEvent {
     pub created_at: i64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClosedEvent {
     pub user_key: Pubkey,
     pub dca_key: Pubkey,
@@ -80,7 +79,7 @@ pub struct ClosedEvent {
     pub user_closed: bool,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawEvent {
     pub dca_key: Pubkey,
     pub in_amount: u64,
@@ -88,7 +87,7 @@ pub struct WithdrawEvent {
     pub user_withdraw: bool,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DepositEvent {
     pub dca_key: Pubkey,
     pub amount: u64,

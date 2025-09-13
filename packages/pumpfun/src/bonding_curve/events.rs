@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
@@ -19,7 +18,7 @@ pub const TRADE_LEN_V2: usize = 233 - 16;
 // -----------------------------------------------------------------------------
 // High-level event enum (concise; rich docs live in each struct)
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PumpFunEvent {
     /// Pool created. See [`CreateEvent`].
     Create(CreateEvent),
@@ -44,7 +43,7 @@ pub enum PumpFunEvent {
 // -----------------------------------------------------------------------------
 
 /// Emitted once when a new bonding-curve pool is created.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateEvent {
     /// Name of the pool, e.g., "Pump.fun".
     pub name: String,
@@ -84,7 +83,7 @@ pub struct CreateEvent {
 }
 
 /// Emitted on every buy or sell.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct TradeEventV0 {
     pub mint: Pubkey,
     /// Lamports moved (positive on buys, negative on sells).
@@ -101,7 +100,7 @@ pub struct TradeEventV0 {
 }
 
 /// Emitted on every buy or sell.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct TradeEventV1 {
     pub mint: Pubkey,
     /// Lamports moved (positive on buys, negative on sells).
@@ -124,7 +123,7 @@ pub struct TradeEventV1 {
 /// https://github.com/pump-fun/pump-public-docs
 /// On every trade the original creator of the coin receives 0.05 % of all trade fees.
 /// This is applicable for all coins that were present on the bonding curve or PumpSwap from the date of May 13 2025.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct TradeEventV2 {
     pub mint: Pubkey,
     /// Lamports moved (positive on buys, negative on sells).
@@ -153,7 +152,7 @@ pub struct TradeEventV2 {
 }
 
 /// Emitted whenever pool parameters change.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetParamsEvent {
     /// New protocol-fee recipient.
     pub fee_recipient: Pubkey,
@@ -170,7 +169,7 @@ pub struct SetParamsEvent {
 }
 
 /// Emitted when a pool is closed / liquidity exhausted.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CompleteEvent {
     /// Wallet that triggered completion (last trade).
     pub user: Pubkey,

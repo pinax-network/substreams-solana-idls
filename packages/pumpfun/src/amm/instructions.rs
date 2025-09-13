@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -------------------------------------------------------------------------
@@ -24,7 +23,7 @@ const WITHDRAW: [u8; 8] = [183, 18, 70, 156, 148, 109, 161, 34];
 // -------------------------------------------------------------------------
 // Instruction enumeration
 // -------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, BorshSerialize, BorshDeserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum PumpFunAmmInstruction {
     Buy(BuyInstruction),
     CreateConfig(CreateConfigInstruction),
@@ -43,39 +42,39 @@ pub enum PumpFunAmmInstruction {
 // -------------------------------------------------------------------------
 // Payload structs
 // -------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct BuyInstruction {
     pub base_amount_out: u64,
     pub max_quote_amount_in: u64,
 }
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateConfigInstruction {
     pub lp_fee_basis_points: u64,
     pub protocol_fee_basis_points: u64,
     pub protocol_fee_recipients: [Pubkey; 8],
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreatePoolInstructionV1 {
     pub index: u16,
     pub base_amount_in: u64,
     pub quote_amount_in: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreatePoolInstructionV2 {
     pub index: u16,
     pub base_amount_in: u64,
     pub quote_amount_in: u64,
     pub coin_creator: Pubkey,
 }
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DepositInstruction {
     pub lp_token_amount_out: u64,
     pub max_base_amount_in: u64,
     pub max_quote_amount_in: u64,
 }
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DisableInstruction {
     pub disable_create_pool: bool,
     pub disable_deposit: bool,
@@ -83,18 +82,18 @@ pub struct DisableInstruction {
     pub disable_buy: bool,
     pub disable_sell: bool,
 }
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SellInstruction {
     pub base_amount_in: u64,
     pub min_quote_amount_out: u64,
 }
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateFeeConfigInstruction {
     pub lp_fee_basis_points: u64,
     pub protocol_fee_basis_points: u64,
     pub protocol_fee_recipients: [Pubkey; 8],
 }
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawInstruction {
     pub lp_token_amount_in: u64,
     pub min_base_amount_out: u64,

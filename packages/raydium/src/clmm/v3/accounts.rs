@@ -1,12 +1,11 @@
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
 use idls_common::accounts::AccountsError;
 
 /// Accounts for the `close_position` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClosePositionAccounts {
     /// The position nft owner
     pub nft_owner: Pubkey,
@@ -46,7 +45,7 @@ pub fn get_close_position_accounts(ix: &InstructionView) -> Result<ClosePosition
 }
 
 /// Accounts for the `collect_fund_fee` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CollectFundFeeAccounts {
     /// Only admin or fund_owner can collect fee now
     pub owner: Pubkey,
@@ -102,7 +101,7 @@ pub fn get_collect_fund_fee_accounts(ix: &InstructionView) -> Result<CollectFund
 }
 
 /// Accounts for the `collect_protocol_fee` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CollectProtocolFeeAccounts {
     /// Only admin or config owner can collect fee now
     pub owner: Pubkey,
@@ -158,7 +157,7 @@ pub fn get_collect_protocol_fee_accounts(ix: &InstructionView) -> Result<Collect
 }
 
 /// Accounts for the `collect_remaining_rewards` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CollectRemainingRewardsAccounts {
     /// The founder who init reward info previously
     pub reward_funder: Pubkey,
@@ -204,7 +203,7 @@ pub fn get_collect_remaining_rewards_accounts(ix: &InstructionView) -> Result<Co
 }
 
 /// Accounts for the `create_amm_config` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateAmmConfigAccounts {
     /// Address to be set as protocol owner.
     pub owner: Pubkey,
@@ -235,7 +234,7 @@ pub fn get_create_amm_config_accounts(ix: &InstructionView) -> Result<CreateAmmC
 }
 
 /// Accounts for the `create_operation_account` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateOperationAccountAccounts {
     /// Address to be set as operation account owner.
     pub owner: Pubkey,
@@ -266,7 +265,7 @@ pub fn get_create_operation_account_accounts(ix: &InstructionView) -> Result<Cre
 }
 
 /// Accounts for the `create_pool` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreatePoolAccounts {
     /// Address paying to create the pool. Can be anyone
     pub pool_creator: Pubkey,
@@ -328,7 +327,7 @@ pub fn get_create_pool_accounts(ix: &InstructionView) -> Result<CreatePoolAccoun
 }
 
 /// Accounts for the `create_support_mint_associated` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateSupportMintAssociatedAccounts {
     /// Address to be set as protocol owner.
     pub owner: Pubkey,
@@ -362,7 +361,7 @@ pub fn get_create_support_mint_associated_accounts(ix: &InstructionView) -> Resu
 }
 
 /// Accounts for the `decrease_liquidity` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DecreaseLiquidityAccounts {
     /// The position owner or delegated authority
     pub nft_owner: Pubkey,
@@ -419,7 +418,7 @@ pub fn get_decrease_liquidity_accounts(ix: &InstructionView) -> Result<DecreaseL
 }
 
 /// Accounts for the `decrease_liquidity_v2` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DecreaseLiquidityV2Accounts {
     /// The position owner or delegated authority
     pub nft_owner: Pubkey,
@@ -488,7 +487,7 @@ pub fn get_decrease_liquidity_v2_accounts(ix: &InstructionView) -> Result<Decrea
 }
 
 /// Accounts for the `increase_liquidity` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct IncreaseLiquidityAccounts {
     /// Pays to mint the position
     pub nft_owner: Pubkey,
@@ -545,7 +544,7 @@ pub fn get_increase_liquidity_accounts(ix: &InstructionView) -> Result<IncreaseL
 }
 
 /// Accounts for the `increase_liquidity_v2` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct IncreaseLiquidityV2Accounts {
     /// Pays to mint the position
     pub nft_owner: Pubkey,
@@ -611,7 +610,7 @@ pub fn get_increase_liquidity_v2_accounts(ix: &InstructionView) -> Result<Increa
 }
 
 /// Accounts for the `initialize_reward` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeRewardAccounts {
     /// The founder deposit reward token to vault
     pub reward_funder: Pubkey,
@@ -660,7 +659,7 @@ pub fn get_initialize_reward_accounts(ix: &InstructionView) -> Result<Initialize
 }
 
 /// Accounts for the `open_position` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct OpenPositionAccounts {
     /// Pays to mint the position
     pub payer: Pubkey,
@@ -738,7 +737,7 @@ pub fn get_open_position_accounts(ix: &InstructionView) -> Result<OpenPositionAc
 }
 
 /// Accounts for the `open_position_v2` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct OpenPositionV2Accounts {
     /// Pays to mint the position
     pub payer: Pubkey,
@@ -824,7 +823,7 @@ pub fn get_open_position_v2_accounts(ix: &InstructionView) -> Result<OpenPositio
 }
 
 /// Accounts for the `open_position_with_token22_nft` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct OpenPositionWithToken22NftAccounts {
     /// Pays to mint the position
     pub payer: Pubkey,
@@ -903,7 +902,7 @@ pub fn get_open_position_with_token22_nft_accounts(ix: &InstructionView) -> Resu
 }
 
 /// Accounts for the `set_reward_params` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetRewardParamsAccounts {
     /// Address to be set as protocol owner. It pays to create factory state account.
     pub authority: Pubkey,
@@ -942,7 +941,7 @@ pub fn get_set_reward_params_accounts(ix: &InstructionView) -> Result<SetRewardP
 }
 
 /// Accounts for the `swap` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapAccounts {
     /// The user performing the swap
     pub payer: Pubkey,
@@ -994,7 +993,7 @@ pub fn get_swap_accounts(ix: &InstructionView) -> Result<SwapAccounts, AccountsE
 }
 
 /// Accounts for the `swap_router_base_in` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapRouterBaseInAccounts {
     /// The user performing the swap
     pub payer: Pubkey,
@@ -1035,7 +1034,7 @@ pub fn get_swap_router_base_in_accounts(ix: &InstructionView) -> Result<SwapRout
 }
 
 /// Accounts for the `swap_v2` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapV2Accounts {
     /// The user performing the swap
     pub payer: Pubkey,
@@ -1097,7 +1096,7 @@ pub fn get_swap_v2_accounts(ix: &InstructionView) -> Result<SwapV2Accounts, Acco
 }
 
 /// Accounts for the `transfer_reward_owner` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct TransferRewardOwnerAccounts {
     /// Address to be set as operation account owner.
     pub authority: Pubkey,
@@ -1125,7 +1124,7 @@ pub fn get_transfer_reward_owner_accounts(ix: &InstructionView) -> Result<Transf
 }
 
 /// Accounts for the `update_amm_config` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateAmmConfigAccounts {
     /// The amm config owner or admin
     pub owner: Pubkey,
@@ -1154,7 +1153,7 @@ pub fn get_update_amm_config_accounts(ix: &InstructionView) -> Result<UpdateAmmC
 }
 
 /// Accounts for the `update_operation_account` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateOperationAccountAccounts {
     /// Address to be set as operation account owner.
     pub owner: Pubkey,
@@ -1185,7 +1184,7 @@ pub fn get_update_operation_account_accounts(ix: &InstructionView) -> Result<Upd
 }
 
 /// Accounts for the `update_pool_status` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdatePoolStatusAccounts {
     pub authority: Pubkey,
     pub pool_state: Pubkey,
@@ -1212,7 +1211,7 @@ pub fn get_update_pool_status_accounts(ix: &InstructionView) -> Result<UpdatePoo
 }
 
 /// Accounts for the `update_reward_infos` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateRewardInfosAccounts {
     /// The liquidity pool for which reward info to update
     pub pool_state: Pubkey,

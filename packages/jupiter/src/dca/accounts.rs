@@ -1,5 +1,4 @@
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
@@ -191,7 +190,7 @@ const IDX_WD_EVENT_AUTHORITY: usize = 10;
 const IDX_WD_PROGRAM: usize = 11;
 
 /// Accounts for the `withdraw` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawAccounts {
     pub user: Pubkey,
     pub dca: Pubkey,
@@ -252,7 +251,7 @@ const IDX_TR_EVENT_AUTHORITY: usize = 10;
 const IDX_TR_PROGRAM: usize = 11;
 
 /// Accounts for the `transfer` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct TransferAccounts {
     pub keeper: Pubkey,
     pub dca: Pubkey,
@@ -316,7 +315,7 @@ const IDX_EC_EVENT_AUTHORITY: usize = 13;
 const IDX_EC_PROGRAM: usize = 14;
 
 /// Accounts for the `end_and_close` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EndAndCloseAccounts {
     pub keeper: Pubkey,
     pub dca: Pubkey,

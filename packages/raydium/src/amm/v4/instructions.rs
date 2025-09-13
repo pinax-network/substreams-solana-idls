@@ -4,7 +4,6 @@
 // https://github.com/raydium-io/raydium-amm/blob/master/program/src/instruction.rs
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 // use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
@@ -40,7 +39,7 @@ const SWAP_LEN: usize = 16; // Length of the swap instructions (excluding discri
 // High-level enum
 // ──────────────────────────────────────────────────────────────────────────────
 /// Instructions supported by the Raydium-v4 AMM program.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum RaydiumV4Instruction {
     // ─────────────────────────────────────────────────────────────────────
     // Pool creation
@@ -319,7 +318,7 @@ pub enum RaydiumV4Instruction {
 // Payload structs
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapBaseInInstruction {
     /// Amount of base token to swap in.
     pub amount_in: u64,
@@ -328,7 +327,7 @@ pub struct SwapBaseInInstruction {
     pub minimum_amount_out: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapBaseOutInstruction {
     /// Maximum amount of base token to swap in.
     pub max_amount_in: u64,
@@ -336,7 +335,7 @@ pub struct SwapBaseOutInstruction {
     /// Amount of output token to receive.
     pub amount_out: u64,
 }
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeInstruction {
     /// Nonce used to derive the pool-authority PDA
     nonce: u8,
@@ -344,7 +343,7 @@ pub struct InitializeInstruction {
     open_time: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct Initialize2Instruction {
     /// Nonce used to derive the pool-authority PDA
     nonce: u8,
@@ -356,13 +355,13 @@ pub struct Initialize2Instruction {
     init_coin_amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct PreInitializeInstruction {
     /// Nonce used to derive the pool-authority PDA (legacy helper)
     nonce: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct MonitorStepInstruction {
     /// Upper bound on the number of *planned* orders to check this crank
     plan_order_limit: u16,
@@ -372,7 +371,7 @@ pub struct MonitorStepInstruction {
     cancel_order_limit: u16,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DepositInstruction {
     /// Max base-token (**coin**) the user is willing to deposit
     max_coin_amount: u64,
@@ -384,7 +383,7 @@ pub struct DepositInstruction {
     other_amount_min: Option<u64>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawInstruction {
     /// LP-token amount to burn for the withdrawal
     amount: u64,
@@ -394,7 +393,7 @@ pub struct WithdrawInstruction {
     min_pc_amount: Option<u64>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetParamsInstruction {
     /// Discriminator selecting which parameter is being updated
     param: u8,
@@ -405,13 +404,13 @@ pub struct SetParamsInstruction {
     /* other Raydium-specific fields (fees, last_order_distance) omitted */
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawSrmInstruction {
     /// (M)SRM amount to withdraw from the fee-discount vault
     amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SimulateInstruction {
     /// Discriminator from `SimulateParams` choosing what to simulate
     param: u8,
@@ -421,13 +420,13 @@ pub struct SimulateInstruction {
     swap_base_out_value: Option<SwapBaseOutInstruction>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AdminCancelOrdersInstruction {
     /// Maximum number of orders the admin crank will cancel this call
     limit: u16,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ConfigArgs {
     /// Field selector (0 = owner, 1 = admin, 2 = create_pool_fee, …)
     param: u8,

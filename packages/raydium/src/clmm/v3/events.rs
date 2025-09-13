@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
@@ -23,7 +22,7 @@ pub const UPDATE_REWARD_INFOS_EVENT: [u8; 8] = [109, 127, 186, 78, 114, 65, 37, 
 // -----------------------------------------------------------------------------
 // Event enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RaydiumClmmEvent {
     CollectPersonalFeeEvent(CollectPersonalFeeEvent),
     CollectProtocolFeeEvent(CollectProtocolFeeEvent),
@@ -43,7 +42,7 @@ pub enum RaydiumClmmEvent {
 // Payload structs
 // -----------------------------------------------------------------------------
 /// Emitted when tokens are collected for a position
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CollectPersonalFeeEvent {
     /// The ID of the token for which underlying tokens were collected
     pub position_nft_mint: Pubkey,
@@ -58,7 +57,7 @@ pub struct CollectPersonalFeeEvent {
 }
 
 /// Emitted when the collected protocol fees are withdrawn by the factory owner
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CollectProtocolFeeEvent {
     /// The pool whose protocol fee is collected
     pub pool_state: Pubkey,
@@ -73,7 +72,7 @@ pub struct CollectProtocolFeeEvent {
 }
 
 /// Emitted when create or update a config
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ConfigChangeEvent {
     pub index: u16,
     pub owner: Pubkey,
@@ -85,7 +84,7 @@ pub struct ConfigChangeEvent {
 }
 
 /// Emitted when create a new position
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreatePersonalPositionEvent {
     /// The pool for which liquidity was added
     pub pool_state: Pubkey,
@@ -110,7 +109,7 @@ pub struct CreatePersonalPositionEvent {
 }
 
 /// Emitted when liquidity is decreased.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DecreaseLiquidityEvent {
     /// The ID of the token for which liquidity was decreased
     pub position_nft_mint: Pubkey,
@@ -132,7 +131,7 @@ pub struct DecreaseLiquidityEvent {
 }
 
 /// Emitted when liquidity is increased.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct IncreaseLiquidityEvent {
     /// The ID of the token for which liquidity was increased
     pub position_nft_mint: Pubkey,
@@ -149,7 +148,7 @@ pub struct IncreaseLiquidityEvent {
 }
 
 /// Emitted when liquidity decreased or increase.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LiquidityCalculateEvent {
     /// The pool liquidity before decrease or increase
     pub pool_liquidity: u128,
@@ -171,7 +170,7 @@ pub struct LiquidityCalculateEvent {
 }
 
 /// Emitted pool liquidity change when increase and decrease liquidity
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LiquidityChangeEvent {
     /// The pool for swap
     pub pool_state: Pubkey,
@@ -189,7 +188,7 @@ pub struct LiquidityChangeEvent {
 
 /// Emitted when a pool is created and initialized with a starting price
 ///
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct PoolCreatedEvent {
     /// The first token of the pool by address sort order
     pub token_mint_0: Pubkey,
@@ -210,7 +209,7 @@ pub struct PoolCreatedEvent {
 }
 
 /// Emitted by when a swap is performed for a pool
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapEvent {
     /// The pool for which token_0 and token_1 were swapped
     pub pool_state: Pubkey,
@@ -241,7 +240,7 @@ pub struct SwapEvent {
 }
 
 /// Emitted when Reward are updated for a pool
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateRewardInfosEvent {
     /// Reward info
     pub reward_growth_global_x64: [u128; 3],

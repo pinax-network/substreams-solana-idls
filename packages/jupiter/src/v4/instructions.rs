@@ -2,53 +2,52 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AmountWithSlippage {
     pub amount: u64,
     pub slippage_bps: u16,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SplitLegDeeper {
     pub percent: u8,
     pub swap_leg: SwapLegSwap,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SplitLeg {
     pub percent: u8,
     pub swap_leg: SwapLegDeeper,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum Side {
     Bid,
     Ask,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum SwapLegSwap {
     PlaceholderOne,
     PlaceholderTwo,
     Swap { swap: Swap },
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum SwapLegDeeper {
     Chain { swap_legs: Vec<SwapLegSwap> },
     Split { split_legs: Vec<SplitLegDeeper> },
     Swap { swap: Swap },
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum SwapLeg {
     Chain { swap_legs: Vec<SwapLegDeeper> },
     Split { split_legs: Vec<SplitLeg> },
     Swap { swap: Swap },
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum Swap {
     Saber,
     SaberAddDecimalsDeposit,
@@ -89,7 +88,7 @@ pub const ROUTE: [u8; 8] = [229, 23, 203, 151, 122, 227, 173, 42];
 // -----------------------------------------------------------------------------
 // Instruction enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum JupiterV4Instruction {
     Route(RouteInstruction),
     Whirlpoolswapexactoutput(WhirlpoolswapexactoutputInstruction),
@@ -131,7 +130,7 @@ pub enum JupiterV4Instruction {
 // -----------------------------------------------------------------------------
 // Payload structs
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RouteInstruction {
     pub swap_leg: SwapLeg,
     pub in_amount: u64,
@@ -140,7 +139,7 @@ pub struct RouteInstruction {
     pub platform_fee_bps: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WhirlpoolswapexactoutputInstruction {
     pub out_amount: u64,
     pub in_amount_with_slippage: AmountWithSlippage,
@@ -148,14 +147,14 @@ pub struct WhirlpoolswapexactoutputInstruction {
     pub platform_fee_bps: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RaydiumswapexactoutputInstruction {
     pub out_amount: u64,
     pub in_amount_with_slippage: AmountWithSlippage,
     pub platform_fee_bps: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RaydiumclmmswapexactoutputInstruction {
     pub out_amount: u64,
     pub in_amount_with_slippage: AmountWithSlippage,

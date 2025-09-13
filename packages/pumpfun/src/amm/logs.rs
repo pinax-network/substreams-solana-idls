@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -------------------------------------------------------------------------
@@ -14,7 +13,7 @@ const SELL_LOG: [u8; 8] = [62, 47, 55, 10, 165, 3, 220, 42]; // 3e2f370aa503dc2a
 // -------------------------------------------------------------------------
 // enumeration
 // -------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PumpFunAmmLog {
     BuyLog(BuyLog),
     SellLog(SellLog),
@@ -28,7 +27,7 @@ pub enum PumpFunAmmLog {
 // -------------------------------------------------------------------------
 // Payload structs
 // -------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct BuyLog {
     pub timestamp: i64,
     pub base_amount_out: u64,
@@ -52,7 +51,7 @@ pub struct BuyLog {
     pub protocol_fee_recipient_token_account: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SellLog {
     pub timestamp: i64,
     pub base_amount_in: u64,

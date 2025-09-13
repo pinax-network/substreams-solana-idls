@@ -1,5 +1,4 @@
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
@@ -49,7 +48,7 @@ const IDX_TOKEN_PROGRAM: usize = 10;
 const IDX_RENT: usize = 11;
 
 /// Accounts for the `initialize_order` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeOrderAccounts {
     pub base: Pubkey,
     pub maker: Pubkey,
@@ -110,7 +109,7 @@ const IDX_FO_TOKEN_PROGRAM: usize = 10;
 const IDX_FO_SYSTEM_PROGRAM: usize = 11;
 
 /// Accounts for the `fill_order` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct FillOrderAccounts {
     pub order: Pubkey,
     pub reserve: Pubkey,
@@ -173,7 +172,7 @@ const IDX_FFL_OUTPUT_MINT_TOKEN_PROGRAM: usize = 12;
 const IDX_FFL_SYSTEM_PROGRAM: usize = 13;
 
 /// Accounts for the `flash_fill_order` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct FlashFillOrderAccounts {
     pub order: Pubkey,
     pub reserve: Pubkey,
@@ -233,7 +232,7 @@ const IDX_CO_TOKEN_PROGRAM: usize = 5;
 const IDX_CO_INPUT_MINT: usize = 6;
 
 /// Accounts for the `cancel_order` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CancelOrderAccounts {
     pub order: Pubkey,
     pub reserve: Pubkey,
@@ -271,7 +270,7 @@ pub fn get_cancel_order_accounts(ix: &InstructionView) -> Result<CancelOrderAcco
 }
 
 /// Accounts for the `cancel_expired_order` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CancelExpiredOrderAccounts {
     pub order: Pubkey,
     pub reserve: Pubkey,
