@@ -1,5 +1,11 @@
+[package]
+name = "substreams-solana-idls"
+version = "0.5.5"
+edition = "2021"
+
 [workspace]
 members = [
+    ".",
     "packages/common",
     "packages/raydium",
     "packages/pumpfun",
@@ -10,6 +16,17 @@ members = [
     "packages/phoenix",
     "packages/stabble",
 ]
+
+[dependencies]
+bonkswap = { path = "packages/bonkswap" }
+idls-common = { path = "packages/common" }
+jupiter = { path = "packages/jupiter" }
+meteora = { path = "packages/meteora" }
+orca = { path = "packages/orca" }
+phoenix = { path = "packages/phoenix" }
+pumpfun = { path = "packages/pumpfun" }
+raydium = { path = "packages/raydium" }
+stabble = { path = "packages/stabble" }
 
 [workspace.dependencies]
 substreams = "0.6.2"
