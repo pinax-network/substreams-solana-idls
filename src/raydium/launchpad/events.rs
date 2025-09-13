@@ -12,6 +12,8 @@ pub const CLAIM_VESTED_EVENT: [u8; 8] = [21, 194, 114, 87, 120, 211, 226, 32];
 pub const CREATE_VESTING_EVENT: [u8; 8] = [201, 216, 28, 169, 227, 76, 208, 95];
 pub const POOL_CREATE_EVENT: [u8; 8] = [35, 19, 27, 213, 21, 36, 194, 123];
 pub const TRADE_EVENT: [u8; 8] = [189, 219, 127, 211, 78, 230, 97, 238];
+pub const TRADE_EVENT_LEN_V1: usize = 139;
+pub const TRADE_EVENT_LEN_V2: usize = 130;
 const ANCHOR_DISC: [u8; 8] = [0xe4, 0x45, 0xa5, 0x2e, 0x51, 0xcb, 0x9a, 0x1d];
 
 // -----------------------------------------------------------------------------
@@ -22,7 +24,8 @@ pub enum RaydiumLaunchpadEvent {
     ClaimVestedEvent(ClaimVestedEvent),
     CreateVestingEvent(CreateVestingEvent),
     PoolCreateEvent(PoolCreateEvent),
-    TradeEvent(TradeEvent),
+    TradeEventV1(TradeEventV1),
+    TradeEventV2(TradeEventV2),
     Unknown,
 }
 
@@ -57,9 +60,9 @@ pub struct PoolCreateEvent {
     pub amm_fee_on: AmmCreatorFeeOn,
 }
 
-/// Emitted when trade process
+/// Emitted when trade process (legacy format)
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
-pub struct TradeEvent {
+pub struct TradeEventV1 {
     pub pool_state: Pubkey,
     pub total_base_sell: u64,
     pub virtual_base: u64,
@@ -77,6 +80,26 @@ pub struct TradeEvent {
     pub trade_direction: TradeDirection,
     pub pool_status: PoolStatus,
     pub exact_in: bool,
+}
+
+/// Emitted when trade process (current format)
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+pub struct TradeEventV2 {
+    pub pool_state: Pubkey,
+    pub total_base_sell: u64,
+    pub virtual_base: u64,
+    pub virtual_quote: u64,
+    pub real_base_before: u64,
+    pub real_quote_before: u64,
+    pub real_base_after: u64,
+    pub real_quote_after: u64,
+    pub amount_in: u64,
+    pub amount_out: u64,
+    pub protocol_fee: u64,
+    pub platform_fee: u64,
+    pub share_fee: u64,
+    pub trade_direction: TradeDirection,
+    pub pool_status: PoolStatus,
 }
 
 // -----------------------------------------------------------------------------
@@ -166,7 +189,16 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumLaunchpadEvent {
             CLAIM_VESTED_EVENT => Self::ClaimVestedEvent(ClaimVestedEvent::try_from_slice(payload)?),
             CREATE_VESTING_EVENT => Self::CreateVestingEvent(CreateVestingEvent::try_from_slice(payload)?),
             POOL_CREATE_EVENT => Self::PoolCreateEvent(PoolCreateEvent::try_from_slice(payload)?),
-            TRADE_EVENT => Self::TradeEvent(TradeEvent::try_from_slice(payload)?),
+            TRADE_EVENT => match payload.len() {
+                TRADE_EVENT_LEN_V1 => Self::TradeEventV1(TradeEventV1::try_from_slice(payload)?),
+                TRADE_EVENT_LEN_V2 => Self::TradeEventV2(TradeEventV2::try_from_slice(payload)?),
+                other => {
+                    return Err(ParseError::InvalidLength {
+                        expected: TRADE_EVENT_LEN_V1.max(TRADE_EVENT_LEN_V2),
+                        got: other,
+                    })
+                }
+            },
             other => return Err(ParseError::Unknown(other)),
         })
     }
