@@ -2105,6 +2105,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "substreams-solana-idls"
+version = "0.5.5"
+dependencies = [
+ "bonkswap",
+ "idls-common",
+ "jupiter",
+ "meteora",
+ "orca",
+ "phoenix",
+ "phonenix",
+ "pumpfun",
+ "raydium",
+ "stabble",
+]
+
+[[package]]
 name = "substreams-solana-macro"
 version = "0.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
