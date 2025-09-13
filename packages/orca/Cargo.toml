@@ -9,10 +9,4 @@ substreams = { workspace = true }
 substreams-solana = { workspace = true }
 solana-program = { workspace = true }
 borsh = { workspace = true }
-serde = { workspace = true }
-serde_json = { workspace = true }
-thiserror = { workspace = true }
-serde-big-array = { workspace = true }
 
-[dev-dependencies]
-base64 = { workspace = true }

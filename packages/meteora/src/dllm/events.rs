@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
@@ -38,7 +37,7 @@ const ANCHOR_DISC: [u8; 8] = [0xe4, 0x45, 0xa5, 0x2e, 0x51, 0xcb, 0x9a, 0x1d];
 // -----------------------------------------------------------------------------
 // High-level event enum
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum MeteoraDllmEvent {
     Swap(SwapEvent),
     // AddLiquidity,
@@ -69,7 +68,7 @@ pub enum MeteoraDllmEvent {
 }
 
 /// Emitted when swap occurs.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapEvent {
     pub lb_pair: Pubkey,
     pub from: Pubkey,

@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 
 // -----------------------------------------------------------------------------
 // Discriminators
@@ -13,7 +12,7 @@ pub const SWAP_WITH_FREE_FUNDS: u8 = 1;
 // -----------------------------------------------------------------------------
 // Instruction enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PhonenixInstruction {
     Swap(SwapInstruction),
     SwapWithFreeFunds(SwapWithFreeFundsInstruction),
@@ -23,13 +22,13 @@ pub enum PhonenixInstruction {
 // -----------------------------------------------------------------------------
 // Payload structs
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapInstruction {
     /// Raw order packet payload
     pub order_packet: Vec<u8>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapWithFreeFundsInstruction {
     /// Raw order packet payload
     pub order_packet: Vec<u8>,

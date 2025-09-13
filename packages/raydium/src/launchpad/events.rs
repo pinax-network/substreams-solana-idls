@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
@@ -17,7 +16,7 @@ const ANCHOR_DISC: [u8; 8] = [0xe4, 0x45, 0xa5, 0x2e, 0x51, 0xcb, 0x9a, 0x1d];
 // -----------------------------------------------------------------------------
 // Event enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RaydiumLaunchpadEvent {
     ClaimVestedEvent(ClaimVestedEvent),
     CreateVestingEvent(CreateVestingEvent),
@@ -30,7 +29,7 @@ pub enum RaydiumLaunchpadEvent {
 // Payload structs
 // -----------------------------------------------------------------------------
 /// Emitted when vesting token claimed by beneficiary
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimVestedEvent {
     pub pool_state: Pubkey,
     pub beneficiary: Pubkey,
@@ -38,7 +37,7 @@ pub struct ClaimVestedEvent {
 }
 
 /// Emitted when vest_account created
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateVestingEvent {
     pub pool_state: Pubkey,
     pub beneficiary: Pubkey,
@@ -46,7 +45,7 @@ pub struct CreateVestingEvent {
 }
 
 /// Emitted when pool created
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct PoolCreateEvent {
     pub pool_state: Pubkey,
     pub creator: Pubkey,
@@ -58,7 +57,7 @@ pub struct PoolCreateEvent {
 }
 
 /// Emitted when trade process
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct TradeEvent {
     pub pool_state: Pubkey,
     pub total_base_sell: u64,
@@ -82,7 +81,7 @@ pub struct TradeEvent {
 // -----------------------------------------------------------------------------
 // Additional types
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct MintParams {
     pub decimals: u8,
     pub name: String,
@@ -90,14 +89,14 @@ pub struct MintParams {
     pub uri: String,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum CurveParams {
     Constant { data: ConstantCurve },
     Fixed { data: FixedCurve },
     Linear { data: LinearCurve },
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ConstantCurve {
     pub supply: u64,
     pub total_base_sell: u64,
@@ -105,40 +104,40 @@ pub struct ConstantCurve {
     pub migrate_type: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct FixedCurve {
     pub supply: u64,
     pub total_quote_fund_raising: u64,
     pub migrate_type: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LinearCurve {
     pub supply: u64,
     pub total_quote_fund_raising: u64,
     pub migrate_type: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct VestingParams {
     pub total_locked_amount: u64,
     pub cliff_period: u64,
     pub unlock_period: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum AmmCreatorFeeOn {
     QuoteToken,
     BothToken,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum TradeDirection {
     Buy,
     Sell,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum PoolStatus {
     Fund,
     Migrate,

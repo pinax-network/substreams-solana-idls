@@ -88,6 +88,6 @@ Swap `pumpfun` for any supported protocol and you get the same ergonomic API.
 
 * Add a new folder under `src/<protocol>` with `instructions.rs`, `events.rs`, and `mod.rs`.
 * Follow existing modules for structure & doc style.
-* Keep dependencies minimal (`borsh`, `serde`, `solana_program` only).
+* Keep dependencies minimal (`borsh`, `solana_program` only).
 
 PRs and issues welcome!

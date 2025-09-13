@@ -3,7 +3,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 /// ------------------------------------------------------------------------
@@ -21,7 +20,7 @@ pub const SWAP_OUT: u8 = 4;
 // -----------------------------------------------------------------------------
 // High-level event enum (concise; rich docs live in each struct)
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RaydiumV4Log {
     /// New pool initialised. See [`InitLog`].
     Init(InitLog),
@@ -46,7 +45,7 @@ pub enum RaydiumV4Log {
 // Payload structs
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitLog {
     pub log_type: u8,
     pub time: u64,
@@ -59,7 +58,7 @@ pub struct InitLog {
     pub market: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DepositLog {
     pub log_type: u8,
     // input
@@ -78,7 +77,7 @@ pub struct DepositLog {
     pub mint_lp: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawLog {
     pub log_type: u8,
     // input
@@ -96,7 +95,7 @@ pub struct WithdrawLog {
     pub out_pc: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapBaseInLog {
     pub log_type: u8,
     // input
@@ -112,7 +111,7 @@ pub struct SwapBaseInLog {
     pub out_amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapBaseOutLog {
     pub log_type: u8,
     // input

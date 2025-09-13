@@ -2,20 +2,19 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum LockType {
     Permanent,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum LockTypeLabel {
     Permanent,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AdaptiveFeeConstants {
     pub filter_period: u16,
     pub decay_period: u16,
@@ -27,7 +26,7 @@ pub struct AdaptiveFeeConstants {
     pub reserved: [u8; 16],
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AdaptiveFeeVariables {
     pub last_reference_update_timestamp: u64,
     pub last_major_swap_timestamp: u64,
@@ -37,24 +36,24 @@ pub struct AdaptiveFeeVariables {
     pub reserved: [u8; 16],
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct OpenPositionBumps {
     pub position_bump: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct OpenPositionWithMetadataBumps {
     pub position_bump: u8,
     pub metadata_bump: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct PositionRewardInfo {
     pub growth_inside_checkpoint: u128,
     pub amount_owed: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct Tick {
     pub initialized: bool,
     pub liquidity_net: i128,
@@ -64,12 +63,12 @@ pub struct Tick {
     pub reward_growths_outside: [u128; 3],
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WhirlpoolBumps {
     pub whirlpool_bump: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WhirlpoolRewardInfo {
     pub mint: Pubkey,
     pub vault: Pubkey,
@@ -78,7 +77,7 @@ pub struct WhirlpoolRewardInfo {
     pub growth_global_x64: u128,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum AccountsType {
     TransferHookA,
     TransferHookB,
@@ -91,12 +90,12 @@ pub enum AccountsType {
     SupplementalTickArraysTwo,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemainingAccountsInfo {
     pub slices: Vec<RemainingAccountsSlice>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemainingAccountsSlice {
     pub accounts_type: AccountsType,
     pub length: u8,
@@ -107,7 +106,7 @@ const LIQUIDITY_INCREASED: [u8; 8] = [30, 7, 144, 181, 102, 254, 155, 161];
 const POOL_INITIALIZED: [u8; 8] = [100, 118, 173, 87, 12, 198, 254, 229];
 const TRADED: [u8; 8] = [225, 202, 73, 175, 147, 43, 160, 150];
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum WhirlpoolEvent {
     LiquidityDecreased(LiquidityDecreased),
     LiquidityIncreased(LiquidityIncreased),
@@ -116,7 +115,7 @@ pub enum WhirlpoolEvent {
     Unknown,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LiquidityDecreased {
     pub whirlpool: Pubkey,
     pub position: Pubkey,
@@ -129,7 +128,7 @@ pub struct LiquidityDecreased {
     pub token_b_transfer_fee: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LiquidityIncreased {
     pub whirlpool: Pubkey,
     pub position: Pubkey,
@@ -142,7 +141,7 @@ pub struct LiquidityIncreased {
     pub token_b_transfer_fee: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct PoolInitialized {
     pub whirlpool: Pubkey,
     pub whirlpools_config: Pubkey,
@@ -156,7 +155,7 @@ pub struct PoolInitialized {
     pub initial_sqrt_price: u128,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct Traded {
     pub whirlpool: Pubkey,
     pub a_to_b: bool,

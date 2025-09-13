@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
@@ -14,7 +13,7 @@ const FEE: [u8; 8] = [6, 220, 131, 59, 240, 71, 51, 96];
 // -----------------------------------------------------------------------------
 // High-level event enum (concise; rich docs live in each struct)
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum JupiterV4Event {
     /// Swap. See [`SwapEvent`].
     Swap(SwapEvent),
@@ -27,7 +26,7 @@ pub enum JupiterV4Event {
 // -----------------------------------------------------------------------------
 // Payload structs (inline field comments instead of tables)
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapEvent {
     pub amm: Pubkey,
     pub input_mint: Pubkey,
@@ -36,7 +35,7 @@ pub struct SwapEvent {
     pub output_amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct FeeEvent {
     pub account: Pubkey,
     pub mint: Pubkey,

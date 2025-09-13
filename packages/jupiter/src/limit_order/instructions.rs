@@ -2,40 +2,39 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 
 // -----------------------------------------------------------------------------
 // Payload structs
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeOrderInstruction {
     pub making_amount: u64,
     pub taking_amount: u64,
     pub expired_at: Option<i64>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct FillOrderInstruction {
     pub making_amount: u64,
     pub max_taking_amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct PreFlashFillOrderInstruction {
     pub making_amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct FlashFillOrderInstruction {
     pub max_taking_amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawFeeInstruction {
     pub amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitFeeInstruction {
     pub maker_fee: u64,
     pub maker_stable_fee: u64,
@@ -43,7 +42,7 @@ pub struct InitFeeInstruction {
     pub taker_stable_fee: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateFeeInstruction {
     pub maker_fee: u64,
     pub maker_stable_fee: u64,
@@ -67,7 +66,7 @@ pub const UPDATE_FEE: [u8; 8] = [232, 253, 195, 247, 148, 212, 73, 222];
 // -----------------------------------------------------------------------------
 // Instruction enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum JupiterLimitOrderInstruction {
     InitializeOrder(InitializeOrderInstruction),
     FillOrder(FillOrderInstruction),

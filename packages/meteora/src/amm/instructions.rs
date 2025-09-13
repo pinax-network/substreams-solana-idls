@@ -2,12 +2,10 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
-use serde_big_array::BigArray;
 use solana_program::pubkey::Pubkey;
 
 /// Multiplier for the pool token. Used to normalized token with different decimal into the same precision.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct TokenMultiplier {
     /// Multiplier for token A of the pool.
     pub token_a_multiplier: u64,
@@ -18,7 +16,7 @@ pub struct TokenMultiplier {
 }
 
 /// Information regarding fee charges
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct PoolFees {
     /// Trade fees are extra token amounts that are held inside the token
     /// accounts during a trade, making the value of liquidity tokens rise.
@@ -36,7 +34,7 @@ pub struct PoolFees {
 }
 
 /// Contains information for depeg pool
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct Depeg {
     /// The virtual price of staking / interest bearing token
     pub base_virtual_price: u64,
@@ -46,7 +44,7 @@ pub struct Depeg {
     pub depeg_type: DepegType,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ConfigParameters {
     pub trade_fee_numerator: u64,
     pub protocol_trade_fee_numerator: u64,
@@ -58,7 +56,7 @@ pub struct ConfigParameters {
     pub partner_fee_numerator: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CustomizableParams {
     /// Trading fee.
     pub trade_fee_numerator: u32,
@@ -69,12 +67,11 @@ pub struct CustomizableParams {
     /// Activation type
     pub activation_type: u8,
     /// Padding
-    #[serde(with = "BigArray")]
     pub padding: [u8; 90],
 }
 
 /// Padding for future pool fields
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct Padding {
     /// Padding 0
     pub padding0: [u8; 6],
@@ -84,7 +81,7 @@ pub struct Padding {
     pub padding2: [u64; 21],
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct PartnerInfo {
     pub fee_numerator: u64,
     pub partner_authority: Pubkey,
@@ -92,7 +89,7 @@ pub struct PartnerInfo {
     pub pending_fee_b: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct Bootstrapping {
     /// Activation point, can be slot or timestamp
     pub activation_point: u64,
@@ -105,28 +102,28 @@ pub struct Bootstrapping {
 }
 
 /// Type of the activation
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum ActivationType {
     Slot,
     Timestamp,
 }
 
 /// Rounding direction
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum RoundDirection {
     Floor,
     Ceiling,
 }
 
 /// Trade (swap) direction
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum TradeDirection {
     AtoB,
     BtoA,
 }
 
 /// Type of the swap curve
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum NewCurveType {
     ConstantProduct,
     Stable {
@@ -146,7 +143,7 @@ pub enum NewCurveType {
 }
 
 /// Type of the swap curve
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum CurveType {
     ConstantProduct,
     Stable {
@@ -162,7 +159,7 @@ pub enum CurveType {
 }
 
 /// Type of depeg pool
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum DepegType {
     None,
     Marinade,
@@ -171,14 +168,14 @@ pub enum DepegType {
 }
 
 /// Round up, down
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum Rounding {
     Up,
     Down,
 }
 
 /// Pool type
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum PoolType {
     Permissioned,
     Permissionless,
@@ -217,7 +214,7 @@ pub const PARTNER_CLAIM_FEE: [u8; 8] = [62, 78, 142, 207, 84, 95, 7, 227];
 // -----------------------------------------------------------------------------
 // Instruction enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum AmmInstruction {
     InitializePermissionedPool(InitializePermissionedPoolInstruction),
     InitializePermissionlessPool(InitializePermissionlessPoolInstruction),
@@ -252,13 +249,13 @@ pub enum AmmInstruction {
 // Payload structs
 // -----------------------------------------------------------------------------
 /// Initialize a new permissioned pool.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePermissionedPoolInstruction {
     pub curve_type: CurveType,
 }
 
 /// Initialize a new permissionless pool.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePermissionlessPoolInstruction {
     pub curve_type: CurveType,
     pub token_a_amount: u64,
@@ -266,7 +263,7 @@ pub struct InitializePermissionlessPoolInstruction {
 }
 
 /// Initialize a new permissionless pool with customized fee tier
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePermissionlessPoolWithFeeTierInstruction {
     pub curve_type: CurveType,
     pub trade_fee_bps: u64,
@@ -275,27 +272,27 @@ pub struct InitializePermissionlessPoolWithFeeTierInstruction {
 }
 
 /// Enable or disable a pool. A disabled pool allow only remove balanced liquidity operation.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EnableOrDisablePoolInstruction {
     pub enable: bool,
 }
 
 /// Swap token A to B, or vice versa. An amount of trading fee will be charged for liquidity provider, and the admin of the pool.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapInstruction {
     pub in_amount: u64,
     pub minimum_out_amount: u64,
 }
 
 /// Withdraw only single token from the pool. Only supported by pool with stable swap curve.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveLiquiditySingleSideInstruction {
     pub pool_token_amount: u64,
     pub minimum_out_amount: u64,
 }
 
 /// Deposit tokens to the pool in an imbalance ratio. Only supported by pool with stable swap curve.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddImbalanceLiquidityInstruction {
     pub minimum_pool_token_amount: u64,
     pub token_a_amount: u64,
@@ -303,7 +300,7 @@ pub struct AddImbalanceLiquidityInstruction {
 }
 
 /// Withdraw tokens from the pool in a balanced ratio. User will still able to withdraw from pool even the pool is disabled. This allow user to exit their liquidity when there's some unforeseen event happen.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveBalanceLiquidityInstruction {
     pub pool_token_amount: u64,
     pub minimum_a_token_out: u64,
@@ -311,7 +308,7 @@ pub struct RemoveBalanceLiquidityInstruction {
 }
 
 /// Deposit tokens to the pool in a balanced ratio.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddBalanceLiquidityInstruction {
     pub pool_token_amount: u64,
     pub maximum_token_a_amount: u64,
@@ -319,7 +316,7 @@ pub struct AddBalanceLiquidityInstruction {
 }
 
 /// Update trading fee charged for liquidity provider, and admin.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetPoolFeesInstruction {
     pub fees: PoolFees,
     pub new_partner_fee_numerator: u64,
@@ -327,45 +324,45 @@ pub struct SetPoolFeesInstruction {
 
 /// Update swap curve parameters. This function do not allow update of curve type. For example: stable swap curve to constant product curve. Only supported by pool with stable swap curve.
 /// Only amp is allowed to be override. The other attributes of stable swap curve will be ignored.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct OverrideCurveParamInstruction {
     pub curve_type: CurveType,
 }
 
 /// Bootstrap the pool when liquidity is depleted.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct BootstrapLiquidityInstruction {
     pub token_a_amount: u64,
     pub token_b_amount: u64,
 }
 
 /// Lock Lp token
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LockInstruction {
     pub max_amount: u64,
 }
 
 /// Claim fee
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimFeeInstruction {
     pub max_amount: u64,
 }
 
 /// Create config
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateConfigInstruction {
     pub config_parameters: ConfigParameters,
 }
 
 /// Initialize permissionless pool with config
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePermissionlessConstantProductPoolWithConfigInstruction {
     pub token_a_amount: u64,
     pub token_b_amount: u64,
 }
 
 /// Initialize permissionless pool with config 2
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePermissionlessConstantProductPoolWithConfig2Instruction {
     pub token_a_amount: u64,
     pub token_b_amount: u64,
@@ -373,7 +370,7 @@ pub struct InitializePermissionlessConstantProductPoolWithConfig2Instruction {
 }
 
 /// Initialize permissionless pool with customizable params
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeCustomizablePermissionlessConstantProductPoolInstruction {
     pub token_a_amount: u64,
     pub token_b_amount: u64,
@@ -381,19 +378,19 @@ pub struct InitializeCustomizablePermissionlessConstantProductPoolInstruction {
 }
 
 /// Update activation slot
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateActivationPointInstruction {
     pub new_activation_point: u64,
 }
 
 /// Set whitelisted vault
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetWhitelistedVaultInstruction {
     pub whitelisted_vault: Pubkey,
 }
 
 /// Partner claim fee
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct PartnerClaimFeeInstruction {
     pub max_amount_a: u64,
     pub max_amount_b: u64,

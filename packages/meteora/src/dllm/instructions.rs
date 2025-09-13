@@ -2,11 +2,9 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
-use serde_big_array::BigArray;
 use solana_program::pubkey::Pubkey;
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum AccountsType {
     TransferHookX,
     TransferHookY,
@@ -15,13 +13,13 @@ pub enum AccountsType {
 }
 
 /// Type of the activation
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum ActivationType {
     Slot,
     Timestamp,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityParams {
     pub min_delta_id: i32,
 
@@ -42,14 +40,14 @@ pub struct AddLiquidityParams {
     pub padding: [u8; 16],
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquiditySingleSidePreciseParameter {
     pub bins: Vec<CompressedBinDepositAmount>,
 
     pub decompress_multiplier: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquiditySingleSidePreciseParameter2 {
     pub bins: Vec<CompressedBinDepositAmount>,
 
@@ -58,7 +56,7 @@ pub struct AddLiquiditySingleSidePreciseParameter2 {
     pub max_amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct BaseFeeParameter {
     /// Portion of swap fees retained by the protocol by controlling protocol_share parameter. protocol_swap_fee = protocol_share * total_swap_fee
     pub protocol_share: u16,
@@ -68,7 +66,7 @@ pub struct BaseFeeParameter {
     pub base_fee_power_factor: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct BinLiquidityDistribution {
     /// Define the bin ID wish to deposit to.
     pub bin_id: i32,
@@ -78,7 +76,7 @@ pub struct BinLiquidityDistribution {
     pub distribution_y: u16,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct BinLiquidityDistributionByWeight {
     /// Define the bin ID wish to deposit to.
     pub bin_id: i32,
@@ -86,21 +84,21 @@ pub struct BinLiquidityDistributionByWeight {
     pub weight: u16,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct BinLiquidityReduction {
     pub bin_id: i32,
 
     pub bps_to_remove: u16,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CompressedBinDepositAmount {
     pub bin_id: i32,
 
     pub amount: u32,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CustomizableParams {
     /// Pool price
     pub active_id: i32,
@@ -119,11 +117,10 @@ pub struct CustomizableParams {
     /// Base fee power factor
     pub base_fee_power_factor: u8,
     /// Padding, for future use
-    #[serde(with = "BigArray")]
     pub padding: [u8; 62],
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DummyIx {
     pub _pair_status: PairStatus,
 
@@ -138,7 +135,7 @@ pub struct DummyIx {
     pub _rounding: Rounding,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DynamicFeeParameter {
     /// Filter period determine high frequency trading time window.
     pub filter_period: u16,
@@ -152,7 +149,7 @@ pub struct DynamicFeeParameter {
     pub max_volatility_accumulator: u32,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitPermissionPairIx {
     pub active_id: i32,
 
@@ -167,7 +164,7 @@ pub struct InitPermissionPairIx {
     pub protocol_share: u16,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitPresetParameters2Ix {
     pub index: u16,
     /// Bin step. Represent the price increment / decrement.
@@ -190,7 +187,7 @@ pub struct InitPresetParameters2Ix {
     pub base_fee_power_factor: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitPresetParametersIx {
     /// Bin step. Represent the price increment / decrement.
     pub bin_step: u16,
@@ -210,16 +207,15 @@ pub struct InitPresetParametersIx {
     pub protocol_share: u16,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeLbPair2Params {
     /// Pool price
     pub active_id: i32,
     /// Padding, for future use
-    #[serde(with = "BigArray")]
     pub padding: [u8; 96],
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LiquidityOneSideParameter {
     /// Amount of X token or Y token to deposit
     pub amount: u64,
@@ -231,7 +227,7 @@ pub struct LiquidityOneSideParameter {
     pub bin_liquidity_dist: Vec<BinLiquidityDistributionByWeight>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LiquidityParameter {
     /// Amount of X token to deposit
     pub amount_x: u64,
@@ -241,7 +237,7 @@ pub struct LiquidityParameter {
     pub bin_liquidity_dist: Vec<BinLiquidityDistribution>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LiquidityParameterByStrategy {
     /// Amount of X token to deposit
     pub amount_x: u64,
@@ -255,7 +251,7 @@ pub struct LiquidityParameterByStrategy {
     pub strategy_parameters: StrategyParameters,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LiquidityParameterByStrategyOneSide {
     /// Amount of X token or Y token to deposit
     pub amount: u64,
@@ -267,7 +263,7 @@ pub struct LiquidityParameterByStrategyOneSide {
     pub strategy_parameters: StrategyParameters,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LiquidityParameterByWeight {
     /// Amount of X token to deposit
     pub amount_x: u64,
@@ -282,14 +278,14 @@ pub struct LiquidityParameterByWeight {
 }
 
 /// Pair status. 0 = Enabled, 1 = Disabled. Putting 0 as enabled for backward compatibility.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum PairStatus {
     Enabled,
     Disabled,
 }
 
 /// Type of the Pair. 0 = Permissionless, 1 = Permission, 2 = CustomizablePermissionless. Putting 0 as permissionless for backward compatibility.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum PairType {
     Permissionless,
     Permission,
@@ -297,7 +293,7 @@ pub enum PairType {
     PermissionlessV2,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RebalanceLiquidityParams {
     /// active id
     pub active_id: i32,
@@ -323,19 +319,19 @@ pub struct RebalanceLiquidityParams {
     pub adds: Vec<AddLiquidityParams>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemainingAccountsInfo {
     pub slices: Vec<RemainingAccountsSlice>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemainingAccountsSlice {
     pub accounts_type: AccountsType,
 
     pub length: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveLiquidityParams {
     pub min_bin_id: Option<i32>,
 
@@ -347,19 +343,19 @@ pub struct RemoveLiquidityParams {
 }
 
 /// Side of resize, 0 for lower and 1 for upper
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum ResizeSide {
     Lower,
     Upper,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum Rounding {
     Up,
     Down,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct StrategyParameters {
     /// min bin id
     pub min_bin_id: i32,
@@ -368,11 +364,10 @@ pub struct StrategyParameters {
     /// strategy type
     pub strategy_type: StrategyType,
     /// parameters
-    #[serde(with = "BigArray")]
     pub parameteres: [u8; 64],
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum StrategyType {
     SpotOneSide,
     CurveOneSide,
@@ -385,7 +380,7 @@ pub enum StrategyType {
     BidAskImBalanced,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum TokenProgramFlags {
     TokenProgram,
     TokenProgram2022,
@@ -466,7 +461,7 @@ pub const WITHDRAW_PROTOCOL_FEE: [u8; 8] = [158, 201, 158, 189, 33, 93, 162, 103
 // -----------------------------------------------------------------------------
 // Instruction enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum MeteoraDllmInstruction {
     AddLiquidity(AddLiquidityInstruction),
     AddLiquidity2(AddLiquidity2Instruction),
@@ -542,58 +537,58 @@ pub enum MeteoraDllmInstruction {
 // -----------------------------------------------------------------------------
 // Payload structs
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityInstruction {
     pub liquidity_parameter: LiquidityParameter,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidity2Instruction {
     pub liquidity_parameter: LiquidityParameter,
 
     pub remaining_accounts_info: RemainingAccountsInfo,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityByStrategyInstruction {
     pub liquidity_parameter: LiquidityParameterByStrategy,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityByStrategy2Instruction {
     pub liquidity_parameter: LiquidityParameterByStrategy,
 
     pub remaining_accounts_info: RemainingAccountsInfo,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityByStrategyOneSideInstruction {
     pub liquidity_parameter: LiquidityParameterByStrategyOneSide,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityByWeightInstruction {
     pub liquidity_parameter: LiquidityParameterByWeight,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityOneSideInstruction {
     pub liquidity_parameter: LiquidityOneSideParameter,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityOneSidePreciseInstruction {
     pub parameter: AddLiquiditySingleSidePreciseParameter,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityOneSidePrecise2Instruction {
     pub liquidity_parameter: AddLiquiditySingleSidePreciseParameter2,
 
     pub remaining_accounts_info: RemainingAccountsInfo,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimFee2Instruction {
     pub min_bin_id: i32,
 
@@ -602,12 +597,12 @@ pub struct ClaimFee2Instruction {
     pub remaining_accounts_info: RemainingAccountsInfo,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimRewardInstruction {
     pub reward_index: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimReward2Instruction {
     pub reward_index: u64,
 
@@ -618,19 +613,19 @@ pub struct ClaimReward2Instruction {
     pub remaining_accounts_info: RemainingAccountsInfo,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DecreasePositionLengthInstruction {
     pub length_to_remove: u16,
 
     pub side: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ForIdlTypeGenerationDoNotCallInstruction {
     pub _ix: DummyIx,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct FundRewardInstruction {
     pub reward_index: u64,
 
@@ -641,63 +636,63 @@ pub struct FundRewardInstruction {
     pub remaining_accounts_info: RemainingAccountsInfo,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct GoToABinInstruction {
     pub bin_id: i32,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct IncreaseOracleLengthInstruction {
     pub length_to_add: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct IncreasePositionLengthInstruction {
     pub length_to_add: u16,
 
     pub side: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeBinArrayInstruction {
     pub index: i64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeCustomizablePermissionlessLbPairInstruction {
     pub params: CustomizableParams,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeCustomizablePermissionlessLbPair2Instruction {
     pub params: CustomizableParams,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeLbPairInstruction {
     pub active_id: i32,
 
     pub bin_step: u16,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeLbPair2Instruction {
     pub params: InitializeLbPair2Params,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePermissionLbPairInstruction {
     pub ix_data: InitPermissionPairIx,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePositionInstruction {
     pub lower_bin_id: i32,
 
     pub width: i32,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePositionByOperatorInstruction {
     pub lower_bin_id: i32,
 
@@ -708,24 +703,24 @@ pub struct InitializePositionByOperatorInstruction {
     pub lock_release_point: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePositionPdaInstruction {
     pub lower_bin_id: i32,
 
     pub width: i32,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePresetParameterInstruction {
     pub ix: InitPresetParametersIx,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePresetParameter2Instruction {
     pub ix: InitPresetParameters2Ix,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeRewardInstruction {
     pub reward_index: u64,
 
@@ -734,26 +729,26 @@ pub struct InitializeRewardInstruction {
     pub funder: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RebalanceLiquidityInstruction {
     pub params: RebalanceLiquidityParams,
 
     pub remaining_accounts_info: RemainingAccountsInfo,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveLiquidityInstruction {
     pub bin_liquidity_removal: Vec<BinLiquidityReduction>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveLiquidity2Instruction {
     pub bin_liquidity_removal: Vec<BinLiquidityReduction>,
 
     pub remaining_accounts_info: RemainingAccountsInfo,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveLiquidityByRangeInstruction {
     pub from_bin_id: i32,
 
@@ -762,7 +757,7 @@ pub struct RemoveLiquidityByRangeInstruction {
     pub bps_to_remove: u16,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveLiquidityByRange2Instruction {
     pub from_bin_id: i32,
 
@@ -773,39 +768,39 @@ pub struct RemoveLiquidityByRange2Instruction {
     pub remaining_accounts_info: RemainingAccountsInfo,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetActivationPointInstruction {
     pub activation_point: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetPairStatusInstruction {
     pub status: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetPairStatusPermissionlessInstruction {
     pub status: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetPreActivationDurationInstruction {
     pub pre_activation_duration: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetPreActivationSwapAddressInstruction {
     pub pre_activation_swap_address: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapInstruction {
     pub amount_in: u64,
 
     pub min_amount_out: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct Swap2Instruction {
     pub amount_in: u64,
 
@@ -814,14 +809,14 @@ pub struct Swap2Instruction {
     pub remaining_accounts_info: RemainingAccountsInfo,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapExactOutInstruction {
     pub max_in_amount: u64,
 
     pub out_amount: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapExactOut2Instruction {
     pub max_in_amount: u64,
 
@@ -830,7 +825,7 @@ pub struct SwapExactOut2Instruction {
     pub remaining_accounts_info: RemainingAccountsInfo,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapWithPriceImpactInstruction {
     pub amount_in: u64,
 
@@ -839,7 +834,7 @@ pub struct SwapWithPriceImpactInstruction {
     pub max_price_impact_bps: u16,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapWithPriceImpact2Instruction {
     pub amount_in: u64,
 
@@ -850,50 +845,50 @@ pub struct SwapWithPriceImpact2Instruction {
     pub remaining_accounts_info: RemainingAccountsInfo,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateBaseFeeParametersInstruction {
     pub fee_parameter: BaseFeeParameter,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateDynamicFeeParametersInstruction {
     pub fee_parameter: DynamicFeeParameter,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateFeesAndReward2Instruction {
     pub min_bin_id: i32,
 
     pub max_bin_id: i32,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdatePositionOperatorInstruction {
     pub operator: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateRewardDurationInstruction {
     pub reward_index: u64,
 
     pub new_duration: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateRewardFunderInstruction {
     pub reward_index: u64,
 
     pub new_funder: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawIneligibleRewardInstruction {
     pub reward_index: u64,
 
     pub remaining_accounts_info: RemainingAccountsInfo,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawProtocolFeeInstruction {
     pub max_amount_x: u64,
 

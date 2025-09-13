@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
@@ -13,7 +12,7 @@ pub const FILL_EVENT: u8 = 2;
 // -----------------------------------------------------------------------------
 // Event enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PhonenixEvent {
     Fill(FillEvent),
     Unknown,
@@ -22,7 +21,7 @@ pub enum PhonenixEvent {
 // -----------------------------------------------------------------------------
 // Payload structs
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct FillEvent {
     pub index: u16,
     pub maker_id: Pubkey,

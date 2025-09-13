@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 
 // -----------------------------------------------------------------------------
 // Discriminators
@@ -15,7 +14,7 @@ pub const SELL_EXACT_OUT: [u8; 8] = [95, 200, 71, 34, 8, 9, 11, 166];
 // -----------------------------------------------------------------------------
 // Instruction enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RaydiumLaunchpadInstruction {
     BuyExactIn(BuyExactInInstruction),
     BuyExactOut(BuyExactOutInstruction),
@@ -28,7 +27,7 @@ pub enum RaydiumLaunchpadInstruction {
 // Payload structs
 // -----------------------------------------------------------------------------
 /// Use the given amount of quote tokens to purchase base tokens.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct BuyExactInInstruction {
     /// Amount of quote token to purchase
     pub amount_in: u64,
@@ -39,7 +38,7 @@ pub struct BuyExactInInstruction {
 }
 
 /// Use quote tokens to purchase the given amount of base tokens.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct BuyExactOutInstruction {
     /// Amount of base token to receive
     pub amount_out: u64,
@@ -50,7 +49,7 @@ pub struct BuyExactOutInstruction {
 }
 
 /// Use the given amount of base tokens to sell for quote tokens.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SellExactInInstruction {
     /// Amount of base token to sell
     pub amount_in: u64,
@@ -61,7 +60,7 @@ pub struct SellExactInInstruction {
 }
 
 /// Sell base tokens for the given amount of quote tokens.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SellExactOutInstruction {
     /// Amount of quote token to receive
     pub amount_out: u64,

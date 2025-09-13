@@ -1,12 +1,11 @@
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
 use idls_common::accounts::AccountsError;
 
 /// Accounts for the `close_permission_pda` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClosePermissionPdaAccounts {
     pub owner: Pubkey,
     pub permission_authority: Pubkey,
@@ -38,7 +37,7 @@ pub fn get_close_permission_pda_accounts(ix: &InstructionView) -> Result<ClosePe
 }
 
 /// Accounts for the `collect_creator_fee` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CollectCreatorFeeAccounts {
     /// Only pool creator can collect fee
     pub creator: Pubkey,
@@ -102,7 +101,7 @@ pub fn get_collect_creator_fee_accounts(ix: &InstructionView) -> Result<CollectC
 }
 
 /// Accounts for the `collect_fund_fee` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CollectFundFeeAccounts {
     /// Only admin or fund_owner can collect fee now
     pub owner: Pubkey,
@@ -160,7 +159,7 @@ pub fn get_collect_fund_fee_accounts(ix: &InstructionView) -> Result<CollectFund
 }
 
 /// Accounts for the `collect_protocol_fee` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CollectProtocolFeeAccounts {
     /// Only admin or owner can collect fee now
     pub owner: Pubkey,
@@ -218,7 +217,7 @@ pub fn get_collect_protocol_fee_accounts(ix: &InstructionView) -> Result<Collect
 }
 
 /// Accounts for the `create_amm_config` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateAmmConfigAccounts {
     /// Address to be set as protocol owner.
     pub owner: Pubkey,
@@ -249,7 +248,7 @@ pub fn get_create_amm_config_accounts(ix: &InstructionView) -> Result<CreateAmmC
 }
 
 /// Accounts for the `create_permission_pda` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreatePermissionPdaAccounts {
     pub owner: Pubkey,
     pub permission_authority: Pubkey,
@@ -281,7 +280,7 @@ pub fn get_create_permission_pda_accounts(ix: &InstructionView) -> Result<Create
 }
 
 /// Accounts for the `deposit` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DepositAccounts {
     /// Pays to mint the position
     pub owner: Pubkey,
@@ -341,7 +340,7 @@ pub fn get_deposit_accounts(ix: &InstructionView) -> Result<DepositAccounts, Acc
 }
 
 /// Accounts for the `initialize` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeAccounts {
     /// Address paying to create the pool. Can be anyone
     pub creator: Pubkey,
@@ -430,7 +429,7 @@ pub fn get_initialize_accounts(ix: &InstructionView) -> Result<InitializeAccount
 }
 
 /// Accounts for the `initialize_with_permission` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeWithPermissionAccounts {
     /// Address paying to create the pool. Can be anyone
     pub payer: Pubkey,
@@ -520,7 +519,7 @@ pub fn get_initialize_with_permission_accounts(ix: &InstructionView) -> Result<I
 }
 
 /// Accounts for the `swap_base_input` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapBaseInputAccounts {
     /// The user performing the swap
     pub payer: Pubkey,
@@ -581,7 +580,7 @@ pub fn get_swap_base_input_accounts(ix: &InstructionView) -> Result<SwapBaseInpu
 }
 
 /// Accounts for the `swap_base_output` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapBaseOutputAccounts {
     /// The user performing the swap
     pub payer: Pubkey,
@@ -642,7 +641,7 @@ pub fn get_swap_base_output_accounts(ix: &InstructionView) -> Result<SwapBaseOut
 }
 
 /// Accounts for the `update_amm_config` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateAmmConfigAccounts {
     /// The amm config owner or admin
     pub owner: Pubkey,
@@ -671,7 +670,7 @@ pub fn get_update_amm_config_accounts(ix: &InstructionView) -> Result<UpdateAmmC
 }
 
 /// Accounts for the `update_pool_status` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdatePoolStatusAccounts {
     pub authority: Pubkey,
     pub pool_state: Pubkey,
@@ -698,7 +697,7 @@ pub fn get_update_pool_status_accounts(ix: &InstructionView) -> Result<UpdatePoo
 }
 
 /// Accounts for the `withdraw` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawAccounts {
     /// Pays to mint the position
     pub owner: Pubkey,

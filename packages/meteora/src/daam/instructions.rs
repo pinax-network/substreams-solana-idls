@@ -2,13 +2,12 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
 // Custom types
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityParameters {
     /// delta liquidity
     pub liquidity_delta: u128,
@@ -18,7 +17,7 @@ pub struct AddLiquidityParameters {
     pub token_b_amount_threshold: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct BaseFeeParameters {
     pub cliff_fee_numerator: u64,
     pub number_of_period: u16,
@@ -27,12 +26,12 @@ pub struct BaseFeeParameters {
     pub fee_scheduler_mode: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DynamicConfigParameters {
     pub pool_creator_authority: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DynamicFeeParameters {
     pub bin_step: u16,
     pub bin_step_u128: u128,
@@ -43,7 +42,7 @@ pub struct DynamicFeeParameters {
     pub variable_fee_control: u32,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeCustomizablePoolParameters {
     /// pool fees
     pub pool_fees: PoolFeeParameters,
@@ -65,7 +64,7 @@ pub struct InitializeCustomizablePoolParameters {
     pub activation_point: Option<u64>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePoolParameters {
     /// initialize liquidity
     pub liquidity: u128,
@@ -75,7 +74,7 @@ pub struct InitializePoolParameters {
     pub activation_point: Option<u64>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct PoolFeeParameters {
     /// Base fee
     pub base_fee: BaseFeeParameters,
@@ -85,7 +84,7 @@ pub struct PoolFeeParameters {
     pub dynamic_fee: Option<DynamicFeeParameters>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveLiquidityParameters {
     /// delta liquidity
     pub liquidity_delta: u128,
@@ -95,7 +94,7 @@ pub struct RemoveLiquidityParameters {
     pub token_b_amount_threshold: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SplitAmountInfo {
     pub permanent_locked_liquidity: u128,
     pub unlocked_liquidity: u128,
@@ -105,7 +104,7 @@ pub struct SplitAmountInfo {
     pub reward_1: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SplitPositionInfo {
     pub liquidity: u128,
     pub fee_a: u64,
@@ -114,7 +113,7 @@ pub struct SplitPositionInfo {
     pub reward_1: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SplitPositionParameters {
     /// Percentage of unlocked liquidity to split to the second position
     pub unlocked_liquidity_percentage: u8,
@@ -132,7 +131,7 @@ pub struct SplitPositionParameters {
     pub padding: [u8; 16],
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct StaticConfigParameters {
     pub pool_fees: PoolFeeParameters,
     pub sqrt_min_price: u128,
@@ -143,13 +142,13 @@ pub struct StaticConfigParameters {
     pub collect_fee_mode: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapParameters {
     pub amount_in: u64,
     pub minimum_amount_out: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapResult {
     pub output_amount: u64,
     pub next_sqrt_price: u128,
@@ -159,7 +158,7 @@ pub struct SwapResult {
     pub referral_fee: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct VestingParameters {
     pub cliff_point: Option<u64>,
     pub period_frequency: u64,
@@ -205,7 +204,7 @@ pub const WITHDRAW_INELIGIBLE_REWARD: [u8; 8] = [148, 206, 42, 195, 247, 49, 103
 // -----------------------------------------------------------------------------
 // Instruction enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum MeteoraDammInstruction {
     AddLiquidity(AddLiquidityInstruction),
     ClaimPartnerFee(ClaimPartnerFeeInstruction),
@@ -243,119 +242,119 @@ pub enum MeteoraDammInstruction {
 // -----------------------------------------------------------------------------
 // Payload structs
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityInstruction {
     pub params: AddLiquidityParameters,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimPartnerFeeInstruction {
     pub max_amount_a: u64,
     pub max_amount_b: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimProtocolFeeInstruction {
     pub max_amount_a: u64,
     pub max_amount_b: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimRewardInstruction {
     pub reward_index: u8,
     pub skip_reward: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateConfigInstruction {
     pub index: u64,
     pub config_parameters: StaticConfigParameters,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateDynamicConfigInstruction {
     pub index: u64,
     pub config_parameters: DynamicConfigParameters,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct FundRewardInstruction {
     pub reward_index: u8,
     pub amount: u64,
     pub carry_forward: bool,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeCustomizablePoolInstruction {
     pub params: InitializeCustomizablePoolParameters,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePoolInstruction {
     pub params: InitializePoolParameters,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePoolWithDynamicConfigInstruction {
     pub params: InitializeCustomizablePoolParameters,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeRewardInstruction {
     pub reward_index: u8,
     pub reward_duration: u64,
     pub funder: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LockPositionInstruction {
     pub params: VestingParameters,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct PermanentLockPositionInstruction {
     pub permanent_lock_liquidity: u128,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveAllLiquidityInstruction {
     pub token_a_amount_threshold: u64,
     pub token_b_amount_threshold: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveLiquidityInstruction {
     pub params: RemoveLiquidityParameters,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetPoolStatusInstruction {
     pub status: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SplitPositionInstruction {
     pub params: SplitPositionParameters,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapInstruction {
     pub params: SwapParameters,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateRewardDurationInstruction {
     pub reward_index: u8,
     pub new_duration: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateRewardFunderInstruction {
     pub reward_index: u8,
     pub new_funder: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawIneligibleRewardInstruction {
     pub reward_index: u8,
 }

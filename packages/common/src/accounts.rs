@@ -24,7 +24,7 @@ pub fn to_pubkey(name: &'static str, index: usize, bytes: &[u8]) -> Result<Pubke
 #[macro_export]
 macro_rules! accounts {
     ($name:ident, $getter:ident, { $( $(#[$doc:meta])* $field:ident ),+ $(,)? }) => {
-        #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+        #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
         pub struct $name {
             $( $(#[$doc])* pub $field: Pubkey,)+
         }

@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
@@ -14,7 +13,7 @@ const CREATE_ORDER_EVENT: [u8; 8] = [49, 142, 72, 166, 230, 29, 84, 84]; // 318e
 // -----------------------------------------------------------------------------
 // High-level event enum (concise; rich docs live in each struct)
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum JupiterLimitOrderEvent {
     /// Cancel order. See [`CancelOrderEvent`].
     CancelOrder(CancelOrderEvent),
@@ -27,12 +26,12 @@ pub enum JupiterLimitOrderEvent {
 // -----------------------------------------------------------------------------
 // Payload structs (inline field comments instead of tables)
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CancelOrderEvent {
     pub order_key: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateOrderEvent {
     pub order_key: Pubkey,
     pub maker: Pubkey,

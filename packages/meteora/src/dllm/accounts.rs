@@ -1,12 +1,11 @@
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
 use idls_common::accounts::AccountsError;
 
 /// Accounts for the `add_liquidity` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityAccounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -61,7 +60,7 @@ pub fn get_add_liquidity_accounts(ix: &InstructionView) -> Result<AddLiquidityAc
 }
 
 /// Accounts for the `add_liquidity2` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidity2Accounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -112,7 +111,7 @@ pub fn get_add_liquidity2_accounts(ix: &InstructionView) -> Result<AddLiquidity2
 }
 
 /// Accounts for the `add_liquidity_by_strategy` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityByStrategyAccounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -167,7 +166,7 @@ pub fn get_add_liquidity_by_strategy_accounts(ix: &InstructionView) -> Result<Ad
 }
 
 /// Accounts for the `add_liquidity_by_strategy2` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityByStrategy2Accounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -218,7 +217,7 @@ pub fn get_add_liquidity_by_strategy2_accounts(ix: &InstructionView) -> Result<A
 }
 
 /// Accounts for the `add_liquidity_by_strategy_one_side` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityByStrategyOneSideAccounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -265,7 +264,7 @@ pub fn get_add_liquidity_by_strategy_one_side_accounts(ix: &InstructionView) -> 
 }
 
 /// Accounts for the `add_liquidity_by_weight` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityByWeightAccounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -320,7 +319,7 @@ pub fn get_add_liquidity_by_weight_accounts(ix: &InstructionView) -> Result<AddL
 }
 
 /// Accounts for the `add_liquidity_one_side` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityOneSideAccounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -367,7 +366,7 @@ pub fn get_add_liquidity_one_side_accounts(ix: &InstructionView) -> Result<AddLi
 }
 
 /// Accounts for the `add_liquidity_one_side_precise` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityOneSidePreciseAccounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -414,7 +413,7 @@ pub fn get_add_liquidity_one_side_precise_accounts(ix: &InstructionView) -> Resu
 }
 
 /// Accounts for the `add_liquidity_one_side_precise2` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddLiquidityOneSidePrecise2Accounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -651,7 +650,7 @@ accounts!(
 );
 
 /// Accounts for the `go_to_a_bin` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct GoToABinAccounts {
     pub lb_pair: Pubkey,
     pub bin_array_bitmap_extension: Option<Pubkey>,
@@ -736,7 +735,7 @@ accounts!(
 );
 
 /// Accounts for the `initialize_customizable_permissionless_lb_pair` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeCustomizablePermissionlessLbPairAccounts {
     pub lb_pair: Pubkey,
     pub bin_array_bitmap_extension: Option<Pubkey>,
@@ -789,7 +788,7 @@ pub fn get_initialize_customizable_permissionless_lb_pair_accounts(
 }
 
 /// Accounts for the `initialize_customizable_permissionless_lb_pair2` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeCustomizablePermissionlessLbPair2Accounts {
     pub lb_pair: Pubkey,
     pub bin_array_bitmap_extension: Option<Pubkey>,
@@ -848,7 +847,7 @@ pub fn get_initialize_customizable_permissionless_lb_pair2_accounts(
 }
 
 /// Accounts for the `initialize_lb_pair` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeLbPairAccounts {
     pub lb_pair: Pubkey,
     pub bin_array_bitmap_extension: Option<Pubkey>,
@@ -899,7 +898,7 @@ pub fn get_initialize_lb_pair_accounts(ix: &InstructionView) -> Result<Initializ
 }
 
 /// Accounts for the `initialize_lb_pair2` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeLbPair2Accounts {
     pub lb_pair: Pubkey,
     pub bin_array_bitmap_extension: Option<Pubkey>,
@@ -954,7 +953,7 @@ pub fn get_initialize_lb_pair2_accounts(ix: &InstructionView) -> Result<Initiali
 }
 
 /// Accounts for the `initialize_permission_lb_pair` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePermissionLbPairAccounts {
     pub base: Pubkey,
     pub lb_pair: Pubkey,
@@ -1083,7 +1082,7 @@ accounts!(
 );
 
 /// Accounts for the `initialize_reward` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeRewardAccounts {
     pub lb_pair: Pubkey,
     pub reward_vault: Pubkey,
@@ -1162,7 +1161,7 @@ accounts!(
 );
 
 /// Accounts for the `rebalance_liquidity` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RebalanceLiquidityAccounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -1219,7 +1218,7 @@ pub fn get_rebalance_liquidity_accounts(ix: &InstructionView) -> Result<Rebalanc
 }
 
 /// Accounts for the `remove_all_liquidity` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveAllLiquidityAccounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -1274,7 +1273,7 @@ pub fn get_remove_all_liquidity_accounts(ix: &InstructionView) -> Result<RemoveA
 }
 
 /// Accounts for the `remove_liquidity` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveLiquidityAccounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -1329,7 +1328,7 @@ pub fn get_remove_liquidity_accounts(ix: &InstructionView) -> Result<RemoveLiqui
 }
 
 /// Accounts for the `remove_liquidity2` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveLiquidity2Accounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -1382,7 +1381,7 @@ pub fn get_remove_liquidity2_accounts(ix: &InstructionView) -> Result<RemoveLiqu
 }
 
 /// Accounts for the `remove_liquidity_by_range` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveLiquidityByRangeAccounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -1437,7 +1436,7 @@ pub fn get_remove_liquidity_by_range_accounts(ix: &InstructionView) -> Result<Re
 }
 
 /// Accounts for the `remove_liquidity_by_range2` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveLiquidityByRange2Accounts {
     pub position: Pubkey,
     pub lb_pair: Pubkey,
@@ -1535,7 +1534,7 @@ accounts!(
 );
 
 /// Accounts for the `swap` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapAccounts {
     pub lb_pair: Pubkey,
     pub bin_array_bitmap_extension: Option<Pubkey>,
@@ -1588,7 +1587,7 @@ pub fn get_swap_accounts(ix: &InstructionView) -> Result<SwapAccounts, AccountsE
 }
 
 /// Accounts for the `swap2` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct Swap2Accounts {
     pub lb_pair: Pubkey,
     pub bin_array_bitmap_extension: Option<Pubkey>,
@@ -1643,7 +1642,7 @@ pub fn get_swap2_accounts(ix: &InstructionView) -> Result<Swap2Accounts, Account
 }
 
 /// Accounts for the `swap_exact_out` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapExactOutAccounts {
     pub lb_pair: Pubkey,
     pub bin_array_bitmap_extension: Option<Pubkey>,
@@ -1696,7 +1695,7 @@ pub fn get_swap_exact_out_accounts(ix: &InstructionView) -> Result<SwapExactOutA
 }
 
 /// Accounts for the `swap_exact_out2` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapExactOut2Accounts {
     pub lb_pair: Pubkey,
     pub bin_array_bitmap_extension: Option<Pubkey>,
@@ -1751,7 +1750,7 @@ pub fn get_swap_exact_out2_accounts(ix: &InstructionView) -> Result<SwapExactOut
 }
 
 /// Accounts for the `swap_with_price_impact` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapWithPriceImpactAccounts {
     pub lb_pair: Pubkey,
     pub bin_array_bitmap_extension: Option<Pubkey>,
@@ -1804,7 +1803,7 @@ pub fn get_swap_with_price_impact_accounts(ix: &InstructionView) -> Result<SwapW
 }
 
 /// Accounts for the `swap_with_price_impact2` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapWithPriceImpact2Accounts {
     pub lb_pair: Pubkey,
     pub bin_array_bitmap_extension: Option<Pubkey>,

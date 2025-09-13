@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 
 // -----------------------------------------------------------------------------
 // Discriminators
@@ -13,7 +12,7 @@ pub const SWAP_EVENT: [u8; 8] = [64, 198, 205, 232, 38, 8, 113, 226];
 // -----------------------------------------------------------------------------
 // Event enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RaydiumStableEvent {
     /// Emitted when a swap occurs.
     SwapEvent(SwapEvent),
@@ -28,7 +27,7 @@ pub enum RaydiumStableEvent {
 ///
 /// The payload layout is:
 /// `[u8 dex][u64 amount_in][u64 amount_out]`.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapEvent {
     /// DEX identifier as defined by Jupiter's aggregator.
     pub dex: u8,

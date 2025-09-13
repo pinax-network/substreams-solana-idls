@@ -1,5 +1,4 @@
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
@@ -9,7 +8,7 @@ use idls_common::accounts::AccountsError;
 // Accounts structs
 // -----------------------------------------------------------------------------
 /// Initialize a new permissioned pool.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePermissionedPoolAccounts {
     /// Pool account (arbitrary address)
     pub pool: Pubkey,
@@ -101,7 +100,7 @@ pub fn get_initialize_permissioned_pool_accounts(ix: &InstructionView) -> Result
 }
 
 /// Initialize a new permissionless pool.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePermissionlessPoolAccounts {
     /// Pool account (PDA address)
     pub pool: Pubkey,
@@ -197,7 +196,7 @@ pub fn get_initialize_permissionless_pool_accounts(ix: &InstructionView) -> Resu
 }
 
 /// Initialize a new permissionless pool with customized fee tier
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePermissionlessPoolWithFeeTierAccounts {
     /// Pool account (PDA address)
     pub pool: Pubkey,
@@ -295,7 +294,7 @@ pub fn get_initialize_permissionless_pool_with_fee_tier_accounts(
 }
 
 /// Enable or disable a pool. A disabled pool allow only remove balanced liquidity operation.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EnableOrDisablePoolAccounts {
     /// Pool account (PDA)
     pub pool: Pubkey,
@@ -323,7 +322,7 @@ pub fn get_enable_or_disable_pool_accounts(ix: &InstructionView) -> Result<Enabl
 }
 
 /// Swap token A to B, or vice versa. An amount of trading fee will be charged for liquidity provider, and the admin of the pool.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapAccounts {
     /// Pool account (PDA)
     pub pool: Pubkey,
@@ -390,7 +389,7 @@ pub fn get_swap_accounts(ix: &InstructionView) -> Result<SwapAccounts, AccountsE
 }
 
 /// Withdraw only single token from the pool. Only supported by pool with stable swap curve.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveLiquiditySingleSideAccounts {
     /// Pool account (PDA)
     pub pool: Pubkey,
@@ -457,7 +456,7 @@ pub fn get_remove_liquidity_single_side_accounts(ix: &InstructionView) -> Result
 }
 
 /// Deposit tokens to the pool in an imbalance ratio. Only supported by pool with stable swap curve.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddImbalanceLiquidityAccounts {
     /// Pool account (PDA)
     pub pool: Pubkey,
@@ -527,7 +526,7 @@ pub fn get_add_imbalance_liquidity_accounts(ix: &InstructionView) -> Result<AddI
 }
 
 /// Withdraw tokens from the pool in a balanced ratio. User will still able to withdraw from pool even the pool is disabled. This allow user to exit their liquidity when there's some unforeseen event happen.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RemoveBalanceLiquidityAccounts {
     /// Pool account (PDA)
     pub pool: Pubkey,
@@ -597,7 +596,7 @@ pub fn get_remove_balance_liquidity_accounts(ix: &InstructionView) -> Result<Rem
 }
 
 /// Deposit tokens to the pool in a balanced ratio.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddBalanceLiquidityAccounts {
     /// Pool account (PDA)
     pub pool: Pubkey,
@@ -667,7 +666,7 @@ pub fn get_add_balance_liquidity_accounts(ix: &InstructionView) -> Result<AddBal
 }
 
 /// Update trading fee charged for liquidity provider, and admin.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetPoolFeesAccounts {
     /// Pool account (PDA)
     pub pool: Pubkey,
@@ -696,7 +695,7 @@ pub fn get_set_pool_fees_accounts(ix: &InstructionView) -> Result<SetPoolFeesAcc
 
 /// Update swap curve parameters. This function do not allow update of curve type. For example: stable swap curve to constant product curve. Only supported by pool with stable swap curve.
 /// Only amp is allowed to be override. The other attributes of stable swap curve will be ignored.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct OverrideCurveParamAccounts {
     /// Pool account (PDA)
     pub pool: Pubkey,
@@ -724,7 +723,7 @@ pub fn get_override_curve_param_accounts(ix: &InstructionView) -> Result<Overrid
 }
 
 /// Get the general information of the pool.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct GetPoolInfoAccounts {
     /// Pool account (PDA)
     pub pool: Pubkey,
@@ -770,7 +769,7 @@ pub fn get_get_pool_info_accounts(ix: &InstructionView) -> Result<GetPoolInfoAcc
 }
 
 /// Bootstrap the pool when liquidity is depleted.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct BootstrapLiquidityAccounts {
     /// Pool account (PDA)
     pub pool: Pubkey,
@@ -840,7 +839,7 @@ pub fn get_bootstrap_liquidity_accounts(ix: &InstructionView) -> Result<Bootstra
 }
 
 /// Create mint metadata account for old pools
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateMintMetadataAccounts {
     /// Pool account
     pub pool: Pubkey,
@@ -881,7 +880,7 @@ pub fn get_create_mint_metadata_accounts(ix: &InstructionView) -> Result<CreateM
 }
 
 /// Create lock account
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateLockEscrowAccounts {
     /// Pool account
     pub pool: Pubkey,
@@ -920,7 +919,7 @@ pub fn get_create_lock_escrow_accounts(ix: &InstructionView) -> Result<CreateLoc
 }
 
 /// Lock Lp token
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct LockAccounts {
     /// Pool account
     pub pool: Pubkey,
@@ -981,7 +980,7 @@ pub fn get_lock_accounts(ix: &InstructionView) -> Result<LockAccounts, AccountsE
 }
 
 /// Claim fee
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ClaimFeeAccounts {
     /// Pool account
     pub pool: Pubkey,
@@ -1057,7 +1056,7 @@ pub fn get_claim_fee_accounts(ix: &InstructionView) -> Result<ClaimFeeAccounts, 
 }
 
 /// Create config
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateConfigAccounts {
     pub config: Pubkey,
     pub admin: Pubkey,
@@ -1085,7 +1084,7 @@ pub fn get_create_config_accounts(ix: &InstructionView) -> Result<CreateConfigAc
 }
 
 /// Close config
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CloseConfigAccounts {
     pub config: Pubkey,
     pub admin: Pubkey,
@@ -1113,7 +1112,7 @@ pub fn get_close_config_accounts(ix: &InstructionView) -> Result<CloseConfigAcco
 }
 
 /// Initialize permissionless pool with config
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePermissionlessConstantProductPoolWithConfigAccounts {
     /// Pool account (PDA address)
     pub pool: Pubkey,
@@ -1211,7 +1210,7 @@ pub fn get_initialize_permissionless_constant_product_pool_with_config_accounts(
 }
 
 /// Initialize permissionless pool with config 2
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializePermissionlessConstantProductPoolWithConfig2Accounts {
     /// Pool account (PDA address)
     pub pool: Pubkey,
@@ -1309,7 +1308,7 @@ pub fn get_initialize_permissionless_constant_product_pool_with_config2_accounts
 }
 
 /// Initialize permissionless pool with customizable params
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct InitializeCustomizablePermissionlessConstantProductPoolAccounts {
     /// Pool account (PDA address)
     pub pool: Pubkey,
@@ -1405,7 +1404,7 @@ pub fn get_initialize_customizable_permissionless_constant_product_pool_accounts
 }
 
 /// Update activation slot
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateActivationPointAccounts {
     /// Pool account (PDA)
     pub pool: Pubkey,
@@ -1433,7 +1432,7 @@ pub fn get_update_activation_point_accounts(ix: &InstructionView) -> Result<Upda
 }
 
 /// Withdraw protocol fee
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawProtocolFeesAccounts {
     /// Pool account (PDA)
     pub pool: Pubkey,
@@ -1470,7 +1469,7 @@ pub fn get_withdraw_protocol_fees_accounts(ix: &InstructionView) -> Result<Withd
 }
 
 /// Set whitelisted vault
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetWhitelistedVaultAccounts {
     pub pool: Pubkey,
     pub admin: Pubkey,
@@ -1496,7 +1495,7 @@ pub fn get_set_whitelisted_vault_accounts(ix: &InstructionView) -> Result<SetWhi
 }
 
 /// Partner claim fee
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct PartnerClaimFeeAccounts {
     /// Pool account (PDA)
     pub pool: Pubkey,

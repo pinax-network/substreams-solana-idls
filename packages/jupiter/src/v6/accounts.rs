@@ -1,5 +1,4 @@
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
@@ -72,7 +71,7 @@ const IDX_EVENT_AUTHORITY: usize = 9;
 const IDX_PROGRAM: usize = 10;
 
 /// Accounts for the `exact_out_route` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ExactOutRouteAccounts {
     pub token_program: Pubkey,
     pub user_transfer_authority: Pubkey,
@@ -128,7 +127,7 @@ const IDX_RT_EVENT_AUTHORITY: usize = 7;
 const IDX_RT_PROGRAM: usize = 8;
 
 /// Accounts for the `route` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RouteAccounts {
     pub token_program: Pubkey,
     pub user_transfer_authority: Pubkey,
@@ -181,7 +180,7 @@ const IDX_RTL_EVENT_AUTHORITY: usize = 8;
 const IDX_RTL_PROGRAM: usize = 9;
 
 /// Accounts for the `route_with_token_ledger` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct RouteWithTokenLedgerAccounts {
     pub token_program: Pubkey,
     pub user_transfer_authority: Pubkey,
@@ -239,7 +238,7 @@ const IDX_SA_EVENT_AUTHORITY: usize = 11;
 const IDX_SA_PROGRAM: usize = 12;
 
 /// Accounts for the `shared_accounts_exact_out_route` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SharedAccountsExactOutRouteAccounts {
     pub token_program: Pubkey,
     pub program_authority: Pubkey,
@@ -289,7 +288,7 @@ pub fn get_shared_accounts_exact_out_route_accounts(ix: &InstructionView) -> Res
 }
 
 /// Accounts for the `shared_accounts_route` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SharedAccountsRouteAccounts {
     pub token_program: Pubkey,
     pub program_authority: Pubkey,
@@ -341,7 +340,7 @@ pub fn get_shared_accounts_route_accounts(ix: &InstructionView) -> Result<Shared
 const IDX_SAL_TOKEN_LEDGER: usize = 11; // for with_token_ledger variant, before event_authority
 
 /// Accounts for the `shared_accounts_route_with_token_ledger` instruction.
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SharedAccountsRouteWithTokenLedgerAccounts {
     pub token_program: Pubkey,
     pub program_authority: Pubkey,

@@ -2,7 +2,6 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -------------------------------------------------------------------------
@@ -23,7 +22,7 @@ const WITHDRAW_EVENT: [u8; 8] = [22, 9, 133, 26, 160, 44, 71, 192];
 // -------------------------------------------------------------------------
 // Event enumeration
 // -------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PumpFunAmmEvent {
     BuyEventV1(BuyEventV1),
     BuyEventV2(BuyEventV2),
@@ -44,7 +43,7 @@ pub enum PumpFunAmmEvent {
 // -------------------------------------------------------------------------
 // Payload structs
 // -------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct BuyEventV1 {
     pub timestamp: i64,
     pub base_amount_out: u64,
@@ -71,7 +70,7 @@ pub struct BuyEventV1 {
 // -------------------------------------------------------------------------
 // Payload structs
 // -------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct BuyEventV2 {
     pub timestamp: i64,
     pub base_amount_out: u64,
@@ -99,7 +98,7 @@ pub struct BuyEventV2 {
     pub coin_creator_fee: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SellEventV1 {
     pub timestamp: i64,
     pub base_amount_in: u64,
@@ -123,7 +122,7 @@ pub struct SellEventV1 {
     pub protocol_fee_recipient_token_account: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SellEventV2 {
     pub timestamp: i64,
     pub base_amount_in: u64,
@@ -151,7 +150,7 @@ pub struct SellEventV2 {
     pub coin_creator_fee: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateConfigEvent {
     pub timestamp: i64,
     pub admin: Pubkey,
@@ -159,7 +158,7 @@ pub struct CreateConfigEvent {
     pub protocol_fee_basis_points: u64,
     pub protocol_fee_recipients: [Pubkey; 8],
 }
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreatePoolEventV1 {
     pub timestamp: i64,
     pub index: u16,
@@ -182,7 +181,7 @@ pub struct CreatePoolEventV1 {
     pub user_quote_token_account: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreatePoolEventV2 {
     pub timestamp: i64,
     pub index: u16,
@@ -207,7 +206,7 @@ pub struct CreatePoolEventV2 {
     pub coin_creator: Pubkey,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DepositEvent {
     pub timestamp: i64,
     pub lp_token_amount_out: u64,
@@ -226,7 +225,7 @@ pub struct DepositEvent {
     pub user_quote_token_account: Pubkey,
     pub user_pool_token_account: Pubkey,
 }
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DisableEvent {
     pub timestamp: i64,
     pub admin: Pubkey,
@@ -236,7 +235,7 @@ pub struct DisableEvent {
     pub disable_buy: bool,
     pub disable_sell: bool,
 }
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct ExtendAccountEvent {
     pub timestamp: i64,
     pub account: Pubkey,
@@ -245,13 +244,13 @@ pub struct ExtendAccountEvent {
     pub new_size: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateAdminEvent {
     pub timestamp: i64,
     pub admin: Pubkey,
     pub new_admin: Pubkey,
 }
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateFeeConfigEvent {
     pub timestamp: i64,
     pub admin: Pubkey,
@@ -259,7 +258,7 @@ pub struct UpdateFeeConfigEvent {
     pub protocol_fee_basis_points: u64,
     pub protocol_fee_recipients: [Pubkey; 8],
 }
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawEvent {
     pub timestamp: i64,
     pub lp_token_amount_in: u64,

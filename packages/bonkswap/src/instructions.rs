@@ -2,17 +2,16 @@
 
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 
 // -----------------------------------------------------------------------------
 // Custom types
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct FixedPoint {
     pub v: u128,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct Token {
     pub v: u64,
 }
@@ -43,7 +42,7 @@ pub const UPDATE_REWARD_TOKENS: [u8; 8] = [156, 68, 147, 116, 29, 57, 159, 114];
 // -----------------------------------------------------------------------------
 // Instruction enumeration
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum BonkSwapInstruction {
     CreatePool(CreatePoolInstruction),
     CreateProvider(CreateProviderInstruction),
@@ -70,7 +69,7 @@ pub enum BonkSwapInstruction {
 // -----------------------------------------------------------------------------
 // Payload structs
 // -----------------------------------------------------------------------------
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreatePoolInstruction {
     pub lp_fee: FixedPoint,
     pub buyback_fee: FixedPoint,
@@ -81,44 +80,44 @@ pub struct CreatePoolInstruction {
     pub bump: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateProviderInstruction {
     pub token_x_amount: Token,
     pub token_y_amount: Token,
     pub bump: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateStateInstruction {
     pub nonce: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddTokensInstruction {
     pub delta_x: Token,
     pub delta_y: Token,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapInstruction {
     pub delta_in: Token,
     pub price_limit: FixedPoint,
     pub x_to_y: bool,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct WithdrawSharesInstruction {
     pub shares: Token,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateFarmInstruction {
     pub supply: Token,
     pub duration: u64,
     pub bump: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateDualFarmInstruction {
     pub supply_marco: Token,
     pub supply_project_first: Token,
@@ -126,7 +125,7 @@ pub struct CreateDualFarmInstruction {
     pub bump: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateTripleFarmInstruction {
     pub supply_marco: Token,
     pub supply_project_first: Token,
@@ -135,7 +134,7 @@ pub struct CreateTripleFarmInstruction {
     pub bump: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AddSupplyInstruction {
     pub supply_marco: Token,
     pub supply_project_first: Token,
@@ -143,7 +142,7 @@ pub struct AddSupplyInstruction {
     pub duration: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateFeesInstruction {
     pub new_buyback_fee: FixedPoint,
     pub new_project_fee: FixedPoint,

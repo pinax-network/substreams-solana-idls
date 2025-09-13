@@ -1,7 +1,6 @@
 //! Pump.fun on-chain instruction definitions and Borsh deserialisation helpers.
 use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
-use serde::{Deserialize, Serialize};
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------
@@ -17,7 +16,7 @@ const WITHDRAW: [u8; 8] = [183, 18, 70, 156, 148, 109, 161, 34];
 // ──────────────────────────────────────────────────────────────────────────────
 // High-level enum
 // ──────────────────────────────────────────────────────────────────────────────
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum PumpFunInstruction {
     /// Initialise global state (no payload).
     Initialize,
@@ -138,7 +137,7 @@ pub enum PumpFunInstruction {
 // -----------------------------------------------------------------------------
 
 /// Instruction data for [`PumpFunInstruction::SetParams`]
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetParamsInstruction {
     /// Account that will collect protocol fees going forward.
     pub fee_recipient: Pubkey,
@@ -154,7 +153,7 @@ pub struct SetParamsInstruction {
     pub fee_basis_points: u64,
 }
 /// Instruction data for [`PumpFunInstruction::Create`]
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateInstruction {
     /// Display name for the token pool (UTF-8).
     pub name: String,
@@ -167,7 +166,7 @@ pub struct CreateInstruction {
 }
 
 /// Instruction data for [`PumpFunInstruction::Buy`].
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct BuyInstruction {
     /// Amount of tokens to purchase.
     pub amount: u64,
@@ -176,7 +175,7 @@ pub struct BuyInstruction {
 }
 
 /// Instruction data for [`PumpFunInstruction::Sell`].
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SellInstruction {
     /// Number of tokens to sell.
     pub amount: u64,
