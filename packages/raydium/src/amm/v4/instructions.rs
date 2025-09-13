@@ -2,8 +2,8 @@
 
 //! on-chain instruction definitions and Borsh deserialisation helpers.
 // https://github.com/raydium-io/raydium-amm/blob/master/program/src/instruction.rs
-use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
+use common::ParseError;
 // use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------

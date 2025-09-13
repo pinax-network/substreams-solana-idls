@@ -2,7 +2,7 @@ use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
-use idls_common::accounts::AccountsError;
+use common::accounts::AccountsError;
 
 // -----------------------------------------------------------------------------
 // Accounts structs
@@ -64,7 +64,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionedPoolAccounts 
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -158,7 +158,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionlessPoolAccount
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -254,7 +254,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionlessPoolWithFee
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -308,7 +308,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for EnableOrDisablePoolAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -362,7 +362,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -429,7 +429,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveLiquiditySingleSideAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -498,7 +498,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddImbalanceLiquidityAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -568,7 +568,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveBalanceLiquidityAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -638,7 +638,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddBalanceLiquidityAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -680,7 +680,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SetPoolFeesAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -709,7 +709,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for OverrideCurveParamAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -749,7 +749,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for GetPoolInfoAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -811,7 +811,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for BootstrapLiquidityAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -861,7 +861,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateMintMetadataAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -901,7 +901,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateLockEscrowAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -955,7 +955,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for LockAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -1026,7 +1026,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimFeeAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -1069,7 +1069,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateConfigAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             config: get(0, "config")?,
@@ -1097,7 +1097,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CloseConfigAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             config: get(0, "config")?,
@@ -1170,7 +1170,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionlessConstantPro
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -1268,7 +1268,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionlessConstantPro
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -1365,7 +1365,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeCustomizablePermissionles
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -1418,7 +1418,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdateActivationPointAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -1450,7 +1450,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for WithdrawProtocolFeesAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -1481,7 +1481,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SetWhitelistedVaultAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,
@@ -1514,7 +1514,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for PartnerClaimFeeAccounts {
         let accounts = ix.accounts();
         let get = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get(0, "pool")?,

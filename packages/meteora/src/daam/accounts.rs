@@ -2,7 +2,7 @@ use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
-use idls_common::accounts::AccountsError;
+use common::accounts::AccountsError;
 
 // -----------------------------------------------------------------------------
 // AddLiquidity accounts
@@ -57,7 +57,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
@@ -131,7 +131,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimPartnerFeeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
@@ -210,7 +210,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimPositionFeeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
@@ -289,7 +289,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimProtocolFeeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
@@ -354,7 +354,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClaimRewardAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
@@ -401,7 +401,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CloseClaimFeeOperatorAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             claim_fee_operator: get_req(IDX_CLAIM_FEE_OPERATOR, "claim_fee_operator")?,
@@ -442,7 +442,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CloseConfigAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             config: get_req(IDX_CONFIG, "config")?,
@@ -497,7 +497,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for ClosePositionAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             position_nft_mint: get_req(IDX_POSITION_NFT_MINT, "position_nft_mint")?,
@@ -543,7 +543,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CloseTokenBadgeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             token_badge: get_req(IDX_TOKEN_BADGE, "token_badge")?,
@@ -586,7 +586,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateClaimFeeOperatorAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             claim_fee_operator: get_req(IDX_CLAIM_FEE_OPERATOR, "claim_fee_operator")?,
@@ -628,7 +628,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateConfigAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             config: get_req(IDX_CONFIG, "config")?,
@@ -669,7 +669,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateDynamicConfigAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             config: get_req(IDX_CONFIG, "config")?,
@@ -726,7 +726,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreatePositionAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             owner: get_req(IDX_OWNER, "owner")?,
@@ -775,7 +775,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for CreateTokenBadgeAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             token_badge: get_req(IDX_TOKEN_BADGE, "token_badge")?,
@@ -823,7 +823,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for FundRewardAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
@@ -908,7 +908,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeCustomizablePoolAccounts 
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             creator: get_req(IDX_CREATOR, "creator")?,
@@ -1007,7 +1007,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePoolAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             creator: get_req(IDX_CREATOR, "creator")?,
@@ -1109,7 +1109,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePoolWithDynamicConfigAcco
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             creator: get_req(IDX_CREATOR, "creator")?,
@@ -1176,7 +1176,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeRewardAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
@@ -1232,7 +1232,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for LockPositionAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
@@ -1281,7 +1281,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for PermanentLockPositionAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
@@ -1322,7 +1322,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RefreshVestingAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
@@ -1392,7 +1392,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveAllLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
@@ -1473,7 +1473,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,
@@ -1522,7 +1522,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SetPoolStatusAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
@@ -1576,7 +1576,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SplitPositionAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
@@ -1650,7 +1650,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Self {
@@ -1699,7 +1699,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdateRewardDurationAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
@@ -1737,7 +1737,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for UpdateRewardFunderAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool: get_req(IDX_POOL, "pool")?,
@@ -1785,7 +1785,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for WithdrawIneligibleRewardAccounts {
         let accounts = ix.accounts();
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
         Ok(Self {
             pool_authority: get_req(IDX_POOL_AUTHORITY, "pool_authority")?,

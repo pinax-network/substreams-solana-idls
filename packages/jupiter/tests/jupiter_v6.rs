@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
-    use substreams::hex;
     use jupiter;
+    use substreams::hex;
 
     #[test]
     fn unpack_v6_swap_event() {

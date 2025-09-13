@@ -19,7 +19,7 @@ members = [
 
 [dependencies]
 bonkswap = { path = "packages/bonkswap" }
-idls-common = { path = "packages/common" }
+common = { path = "packages/common" }
 jupiter = { path = "packages/jupiter" }
 meteora = { path = "packages/meteora" }
 orca = { path = "packages/orca" }

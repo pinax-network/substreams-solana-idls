@@ -1,7 +1,7 @@
 //! Meteora DAMM v2 instructions.
 
-use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
+use common::ParseError;
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------

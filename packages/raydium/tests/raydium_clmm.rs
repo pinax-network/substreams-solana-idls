@@ -1,8 +1,8 @@
 #![cfg(test)]
 #![allow(deprecated)]
 mod tests {
-    use substreams::hex;
     use raydium::clmm;
+    use substreams::hex;
 
     #[test]
     fn unpack_swap_v1_deprecated() {

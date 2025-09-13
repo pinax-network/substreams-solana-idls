@@ -1,8 +1,8 @@
 #![cfg(test)]
 #![allow(deprecated)]
 mod tests {
-    use substreams::hex;
     use meteora::dllm;
+    use substreams::hex;
 
     #[test]
     fn unpack_dllm_swap_event() {

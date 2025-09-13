@@ -1,8 +1,8 @@
 //! on-chain **events** and their Borsh-deserialisation helpers.
 // https://github.com/raydium-io/raydium-amm/blob/master/program/src/log.rs
 
-use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
+use common::ParseError;
 use solana_program::pubkey::Pubkey;
 
 /// ------------------------------------------------------------------------

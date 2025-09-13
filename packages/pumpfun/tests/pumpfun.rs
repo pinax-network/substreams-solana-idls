@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
-    use substreams::hex;
     use pumpfun;
+    use substreams::hex;
 
     #[test]
     fn anchor_self_cpi_trade_v0() {

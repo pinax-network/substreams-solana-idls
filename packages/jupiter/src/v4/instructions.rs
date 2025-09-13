@@ -1,7 +1,7 @@
 //! Jupiter Aggregator v4 on-chain instructions.
 
-use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
+use common::ParseError;
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct AmountWithSlippage {
     pub amount: u64,

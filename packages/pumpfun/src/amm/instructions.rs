@@ -1,7 +1,7 @@
 //! Pump.fun AMM on-chain instructions (auto-generated from IDL).
 
-use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
+use common::ParseError;
 use solana_program::pubkey::Pubkey;
 
 // -------------------------------------------------------------------------

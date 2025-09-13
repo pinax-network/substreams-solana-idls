@@ -2,7 +2,7 @@ use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
-use idls_common::accounts::AccountsError;
+use common::accounts::AccountsError;
 
 // -----------------------------------------------------------------------------
 // Swap accounts (with optional referrer)
@@ -55,7 +55,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapAccounts {
 
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
-            idls_common::accounts::to_pubkey(name, index, a.0)
+            common::accounts::to_pubkey(name, index, a.0)
         };
 
         let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };

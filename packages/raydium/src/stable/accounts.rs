@@ -2,7 +2,7 @@ use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
-use idls_common::accounts;
+use common::accounts;
 
 // -----------------------------------------------------------------------------
 // Pre-initialize accounts
@@ -257,4 +257,3 @@ accounts!(
         user_source_owner
     }
 );
-

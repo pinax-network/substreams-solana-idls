@@ -1,7 +1,7 @@
 //! Jupiter DCA on-chain events.
 
-use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
+use common::ParseError;
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------

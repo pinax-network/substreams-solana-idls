@@ -1,7 +1,7 @@
 //! Phonenix trading instructions.
 
-use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
+use common::ParseError;
 
 // -----------------------------------------------------------------------------
 // Discriminators

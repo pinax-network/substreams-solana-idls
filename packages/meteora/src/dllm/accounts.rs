@@ -2,7 +2,7 @@ use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
-use idls_common::accounts::AccountsError;
+use common::accounts::AccountsError;
 
 /// Accounts for the `add_liquidity` instruction.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
@@ -31,7 +31,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityAccounts {
@@ -84,7 +84,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidity2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidity2Accounts {
@@ -137,7 +137,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityByStrategyAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityByStrategyAccounts {
@@ -190,7 +190,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityByStrategy2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityByStrategy2Accounts {
@@ -239,7 +239,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityByStrategyOneSideAccoun
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityByStrategyOneSideAccounts {
@@ -290,7 +290,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityByWeightAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityByWeightAccounts {
@@ -341,7 +341,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityOneSideAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityOneSideAccounts {
@@ -388,7 +388,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityOneSidePreciseAccounts 
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityOneSidePreciseAccounts {
@@ -433,7 +433,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for AddLiquidityOneSidePrecise2Accounts
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(AddLiquidityOneSidePrecise2Accounts {
@@ -666,7 +666,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for GoToABinAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(GoToABinAccounts {
@@ -759,7 +759,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeCustomizablePermissionles
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(InitializeCustomizablePermissionlessLbPairAccounts {
@@ -815,7 +815,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeCustomizablePermissionles
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(InitializeCustomizablePermissionlessLbPair2Accounts {
@@ -871,7 +871,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeLbPairAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(InitializeLbPairAccounts {
@@ -924,7 +924,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeLbPair2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(InitializeLbPair2Accounts {
@@ -980,7 +980,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializePermissionLbPairAccounts 
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(InitializePermissionLbPairAccounts {
@@ -1102,7 +1102,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for InitializeRewardAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(InitializeRewardAccounts {
@@ -1188,7 +1188,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RebalanceLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(RebalanceLiquidityAccounts {
@@ -1244,7 +1244,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveAllLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(RemoveAllLiquidityAccounts {
@@ -1299,7 +1299,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveLiquidityAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(RemoveLiquidityAccounts {
@@ -1353,7 +1353,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveLiquidity2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(RemoveLiquidity2Accounts {
@@ -1407,7 +1407,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveLiquidityByRangeAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(RemoveLiquidityByRangeAccounts {
@@ -1461,7 +1461,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for RemoveLiquidityByRange2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(RemoveLiquidityByRange2Accounts {
@@ -1559,7 +1559,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(SwapAccounts {
@@ -1613,7 +1613,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for Swap2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(Swap2Accounts {
@@ -1667,7 +1667,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapExactOutAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(SwapExactOutAccounts {
@@ -1721,7 +1721,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapExactOut2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(SwapExactOut2Accounts {
@@ -1775,7 +1775,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapWithPriceImpactAccounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(SwapWithPriceImpactAccounts {
@@ -1829,7 +1829,7 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapWithPriceImpact2Accounts {
         let accounts = ix.accounts();
         let get_req = |i: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(i).ok_or(AccountsError::Missing { name, index: i })?;
-            idls_common::accounts::to_pubkey(name, i, a.0)
+            common::accounts::to_pubkey(name, i, a.0)
         };
         let get_opt = |i: usize| -> Option<Pubkey> { accounts.get(i).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
         Ok(SwapWithPriceImpact2Accounts {
