@@ -2,7 +2,7 @@ use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana::block_view::InstructionView;
 
-use idls_common::accounts::{to_pubkey, AccountsError};
+use common::accounts::{to_pubkey, AccountsError};
 
 // -----------------------------------------------------------------------------
 // Simple instructions

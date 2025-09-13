@@ -2,8 +2,8 @@
 #![allow(deprecated)]
 
 mod tests {
-    use substreams::hex;
     use meteora::daam;
+    use substreams::hex;
 
     #[test]
     fn unpack_daam_swap_event() {

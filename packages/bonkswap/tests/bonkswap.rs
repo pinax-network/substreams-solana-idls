@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
-    use substreams::hex;
     use bonkswap;
+    use substreams::hex;
 
     #[test]
     fn unpack_swap_event() {

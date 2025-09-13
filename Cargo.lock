@@ -122,7 +122,7 @@ name = "bonkswap"
 version = "0.1.0"
 dependencies = [
  "borsh 1.5.7",
- "idls-common",
+ "common",
  "solana-program",
  "substreams",
  "substreams-solana",
@@ -270,6 +270,15 @@ name = "cfg_aliases"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "613afe47fcd5fac7ccf1db93babcb082c5994d996f20b8b159f2ad1658eb5724"
+
+[[package]]
+name = "common"
+version = "0.1.0"
+dependencies = [
+ "borsh 1.5.7",
+ "solana-program",
+ "thiserror 2.0.16",
+]
 
 [[package]]
 name = "console_error_panic_hook"
@@ -520,15 +529,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7ebdb29d2ea9ed0083cd8cece49bbd968021bd99b0849edb4a9a7ee0fdf6a4e0"
 
 [[package]]
-name = "idls-common"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "solana-program",
- "thiserror 2.0.16",
-]
-
-[[package]]
 name = "indexmap"
 version = "2.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -562,7 +562,7 @@ name = "jupiter"
 version = "0.1.0"
 dependencies = [
  "borsh 1.5.7",
- "idls-common",
+ "common",
  "solana-program",
  "substreams",
  "substreams-solana",
@@ -677,7 +677,7 @@ name = "meteora"
 version = "0.1.0"
 dependencies = [
  "borsh 1.5.7",
- "idls-common",
+ "common",
  "solana-program",
  "substreams",
  "substreams-solana",
@@ -766,7 +766,7 @@ name = "orca"
 version = "0.1.0"
 dependencies = [
  "borsh 1.5.7",
- "idls-common",
+ "common",
  "solana-program",
  "substreams",
  "substreams-solana",
@@ -863,7 +863,7 @@ name = "phoenix"
 version = "0.1.0"
 dependencies = [
  "borsh 1.5.7",
- "idls-common",
+ "common",
  "solana-program",
  "substreams",
  "substreams-solana",
@@ -972,7 +972,7 @@ name = "pumpfun"
 version = "0.1.0"
 dependencies = [
  "borsh 1.5.7",
- "idls-common",
+ "common",
  "solana-program",
  "substreams",
  "substreams-solana",
@@ -1070,7 +1070,7 @@ version = "0.1.0"
 dependencies = [
  "base64 0.22.1",
  "borsh 1.5.7",
- "idls-common",
+ "common",
  "solana-program",
  "substreams",
  "substreams-solana",
@@ -2027,7 +2027,7 @@ name = "stabble"
 version = "0.1.0"
 dependencies = [
  "borsh 1.5.7",
- "idls-common",
+ "common",
  "solana-program",
  "substreams",
  "substreams-solana",
@@ -2098,7 +2098,7 @@ name = "substreams-solana-idls"
 version = "0.5.5"
 dependencies = [
  "bonkswap",
- "idls-common",
+ "common",
  "jupiter",
  "meteora",
  "orca",

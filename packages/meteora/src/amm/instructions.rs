@@ -1,7 +1,7 @@
 //! Meteora AMM on-chain instructions.
 
-use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
+use common::ParseError;
 use solana_program::pubkey::Pubkey;
 
 /// Multiplier for the pool token. Used to normalized token with different decimal into the same precision.

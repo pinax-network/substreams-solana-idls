@@ -1,7 +1,7 @@
 //! Raydium Launchpad events.
 
 use borsh::{BorshDeserialize, BorshSerialize};
-use idls_common::ParseError;
+use common::ParseError;
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 pub use bonkswap;
-pub use idls_common as common;
+pub use common;
 pub use jupiter;
 pub use meteora;
 pub use orca;

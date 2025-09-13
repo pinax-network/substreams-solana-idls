@@ -5,7 +5,7 @@ edition = "2021"
 publish = false
 
 [dependencies]
-idls-common = { path = "../common" }
+common = { path = "../common" }
 substreams = { workspace = true }
 substreams-solana = { workspace = true }
 solana-program = { workspace = true }

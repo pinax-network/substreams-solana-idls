@@ -1,7 +1,7 @@
 //! Jupiter Aggregator v4 on-chain **events** and their Borsh-deserialisation helpers.
 
-use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
+use common::ParseError;
 use solana_program::pubkey::Pubkey;
 
 // -----------------------------------------------------------------------------

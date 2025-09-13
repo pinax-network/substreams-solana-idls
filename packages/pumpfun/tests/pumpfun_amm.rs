@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
-    use substreams::hex;
     use pumpfun;
+    use substreams::hex;
 
     #[test]
     fn unpack_sell_event_v2() {

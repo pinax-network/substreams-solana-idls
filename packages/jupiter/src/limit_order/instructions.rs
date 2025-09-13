@@ -1,7 +1,7 @@
 //! Jupiter Limit Order on-chain instructions.
 
-use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
+use common::ParseError;
 
 // -----------------------------------------------------------------------------
 // Payload structs

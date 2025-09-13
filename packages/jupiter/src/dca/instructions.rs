@@ -1,7 +1,7 @@
 //! Jupiter DCA on-chain instructions.
 
-use idls_common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
+use common::ParseError;
 
 // -----------------------------------------------------------------------------
 // Custom types

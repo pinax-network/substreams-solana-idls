@@ -1,2 +1,2 @@
-extern crate idls_common;
+extern crate common;
 pub mod whirlpool;

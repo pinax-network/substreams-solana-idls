@@ -1,5 +1,5 @@
 #[macro_use]
-extern crate idls_common;
+extern crate common;
 pub mod dca;
 pub mod limit_order;
 pub mod v4;
