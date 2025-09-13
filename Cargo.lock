@@ -2030,7 +2030,7 @@ dependencies = [
 
 [[package]]
 name = "substreams-solana-idls"
-version = "0.5.4"
+version = "0.5.5"
 dependencies = [
  "base64 0.22.1",
  "borsh 1.5.7",
