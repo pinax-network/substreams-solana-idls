@@ -8,7 +8,6 @@ members = [
     "packages/meteora",
     "packages/orca",
     "packages/phoenix",
-    "packages/phonenix",
     "packages/stabble",
 ]
 
