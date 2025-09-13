@@ -1,0 +1,14 @@
+[package]
+name = "idls-common"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+thiserror = { workspace = true }
+borsh = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+solana-program = { workspace = true }
+substreams = { workspace = true }
+substreams-solana = { workspace = true }
+serde-big-array = { workspace = true }
