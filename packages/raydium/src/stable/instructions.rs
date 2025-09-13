@@ -114,7 +114,7 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumStableInstruction {
                 Self::SwapBaseIn(SwapBaseInInstruction { amount_in, minimum_amount_out })
             }
             PRE_INITIALIZE => {
-                if payload.len() < 1 {
+                if payload.is_empty() {
                     return Err(ParseError::TooShort(data.len()));
                 }
                 let nonce = payload[0];

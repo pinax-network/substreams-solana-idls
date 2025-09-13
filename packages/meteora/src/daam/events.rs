@@ -322,7 +322,7 @@ impl<'a> TryFrom<&'a [u8]> for MeteoraDammEvent {
         if data.len() < 8 {
             return Err(ParseError::TooShort(data.len()));
         }
-        let (disc, payload) = if data.len() >= 16 && &data[0..8] == ANCHOR_DISC {
+        let (disc, payload) = if data.len() >= 16 && data[0..8] == ANCHOR_DISC {
             let disc: [u8; 8] = data[8..16].try_into().expect("slice len 8");
             (disc, &data[16..])
         } else {
