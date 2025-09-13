@@ -18,15 +18,15 @@ members = [
 ]
 
 [dependencies]
-bonkswap = { path = "packages/bonkswap" }
-common = { path = "packages/common" }
-jupiter = { path = "packages/jupiter" }
-meteora = { path = "packages/meteora" }
-orca = { path = "packages/orca" }
-phoenix = { path = "packages/phoenix" }
-pumpfun = { path = "packages/pumpfun" }
-raydium = { path = "packages/raydium" }
-stabble = { path = "packages/stabble" }
+bonkswap = { version = "0.1.0", path = "packages/bonkswap" }
+common = { version = "0.1.0", path = "packages/common" }
+jupiter = { version = "0.1.0", path = "packages/jupiter" }
+meteora = { version = "0.1.0", path = "packages/meteora" }
+orca = { version = "0.1.0", path = "packages/orca" }
+phoenix = { version = "0.1.0", path = "packages/phoenix" }
+pumpfun = { version = "0.1.0", path = "packages/pumpfun" }
+raydium = { version = "0.1.0", path = "packages/raydium" }
+stabble = { version = "0.1.0", path = "packages/stabble" }
 
 [workspace.dependencies]
 substreams = "0.6.2"
