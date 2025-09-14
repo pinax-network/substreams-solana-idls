@@ -10,3 +10,6 @@ substreams = { workspace = true }
 substreams-solana = { workspace = true }
 solana-program = { workspace = true }
 borsh = { workspace = true }
+
+[dev-dependencies]
+base64 = { workspace = true }

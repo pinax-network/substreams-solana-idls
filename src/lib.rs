@@ -1,5 +1,6 @@
 pub use bonkswap;
 pub use common;
+pub use drift;
 pub use jupiter;
 pub use meteora;
 pub use orca;
