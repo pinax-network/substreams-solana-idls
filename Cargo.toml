@@ -12,6 +12,7 @@ members = [
     "packages/bonkswap",
     "packages/jupiter",
     "packages/meteora",
+    "packages/okx",
     "packages/orca",
     "packages/drift",
     "packages/phoenix",
@@ -35,6 +36,7 @@ drift = { version = "0.1.0", path = "packages/drift" }
 pancakeswap = { version = "0.1.0", path = "packages/pancakeswap" }
 dflow = { version = "0.1.0", path = "packages/dflow" }
 solfi = { version = "0.1.0", path = "packages/solfi" }
+okx = { version = "0.1.0", path = "packages/okx" }
 
 [workspace.dependencies]
 substreams = "0.6.2"
