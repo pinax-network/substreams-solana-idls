@@ -380,6 +380,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "drift"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+]
+
+[[package]]
 name = "either"
 version = "1.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2099,6 +2111,7 @@ version = "0.5.5"
 dependencies = [
  "bonkswap",
  "common",
+ "drift",
  "jupiter",
  "meteora",
  "orca",
