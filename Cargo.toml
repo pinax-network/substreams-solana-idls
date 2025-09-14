@@ -17,7 +17,8 @@ members = [
     "packages/phoenix",
     "packages/stabble",
     "packages/pancakeswap",
-    "packages/solfi",
+    "packages/dflow",
+    "packages/solfi"
 ]
 
 [dependencies]
@@ -32,6 +33,7 @@ raydium = { version = "0.1.0", path = "packages/raydium" }
 stabble = { version = "0.1.0", path = "packages/stabble" }
 drift = { version = "0.1.0", path = "packages/drift" }
 pancakeswap = { version = "0.1.0", path = "packages/pancakeswap" }
+dflow = { version = "0.1.0", path = "packages/dflow" }
 solfi = { version = "0.1.0", path = "packages/solfi" }
 
 [workspace.dependencies]
