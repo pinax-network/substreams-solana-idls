@@ -246,10 +246,7 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunEvent {
                 TRADE_LEN_V3 => Self::TradeV3(TradeEventV3::try_from_slice(payload)?),
                 other => {
                     return Err(ParseError::InvalidLength {
-                        expected: *[TRADE_LEN_V0, TRADE_LEN_V1, TRADE_LEN_V2, TRADE_LEN_V3]
-                            .iter()
-                            .max()
-                            .unwrap(),
+                        expected: *[TRADE_LEN_V0, TRADE_LEN_V1, TRADE_LEN_V2, TRADE_LEN_V3].iter().max().unwrap(),
                         got: other,
                     })
                 }
