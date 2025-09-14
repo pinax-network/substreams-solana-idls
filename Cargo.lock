@@ -2066,6 +2066,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "solfi"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+]
+
+[[package]]
 name = "stabble"
 version = "0.1.0"
 dependencies = [
@@ -2150,6 +2162,7 @@ dependencies = [
  "phoenix",
  "pumpfun",
  "raydium",
+ "solfi",
  "stabble",
 ]
 
