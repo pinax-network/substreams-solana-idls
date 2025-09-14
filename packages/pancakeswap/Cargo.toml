@@ -1,0 +1,12 @@
+[package]
+name = "pancakeswap"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+common = { path = "../common" }
+substreams = { workspace = true }
+substreams-solana = { workspace = true }
+solana-program = { workspace = true }
+borsh = { workspace = true }
