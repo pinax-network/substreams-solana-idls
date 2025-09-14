@@ -1,0 +1,79 @@
+name: DEX Integration Request
+description: Request to implement a new DEX crate (e.g., PumpFun) with instruction and log tests.
+title: "[DEX] Integration Request"
+labels: ["area:DEX", "type:integration"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      description: Name of the DEX or program (e.g., PumpFun)
+      placeholder: PumpFun
+    validations:
+      required: true
+
+  - type: input
+    id: program_id
+    attributes:
+      label: Program ID
+      description: The on-chain program ID
+      placeholder: 0x...
+    validations:
+      required: true
+
+  - type: input
+    id: signature
+    attributes:
+      label: Signature
+      description: Transaction or instruction signature
+      placeholder: 0x...
+    validations:
+      required: true
+
+  - type: textarea
+    id: instruction_hex
+    attributes:
+      label: Instruction Hex Data
+      description: Raw hex data for the instruction
+      render: text
+      placeholder: |
+        f8c6...
+    validations:
+      required: true
+
+  - type: textarea
+    id: instruction_json
+    attributes:
+      label: Instruction JSON Response
+      description: Expected decoded JSON structure
+      render: json
+      placeholder: |
+        {
+          "amount": { "type": "u64", "data": "" },
+          "other_amount_threshold": { "type": "u64", "data": "" },
+          "sqrt_price_limit_x64": { "type": "u128", "data": "" },
+          "is_base_input": { "type": "bool", "data": "" }
+        }
+    validations:
+      required: true
+
+  - type: textarea
+    id: base64_log
+    attributes:
+      label: Base64 Log Data
+      description: SwapEvent or equivalent log in base64 encoding
+      render: text
+      placeholder: |
+        QMbN6C...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: idl_provided
+    attributes:
+      label: IDL Provided?
+      options:
+        - "Yes"
+        - "No"
+    validations:
+      required: true
