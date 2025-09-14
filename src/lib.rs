@@ -3,6 +3,7 @@ pub use common;
 pub use drift;
 pub use jupiter;
 pub use meteora;
+pub use okx;
 pub use orca;
 pub use pancakeswap;
 pub use phoenix;
