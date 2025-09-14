@@ -34,7 +34,7 @@ impl<'a> TryFrom<&'a [u8]> for SolfiInstruction {
     type Error = ParseError;
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
-        if data.len() < 1 {
+        if data.is_empty() {
             return Err(ParseError::TooShort(data.len()));
         }
 
