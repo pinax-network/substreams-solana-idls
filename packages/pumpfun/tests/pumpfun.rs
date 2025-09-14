@@ -156,4 +156,119 @@ mod tests {
             _ => panic!("Expected a CreateInstruction"),
         }
     }
+
+    #[test]
+    fn anchor_self_cpi_trade_v3_sell() {
+        // https://solscan.io/tx/2Yy4JHRCZbxfupUJymVwMnvGmvfcZHFewJAtbBQFzqB1BLxK2cyYFXB7qFQdR9rL6EhjUKUXrtYE7FwfHXWU1JFj
+        let bytes = hex!("e445a52e51cb9a1dbddb7fd34ee661ee93b45e8a111e2251f012eabd20014d13d381415d8a24b65d5c6335b96a17932f5297bf0100000000f3ff14ef8000000000e57997bc9d434d7435cfe05e6bd05391d6bf6b237982ffd3ddd42e97c448d3f50302c668000000006834639c09000000511432543fc5020068883fa002000000517c1f08aec601008d181a0c849fa937a6f34aded3081ef95700aacb0c9bb3d909a4b9147527a4eb5f000000000000008b40040000000000ff15d9e24f928a85201dec379a3c21125fc554499cd901b6ba8d4f7b387449521e00000000000000c057010000000000000000000000000000000000000000000000000000000000000000000000000000");
+
+        match pumpfun::bonding_curve::events::unpack(&bytes).expect("decode event") {
+            pumpfun::bonding_curve::events::PumpFunEvent::TradeV3(event) => {
+                assert_eq!(
+                    event,
+                    pumpfun::bonding_curve::events::TradeEventV3 {
+                        mint: "AwaTATtp7mJygLjDhcrV9VK8dg9pSzPjqdYJBNF7pump".parse().unwrap(),
+                        sol_amount: 29_333_330,
+                        token_amount: 553_766_944_755,
+                        is_buy: false,
+                        user: "GSmuCd95ZCe9MVMiUBYasW46ZVrRyHzNBKtSiJwAwvmA".parse().unwrap(),
+                        timestamp: 1_757_807_107,
+                        virtual_sol_reserves: 41_278_452_840,
+                        virtual_token_reserves: 779_825_739_600_977,
+                        real_sol_reserves: 11_278_452_840,
+                        real_token_reserves: 499_925_739_600_977,
+                        fee_recipient: "AVmoTthdrX6tKt4nDjco2D775W2YK3sDhxPcMmzUAmTY".parse().unwrap(),
+                        fee_basis_points: 95,
+                        fee: 278_667,
+                        creator: "JAkHiNh5z2VsfywdTTViDS28nyBoX9gne9vbW3tZcpBT".parse().unwrap(),
+                        creator_fee_basis_points: 30,
+                        creator_fee: 88_000,
+                        track_volume: false,
+                        total_unclaimed_tokens: 0,
+                        total_claimed_tokens: 0,
+                        current_sol_volume: 0,
+                        last_update_timestamp: 0,
+                    }
+                );
+            }
+            _ => panic!("Expected a TradeEventV3"),
+        }
+    }
+
+    #[test]
+    fn anchor_self_cpi_trade_v3_buy() {
+        // https://solscan.io/tx/2jdMxgFA7YaJUDKTC9sPFMKrcWDWQVP9PiMgtoECbELaUppDCrQiY74HAGFWCoUsKjb3orvwWCiGeYQtxm4jTKsP
+        let bytes = hex!("e445a52e51cb9a1dbddb7fd34ee661ee11d58a2fc85b15bbcf913eb5e77ae6b2e6af217775c1e42c952b17902eed39df00561846000000002dac36647f1600000150ab51e924f80d2b531890ef1973db82748b453648a7c02bf18370e94361fe0c9a02c668000000003166073f09000000f1cbf29238e1020031bae34202000000f133e046a7e20100ad11e6a4fc2944a4fa8251bef815426e1bfb28c6b6646677607c6ad9f566a6465f00000000000000a078aa00000000002177e2caf39181f70d788ec745d4650486b6f387d99d8c3a93e587efb0392e481e0000000000000040d5350000000000000000000000000000000000000000000000000000000000000000000000000000");
+
+        match pumpfun::bonding_curve::events::unpack(&bytes).expect("decode event") {
+            pumpfun::bonding_curve::events::PumpFunEvent::TradeV3(event) => {
+                assert_eq!(
+                    event,
+                    pumpfun::bonding_curve::events::TradeEventV3 {
+                        mint: "2CcncueD7oeSKijgvSF9VGLQNjChNGSktdqwUNRepump".parse().unwrap(),
+                        sol_amount: 1_176_000_000,
+                        token_amount: 24_736_397_962_285,
+                        is_buy: true,
+                        user: "6Ru8fGXkZCVY1bFoc7dg1Mtt6qyCdESeb9BkRUetqUS7".parse().unwrap(),
+                        timestamp: 1_757_807_258,
+                        virtual_sol_reserves: 39_712_155_185,
+                        virtual_token_reserves: 810_583_053_224_945,
+                        real_sol_reserves: 9_712_155_185,
+                        real_token_reserves: 530_683_053_224_945,
+                        fee_recipient: "CebN5WGQ4jvEPvsVU4EoHEpgzq1VV7AbicfhtW4xC9iM".parse().unwrap(),
+                        fee_basis_points: 95,
+                        fee: 11_172_000,
+                        creator: "3FeUwYhnciCkHGp5DBmSKU5BmVPFypneCQDuxKHo9BMy".parse().unwrap(),
+                        creator_fee_basis_points: 30,
+                        creator_fee: 3_528_000,
+                        track_volume: false,
+                        total_unclaimed_tokens: 0,
+                        total_claimed_tokens: 0,
+                        current_sol_volume: 0,
+                        last_update_timestamp: 0,
+                    }
+                );
+            }
+            _ => panic!("Expected a TradeEventV3"),
+        }
+    }
+
+    #[test]
+    fn instruction_sell_exact_in() {
+        // https://solscan.io/tx/2Yy4JHRCZbxfupUJymVwMnvGmvfcZHFewJAtbBQFzqB1BLxK2cyYFXB7qFQdR9rL6EhjUKUXrtYE7FwfHXWU1JFj
+        let bytes = hex!("9527de9bd37c981af1e1139f101c00002c3cd31f000000000000000000000000");
+
+        match pumpfun::bonding_curve::instructions::unpack(&bytes).expect("decode instruction") {
+            pumpfun::bonding_curve::instructions::PumpFunInstruction::SellExactIn(ix) => {
+                assert_eq!(
+                    ix,
+                    pumpfun::bonding_curve::instructions::SellExactInInstruction {
+                        amount_in: 30_857_713_934_833,
+                        minimum_amount_out: 533_937_196,
+                        share_fee_rate: 0,
+                    }
+                );
+            }
+            _ => panic!("Expected a SellExactIn instruction"),
+        }
+    }
+
+    #[test]
+    fn instruction_buy_v3() {
+        // https://solscan.io/tx/2jdMxgFA7YaJUDKTC9sPFMKrcWDWQVP9PiMgtoECbELaUppDCrQiY74HAGFWCoUsKjb3orvwWCiGeYQtxm4jTKsP
+        let bytes = hex!("66063d1201daebea2dac36647f160000008c864700000000");
+
+        match pumpfun::bonding_curve::instructions::unpack(&bytes).expect("decode instruction") {
+            pumpfun::bonding_curve::instructions::PumpFunInstruction::Buy(ix) => {
+                assert_eq!(
+                    ix,
+                    pumpfun::bonding_curve::instructions::BuyInstruction {
+                        amount: 24_736_397_962_285,
+                        max_sol_cost: 1_200_000_000,
+                    }
+                );
+            }
+            _ => panic!("Expected a Buy instruction"),
+        }
+    }
 }
