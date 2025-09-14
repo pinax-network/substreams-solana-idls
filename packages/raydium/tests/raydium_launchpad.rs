@@ -55,4 +55,24 @@ mod tests {
             _ => panic!("Expected TradeEventV2"),
         }
     }
+
+    #[test]
+    fn instruction_sell_exact_in() {
+        // https://solscan.io/tx/2Yy4JHRCZbxfupUJymVwMnvGmvfcZHFewJAtbBQFzqB1BLxK2cyYFXB7qFQdR9rL6EhjUKUXrtYE7FwfHXWU1JFj
+        let bytes = hex!("9527de9bd37c981af1e1139f101c00002c3cd31f000000000000000000000000");
+
+        match launchpad::instructions::unpack(&bytes).expect("decode instruction") {
+            launchpad::instructions::RaydiumLaunchpadInstruction::SellExactIn(ix) => {
+                assert_eq!(
+                    ix,
+                    launchpad::instructions::SellExactInInstruction {
+                        amount_in: 30_857_713_934_833,
+                        minimum_amount_out: 533_937_196,
+                        share_fee_rate: 0,
+                    }
+                );
+            }
+            _ => panic!("Expected a SellExactIn instruction"),
+        }
+    }
 }

@@ -234,26 +234,6 @@ mod tests {
     }
 
     #[test]
-    fn instruction_sell_exact_in() {
-        // https://solscan.io/tx/2Yy4JHRCZbxfupUJymVwMnvGmvfcZHFewJAtbBQFzqB1BLxK2cyYFXB7qFQdR9rL6EhjUKUXrtYE7FwfHXWU1JFj
-        let bytes = hex!("9527de9bd37c981af1e1139f101c00002c3cd31f000000000000000000000000");
-
-        match pumpfun::bonding_curve::instructions::unpack(&bytes).expect("decode instruction") {
-            pumpfun::bonding_curve::instructions::PumpFunInstruction::SellExactIn(ix) => {
-                assert_eq!(
-                    ix,
-                    pumpfun::bonding_curve::instructions::SellExactInInstruction {
-                        amount_in: 30_857_713_934_833,
-                        minimum_amount_out: 533_937_196,
-                        share_fee_rate: 0,
-                    }
-                );
-            }
-            _ => panic!("Expected a SellExactIn instruction"),
-        }
-    }
-
-    #[test]
     fn instruction_buy_v3() {
         // https://solscan.io/tx/2jdMxgFA7YaJUDKTC9sPFMKrcWDWQVP9PiMgtoECbELaUppDCrQiY74HAGFWCoUsKjb3orvwWCiGeYQtxm4jTKsP
         let bytes = hex!("66063d1201daebea2dac36647f160000008c864700000000");
