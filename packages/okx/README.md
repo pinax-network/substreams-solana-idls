@@ -1,4 +1,4 @@
-# OKX DEX: Aggregation Router V2
+# OKX DEX
 
-- <https://web3.okx.com/dex-swap>
-- <https://solscan.io/account/6m2CDdhRgxpH4WjvdzxAYbGxwdGUz5MziiL5jek2kBma>
+- https://solscan.io/account/6m2CDdhRgxpH4WjvdzxAYbGxwdGUz5MziiL5jek2kBma  
+  Program ID: `6m2CDdhRgxpH4WjvdzxAYbGxwdGUz5MziiL5jek2kBma`
