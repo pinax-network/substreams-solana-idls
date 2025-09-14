@@ -1,6 +1,6 @@
 [package]
 name = "pumpfun"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 publish = false
 
@@ -10,4 +10,3 @@ substreams = { workspace = true }
 substreams-solana = { workspace = true }
 solana-program = { workspace = true }
 borsh = { workspace = true }
-
