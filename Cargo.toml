@@ -15,6 +15,7 @@ members = [
     "packages/orca",
     "packages/phoenix",
     "packages/stabble",
+    "packages/pancakeswap",
 ]
 
 [dependencies]
@@ -27,6 +28,7 @@ phoenix = { version = "0.1.0", path = "packages/phoenix" }
 pumpfun = { version = "0.1.0", path = "packages/pumpfun" }
 raydium = { version = "0.1.0", path = "packages/raydium" }
 stabble = { version = "0.1.0", path = "packages/stabble" }
+pancakeswap = { version = "0.1.0", path = "packages/pancakeswap" }
 
 [workspace.dependencies]
 substreams = "0.6.2"
