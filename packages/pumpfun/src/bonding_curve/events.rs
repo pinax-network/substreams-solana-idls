@@ -14,6 +14,7 @@ pub const TRADE: [u8; 8] = [189, 219, 127, 211, 78, 230, 97, 238];
 pub const TRADE_LEN_V0: usize = 121 - 16;
 pub const TRADE_LEN_V1: usize = 137 - 16;
 pub const TRADE_LEN_V2: usize = 233 - 16;
+pub const TRADE_LEN_V3: usize = 266 - 16;
 
 // -----------------------------------------------------------------------------
 // High-level event enum (concise; rich docs live in each struct)
@@ -27,6 +28,7 @@ pub enum PumpFunEvent {
     TradeV0(TradeEventV0),
     TradeV1(TradeEventV1),
     TradeV2(TradeEventV2),
+    TradeV3(TradeEventV3),
 
     /// Pool completed / closed. See [`CompleteEvent`].
     Complete(CompleteEvent),
@@ -151,6 +153,45 @@ pub struct TradeEventV2 {
     pub creator_fee: u64,
 }
 
+/// Emitted on every buy or sell.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct TradeEventV3 {
+    pub mint: Pubkey,
+    /// Lamports moved (positive on buys, negative on sells).
+    pub sol_amount: u64,
+    /// Token amount moved (positive on buys, negative on sells).
+    pub token_amount: u64,
+    /// `true` = buy (SOL→SPL), `false` = sell.
+    pub is_buy: bool,
+    /// Trader’s wallet.
+    pub user: Pubkey,
+    pub timestamp: i64,
+    pub virtual_sol_reserves: u64,
+    pub virtual_token_reserves: u64,
+    pub real_sol_reserves: u64,
+    pub real_token_reserves: u64,
+    /// Protocol-fee recipient at the time of the trade.
+    pub fee_recipient: Pubkey,
+    pub fee_basis_points: u64,
+    /// Protocol fee paid (lamports).
+    pub fee: u64,
+    /// Pool creator wallet.
+    pub creator: Pubkey,
+    pub creator_fee_basis_points: u64,
+    /// Creator fee paid (lamports).
+    pub creator_fee: u64,
+    /// Whether volume tracking is enabled for this pool.
+    pub track_volume: bool,
+    /// Total unclaimed tokens at the time of the trade.
+    pub total_unclaimed_tokens: u64,
+    /// Total claimed tokens at the time of the trade.
+    pub total_claimed_tokens: u64,
+    /// Current SOL volume at the time of the trade.
+    pub current_sol_volume: u64,
+    /// Last timestamp when volume was updated.
+    pub last_update_timestamp: i64,
+}
+
 /// Emitted whenever pool parameters change.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SetParamsEvent {
@@ -190,11 +231,8 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunEvent {
             return Err(ParseError::TooShort(data.len()));
         }
 
-        let disc: [u8; 8] = data[0..8].try_into().expect("slice len 8");
+        let _disc: [u8; 8] = data[0..8].try_into().expect("slice len 8");
         let anchor_disc: [u8; 8] = data[8..16].try_into().expect("slice len 8");
-        println!("anchor_disc: {:?}", anchor_disc);
-        println!("disc: {:?}", disc);
-        println!("data.len(): {:?}", data.len());
         let payload = &data[16..]; // skip both discriminators
 
         Ok(match anchor_disc {
@@ -205,9 +243,13 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunEvent {
                 TRADE_LEN_V0 => Self::TradeV0(TradeEventV0::try_from_slice(payload)?),
                 TRADE_LEN_V1 => Self::TradeV1(TradeEventV1::try_from_slice(payload)?),
                 TRADE_LEN_V2 => Self::TradeV2(TradeEventV2::try_from_slice(payload)?),
+                TRADE_LEN_V3 => Self::TradeV3(TradeEventV3::try_from_slice(payload)?),
                 other => {
                     return Err(ParseError::InvalidLength {
-                        expected: TRADE_LEN_V1.max(TRADE_LEN_V2),
+                        expected: *[TRADE_LEN_V0, TRADE_LEN_V1, TRADE_LEN_V2, TRADE_LEN_V3]
+                            .iter()
+                            .max()
+                            .unwrap(),
                         got: other,
                     })
                 }

@@ -8,6 +8,7 @@ use solana_program::pubkey::Pubkey;
 // -----------------------------------------------------------------------------
 const BUY: [u8; 8] = [102, 6, 61, 18, 1, 218, 235, 234]; // 33e685a4017f83ad
 const SELL: [u8; 8] = [51, 230, 133, 164, 1, 127, 131, 173]; // 66063d1201daebea
+const SELL_EXACT_IN: [u8; 8] = [149, 39, 222, 155, 211, 124, 152, 26];
 const INITIALIZE: [u8; 8] = [175, 175, 109, 31, 13, 152, 155, 237];
 const SET_PARAMS: [u8; 8] = [165, 31, 134, 53, 189, 180, 130, 255];
 const CREATE_INSTRUCTION: [u8; 8] = [24, 30, 200, 40, 5, 28, 7, 119];
@@ -125,6 +126,9 @@ pub enum PumpFunInstruction {
     /// See [`SellInstruction`].
     Sell(SellInstruction),
 
+    /// Sell an exact amount of tokens for a minimum amount of SOL.
+    SellExactIn(SellExactInInstruction),
+
     /// Withdraw accumulated protocol fees.
     Withdraw,
 
@@ -183,6 +187,17 @@ pub struct SellInstruction {
     pub min_sol_output: u64,
 }
 
+/// Instruction data for [`PumpFunInstruction::SellExactIn`].
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct SellExactInInstruction {
+    /// Number of tokens to sell.
+    pub amount_in: u64,
+    /// Minimum lamports the seller expects (slippage guard).
+    pub minimum_amount_out: u64,
+    /// Fee rate for the share.
+    pub share_fee_rate: u64,
+}
+
 // -----------------------------------------------------------------------------
 // Borsh deserialisation helper
 // -----------------------------------------------------------------------------
@@ -202,6 +217,7 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunInstruction {
             CREATE_INSTRUCTION => Self::Create(CreateInstruction::try_from_slice(payload)?),
             BUY => Self::Buy(BuyInstruction::try_from_slice(payload)?),
             SELL => Self::Sell(SellInstruction::try_from_slice(payload)?),
+            SELL_EXACT_IN => Self::SellExactIn(SellExactInInstruction::try_from_slice(payload)?),
             WITHDRAW => Self::Withdraw,
             INITIALIZE => Self::Initialize,
             other => return Err(ParseError::Unknown(other)),
