@@ -802,6 +802,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "pancakeswap"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+]
+
+[[package]]
 name = "parking_lot"
 version = "0.12.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2134,6 +2146,7 @@ dependencies = [
  "jupiter",
  "meteora",
  "orca",
+ "pancakeswap",
  "phoenix",
  "pumpfun",
  "raydium",

@@ -4,6 +4,7 @@ pub use drift;
 pub use jupiter;
 pub use meteora;
 pub use orca;
+pub use pancakeswap;
 pub use phoenix;
 pub use pumpfun;
 pub use raydium;

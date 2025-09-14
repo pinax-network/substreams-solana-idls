@@ -16,6 +16,7 @@ members = [
     "packages/drift",
     "packages/phoenix",
     "packages/stabble",
+    "packages/pancakeswap",
 ]
 
 [dependencies]
@@ -29,6 +30,7 @@ pumpfun = { version = "0.1.0", path = "packages/pumpfun" }
 raydium = { version = "0.1.0", path = "packages/raydium" }
 stabble = { version = "0.1.0", path = "packages/stabble" }
 drift = { version = "0.1.0", path = "packages/drift" }
+pancakeswap = { version = "0.1.0", path = "packages/pancakeswap" }
 
 [workspace.dependencies]
 substreams = "0.6.2"
