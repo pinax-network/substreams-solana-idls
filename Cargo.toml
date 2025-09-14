@@ -18,6 +18,7 @@ members = [
     "packages/stabble",
     "packages/pancakeswap",
     "packages/dflow",
+    "packages/solfi"
 ]
 
 [dependencies]
@@ -33,6 +34,7 @@ stabble = { version = "0.1.0", path = "packages/stabble" }
 drift = { version = "0.1.0", path = "packages/drift" }
 pancakeswap = { version = "0.1.0", path = "packages/pancakeswap" }
 dflow = { version = "0.1.0", path = "packages/dflow" }
+solfi = { version = "0.1.0", path = "packages/solfi" }
 
 [workspace.dependencies]
 substreams = "0.6.2"
