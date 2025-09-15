@@ -1,4 +1,3 @@
-#[macro_use]
 extern crate common;
 use substreams_solana::b58;
 

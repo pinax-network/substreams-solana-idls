@@ -2220,7 +2220,7 @@ dependencies = [
 
 [[package]]
 name = "substreams-solana-idls"
-version = "0.5.5"
+version = "0.6.0"
 dependencies = [
  "bonkswap",
  "byreal",

@@ -8,6 +8,7 @@ pub const SWAP: u8 = 1;
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SarosInstruction {
     Swap(SwapInstruction),
+    Unknown,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]

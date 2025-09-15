@@ -47,6 +47,15 @@ This crate bundles thin, `no_std`‑friendly byte‑codecs that turn on‑chain 
 
 ---
 
+## Import crate
+
+Add to your `Cargo.toml`:
+
+```toml
+[dependencies]
+substreams-solana-idls = { git = "https://github.com/pinax-network/substreams-solana-idls", tag = "v0.6.x" }
+```
+
 ## Module Layout
 
 ```

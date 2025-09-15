@@ -15,6 +15,7 @@ const SWAP_EVENT: [u8; 8] = [64, 198, 205, 232, 38, 8, 113, 226];
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PancakeSwapEvent {
     Swap(SwapEvent),
+    Unknown,
 }
 
 // -----------------------------------------------------------------------------

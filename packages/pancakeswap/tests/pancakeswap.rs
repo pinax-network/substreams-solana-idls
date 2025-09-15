@@ -28,6 +28,7 @@ mod tests {
         let bytes = BASE64_STANDARD
             .decode("QMbN6CYIceJ7JcKWCueJDroD6zdLF7C8Scs5WVmrkFzhFFxokePKiSMs7ScTXdfDnZnirgrntvRpZY8iIJA0U4ZGOOkDB1xy01xyr7Wn83b59FUflt8S+3YR7TDsa5HnmGozMQoBxqOKe+XwJSlYektM0QaH8s/H6HLIQhCF7BhBgqiQQbr8zC4EHwAAAAAAAAAAAAAAAAAAG7cAAAAAAAAAAAAAAAAAATY2amoJdgFuAgAAAAAAAAB65SHmCgAAAAAAAAAAAAAAXEUAAA==")
             .expect("base64 decode");
+
         match pancakeswap::events::unpack(&bytes).expect("decode event") {
             pancakeswap::events::PancakeSwapEvent::Swap(event) => {
                 assert_eq!(
