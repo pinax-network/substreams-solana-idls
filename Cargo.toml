@@ -21,10 +21,10 @@ members = [
     "packages/dflow",
     "packages/solfi",
     "packages/saros",
-    "packages/heaven"
-    "packages/byreal"
-    "packages/tesserav"
-    "packages/humidifi"
+    "packages/heaven",
+    "packages/byreal",
+    "packages/tesserav",
+    "packages/humidifi",
 ]
 
 [dependencies]
