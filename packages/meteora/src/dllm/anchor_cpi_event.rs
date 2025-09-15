@@ -1,4 +1,4 @@
-//! Meteora DLMM on-chain events.
+//! Meteora DLMM Anchor CPI events.
 
 use borsh::{BorshDeserialize, BorshSerialize};
 use common::ParseError;
@@ -38,7 +38,7 @@ const ANCHOR_DISC: [u8; 8] = [0xe4, 0x45, 0xa5, 0x2e, 0x51, 0xcb, 0x9a, 0x1d];
 // High-level event enum
 // -----------------------------------------------------------------------------
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub enum MeteoraDllmEvent {
+pub enum MeteoraDllmAnchorCpiEvent {
     Swap(SwapEvent),
     // AddLiquidity,
     // ClaimFee,
@@ -86,7 +86,7 @@ pub struct SwapEvent {
 // -----------------------------------------------------------------------------
 // Borsh deserialisation helper
 // -----------------------------------------------------------------------------
-impl<'a> TryFrom<&'a [u8]> for MeteoraDllmEvent {
+impl<'a> TryFrom<&'a [u8]> for MeteoraDllmAnchorCpiEvent {
     type Error = ParseError;
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
@@ -132,6 +132,6 @@ impl<'a> TryFrom<&'a [u8]> for MeteoraDllmEvent {
     }
 }
 
-pub fn unpack(data: &[u8]) -> Result<MeteoraDllmEvent, ParseError> {
-    MeteoraDllmEvent::try_from(data)
+pub fn unpack(data: &[u8]) -> Result<MeteoraDllmAnchorCpiEvent, ParseError> {
+    MeteoraDllmAnchorCpiEvent::try_from(data)
 }

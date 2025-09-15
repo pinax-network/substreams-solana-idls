@@ -1,8 +1,8 @@
 use substreams_solana::b58;
 pub mod accounts;
+pub mod anchor_cpi_event;
 pub mod events;
 pub mod instructions;
-pub mod logs;
 
 /// PumpFun AMM program
 ///

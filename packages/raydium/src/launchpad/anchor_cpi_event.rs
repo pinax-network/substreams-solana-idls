@@ -1,4 +1,4 @@
-//! Raydium Launchpad events.
+//! Raydium Launchpad Anchor CPI events.
 
 use borsh::{BorshDeserialize, BorshSerialize};
 use common::ParseError;
@@ -19,7 +19,7 @@ const ANCHOR_DISC: [u8; 8] = [0xe4, 0x45, 0xa5, 0x2e, 0x51, 0xcb, 0x9a, 0x1d];
 // Event enumeration
 // -----------------------------------------------------------------------------
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub enum RaydiumLaunchpadEvent {
+pub enum RaydiumLaunchpadAnchorCpiEvent {
     ClaimVestedEvent(ClaimVestedEvent),
     CreateVestingEvent(CreateVestingEvent),
     PoolCreateEvent(PoolCreateEvent),
@@ -171,7 +171,7 @@ pub enum PoolStatus {
 // -----------------------------------------------------------------------------
 // Borsh deserialisation helper
 // -----------------------------------------------------------------------------
-impl<'a> TryFrom<&'a [u8]> for RaydiumLaunchpadEvent {
+impl<'a> TryFrom<&'a [u8]> for RaydiumLaunchpadAnchorCpiEvent {
     type Error = ParseError;
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
@@ -205,6 +205,6 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumLaunchpadEvent {
 }
 
 /// Convenience wrapper that forwards to `TryFrom`.
-pub fn unpack(data: &[u8]) -> Result<RaydiumLaunchpadEvent, ParseError> {
-    RaydiumLaunchpadEvent::try_from(data)
+pub fn unpack(data: &[u8]) -> Result<RaydiumLaunchpadAnchorCpiEvent, ParseError> {
+    RaydiumLaunchpadAnchorCpiEvent::try_from(data)
 }

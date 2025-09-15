@@ -9,8 +9,8 @@ mod tests {
     fn unpack_daam_swap_event() {
         // https://solscan.io/tx/<unknown> contains this event payload
         let bytes = hex!("e445a52e51cb9a1d1b3c15d58aaabb9361eb363b6c0f73437a18891ec65e5a1f20fbbdd8870656657d3167e04d4830a5010000c2eb0b00000000ccc0a13a8c7f0000ee64bf1c6f8d0000e83e7db166ee49000000000000000000544b1d0000000000d4520700000000000000000000000000000000000000000000c2eb0b0000000053f2bb6800000000");
-        match daam::events::unpack(&bytes).expect("decode event") {
-            daam::events::MeteoraDammEvent::EvtSwap(event) => {
+        match daam::anchor_cpi_event::unpack(&bytes).expect("decode event") {
+            daam::anchor_cpi_event::MeteoraDammAnchorCpiEvent::EvtSwap(event) => {
                 assert_eq!(event.pool.to_string(), "7bEa1teiLKdRbEopnCWjDdcvAAAnaHuiRiPErUKhLybS", "pool",);
                 assert_eq!(event.trade_direction, 1, "trade_direction");
                 assert!(!event.has_referral, "has_referral");

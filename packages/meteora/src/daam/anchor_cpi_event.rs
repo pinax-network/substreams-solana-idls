@@ -1,4 +1,4 @@
-//! Meteora DAMM v2 events.
+//! Meteora DAMM v2 Anchor CPI events.
 
 use super::instructions::{
     AddLiquidityParameters, PoolFeeParameters, RemoveLiquidityParameters, SplitAmountInfo, SplitPositionInfo, SplitPositionParameters, SwapParameters,
@@ -42,7 +42,7 @@ const ANCHOR_DISC: [u8; 8] = [0xe4, 0x45, 0xa5, 0x2e, 0x51, 0xcb, 0x9a, 0x1d];
 // Event enumeration
 // -----------------------------------------------------------------------------
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub enum MeteoraDammEvent {
+pub enum MeteoraDammAnchorCpiEvent {
     EvtAddLiquidity(EvtAddLiquidity),
     EvtClaimPartnerFee(EvtClaimPartnerFee),
     EvtClaimPositionFee(EvtClaimPositionFee),
@@ -315,7 +315,7 @@ pub struct EvtWithdrawIneligibleReward {
 // -----------------------------------------------------------------------------
 // Borsh deserialisation helper
 // -----------------------------------------------------------------------------
-impl<'a> TryFrom<&'a [u8]> for MeteoraDammEvent {
+impl<'a> TryFrom<&'a [u8]> for MeteoraDammAnchorCpiEvent {
     type Error = ParseError;
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
@@ -360,6 +360,6 @@ impl<'a> TryFrom<&'a [u8]> for MeteoraDammEvent {
     }
 }
 
-pub fn unpack(data: &[u8]) -> Result<MeteoraDammEvent, ParseError> {
-    MeteoraDammEvent::try_from(data)
+pub fn unpack(data: &[u8]) -> Result<MeteoraDammAnchorCpiEvent, ParseError> {
+    MeteoraDammAnchorCpiEvent::try_from(data)
 }
