@@ -20,7 +20,11 @@ members = [
     "packages/pancakeswap",
     "packages/dflow",
     "packages/solfi",
-    "packages/saros"
+    "packages/saros",
+    "packages/heaven"
+    "packages/byreal"
+    "packages/tesserav"
+    "packages/humidifi"
 ]
 
 [dependencies]
@@ -39,6 +43,10 @@ dflow = { version = "0.1.0", path = "packages/dflow" }
 solfi = { version = "0.1.0", path = "packages/solfi" }
 okx = { version = "0.1.0", path = "packages/okx" }
 saros = { version = "0.1.0", path = "packages/saros" }
+heaven = { version = "0.1.0", path = "packages/heaven" }
+byreal = { version = "0.1.0", path = "packages/byreal" }
+tesserav = { version = "0.1.0", path = "packages/tesserav" }
+humidifi = { version = "0.1.0", path = "packages/humidifi" }
 
 [workspace.dependencies]
 substreams = "0.6.2"
