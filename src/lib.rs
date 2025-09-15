@@ -1,6 +1,7 @@
 pub use bonkswap;
 pub use common;
 pub use drift;
+pub use humidifi;
 pub use jupiter;
 pub use meteora;
 pub use okx;
@@ -11,4 +12,3 @@ pub use pumpfun;
 pub use raydium;
 pub use stabble;
 pub use tesserav;
-pub use humidifi;
