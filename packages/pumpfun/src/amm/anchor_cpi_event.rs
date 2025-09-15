@@ -7,16 +7,16 @@ use solana_program::pubkey::Pubkey;
 // -------------------------------------------------------------------------
 // Discriminators
 // -------------------------------------------------------------------------
-const BUY_LOG: [u8; 8] = [103, 244, 82, 31, 44, 245, 119, 119]; // 67f4521f2cf57777
-const SELL_LOG: [u8; 8] = [62, 47, 55, 10, 165, 3, 220, 42]; // 3e2f370aa503dc2a
+const BUY_ANCHOR_CPI_EVENT: [u8; 8] = [103, 244, 82, 31, 44, 245, 119, 119]; // 67f4521f2cf57777
+const SELL_ANCHOR_CPI_EVENT: [u8; 8] = [62, 47, 55, 10, 165, 3, 220, 42]; // 3e2f370aa503dc2a
 
 // -------------------------------------------------------------------------
 // enumeration
 // -------------------------------------------------------------------------
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub enum PumpFunAmmLog {
-    BuyLog(BuyLog),
-    SellLog(SellLog),
+pub enum PumpFunAmmAnchorCpiEvent {
+    Buy(BuyAnchorCpiEvent),
+    Sell(SellAnchorCpiEvent),
     Unknown,
 }
 
@@ -28,7 +28,7 @@ pub enum PumpFunAmmLog {
 // Payload structs
 // -------------------------------------------------------------------------
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
-pub struct BuyLog {
+pub struct BuyAnchorCpiEvent {
     pub timestamp: i64,
     pub base_amount_out: u64,
     pub max_quote_amount_in: u64,
@@ -52,7 +52,7 @@ pub struct BuyLog {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
-pub struct SellLog {
+pub struct SellAnchorCpiEvent {
     pub timestamp: i64,
     pub base_amount_in: u64,
     pub min_quote_amount_out: u64,
@@ -78,7 +78,7 @@ pub struct SellLog {
 // -----------------------------------------------------------------------------
 // Borsh deserialisation helper
 // -----------------------------------------------------------------------------
-impl<'a> TryFrom<&'a [u8]> for PumpFunAmmLog {
+impl<'a> TryFrom<&'a [u8]> for PumpFunAmmAnchorCpiEvent {
     type Error = ParseError;
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
@@ -91,8 +91,8 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunAmmLog {
         let payload = &data[8..]; // skip the discriminator
 
         Ok(match disc {
-            BUY_LOG => Self::BuyLog(BuyLog::try_from_slice(payload)?),
-            SELL_LOG => Self::SellLog(SellLog::try_from_slice(payload)?),
+            BUY_ANCHOR_CPI_EVENT => Self::Buy(BuyAnchorCpiEvent::try_from_slice(payload)?),
+            SELL_ANCHOR_CPI_EVENT => Self::Sell(SellAnchorCpiEvent::try_from_slice(payload)?),
             // If the discriminator does not match any known event, return Unknown
             other => return Err(ParseError::Unknown(other)),
         })
@@ -100,6 +100,6 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunAmmLog {
 }
 
 /// Convenience wrapper that forwards to `TryFrom`.
-pub fn unpack(data: &[u8]) -> Result<PumpFunAmmLog, ParseError> {
-    PumpFunAmmLog::try_from(data)
+pub fn unpack(data: &[u8]) -> Result<PumpFunAmmAnchorCpiEvent, ParseError> {
+    PumpFunAmmAnchorCpiEvent::try_from(data)
 }

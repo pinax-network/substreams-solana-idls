@@ -1,7 +1,7 @@
 use substreams_solana::b58;
 
 pub mod accounts;
-pub mod events;
+pub mod anchor_cpi_event;
 pub mod instructions;
 
 /// Meteora DLMM Program
