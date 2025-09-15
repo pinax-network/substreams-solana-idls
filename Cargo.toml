@@ -21,6 +21,7 @@ members = [
     "packages/dflow",
     "packages/solfi",
     "packages/saros",
+    "packages/tesserav"
     "packages/humidifi"
 ]
 
@@ -40,6 +41,7 @@ dflow = { version = "0.1.0", path = "packages/dflow" }
 solfi = { version = "0.1.0", path = "packages/solfi" }
 okx = { version = "0.1.0", path = "packages/okx" }
 saros = { version = "0.1.0", path = "packages/saros" }
+tesserav = { version = "0.1.0", path = "packages/tesserav" }
 humidifi = { version = "0.1.0", path = "packages/humidifi" }
 
 [workspace.dependencies]
