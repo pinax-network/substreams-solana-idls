@@ -38,7 +38,7 @@ This crate bundles thin, `no_std`‑friendly byte‑codecs that turn on‑chain 
 | 💀 | HumidiFi | Swap | `9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp` |
 | 💀 | Tessera V | Swap | `TessVdML9pBGgG9yGks7o4HewRaXVAMuoVj4x83GLQH` |
 | 🚧 | Byreal CLMM | Swap | `REALQqNEomY6cQGZJUGwywTBD2UmDT32rZcNnfxQ5N2` |
-| ❌ | Heaven DEX | Swap | `HEAVENoP2qxoeuF8Dj2oT1GHEnu49U5mJYkdeC8BAX2o` |
+| 💀 | Heaven DEX | Swap | `HEAVENoP2qxoeuF8Dj2oT1GHEnu49U5mJYkdeC8BAX2o` |
 | 💀 | Orca | Token Swap ("Classic") | `9W959DqEETiGZocYWCQPaJ6sBmUzgfxXfqGeTEdp3aQP` |
 
 **Legend**   ✅ done · 🚧 in progress · ❌ planned / help wanted · 💀 no IDL · ❓ partial support

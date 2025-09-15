@@ -228,6 +228,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "byreal"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+]
+
+[[package]]
 name = "bytemuck"
 version = "1.23.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -570,6 +582,18 @@ name = "hex-literal"
 version = "0.3.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7ebdb29d2ea9ed0083cd8cece49bbd968021bd99b0849edb4a9a7ee0fdf6a4e0"
+
+[[package]]
+name = "humidifi"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+]
 
 [[package]]
 name = "indexmap"
@@ -2199,10 +2223,12 @@ name = "substreams-solana-idls"
 version = "0.5.5"
 dependencies = [
  "bonkswap",
+ "byreal",
  "common",
  "dflow",
  "drift",
  "heaven",
+ "humidifi",
  "jupiter",
  "meteora",
  "okx",
@@ -2214,6 +2240,7 @@ dependencies = [
  "saros",
  "solfi",
  "stabble",
+ "tesserav",
 ]
 
 [[package]]
@@ -2264,6 +2291,17 @@ dependencies = [
  "once_cell",
  "rustix",
  "windows-sys",
+]
+
+[[package]]
+name = "tesserav"
+version = "0.1.0"
+dependencies = [
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
 ]
 
 [[package]]
