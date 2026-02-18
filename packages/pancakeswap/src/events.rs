@@ -13,6 +13,7 @@ const SWAP_EVENT: [u8; 8] = [64, 198, 205, 232, 38, 8, 113, 226];
 // Event enumeration
 // -----------------------------------------------------------------------------
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[allow(clippy::large_enum_variant)]
 pub enum PancakeSwapEvent {
     Swap(SwapEvent),
     Unknown,
