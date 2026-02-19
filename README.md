@@ -76,7 +76,7 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-substreams-solana-idls = { git = "https://github.com/pinax-network/substreams-solana-idls", tag = "v0.7.0" }
+substreams-solana-idls = { git = "https://github.com/pinax-network/substreams-solana-idls", tag = "v1.0.0" }
 ```
 
 ## Module Layout
