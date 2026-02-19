@@ -828,6 +828,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "metaplex"
+version = "0.1.0"
+dependencies = [
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+]
+
+[[package]]
 name = "meteora"
 version = "0.1.0"
 dependencies = [
@@ -2392,6 +2403,7 @@ dependencies = [
  "lifinity",
  "magiceden",
  "marinade",
+ "metaplex",
  "meteora",
  "moonshot",
  "obric",

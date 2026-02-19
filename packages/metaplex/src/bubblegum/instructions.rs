@@ -2,7 +2,6 @@
 //!
 //! Anchor program using sha256("global:<snake_case_name>")[..8] discriminators.
 
-use borsh::{BorshDeserialize, BorshSerialize};
 use common::ParseError;
 
 // ── Discriminator constants ─────────────────────────────────────────────
