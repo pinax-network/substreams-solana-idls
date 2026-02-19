@@ -9,6 +9,7 @@ members = [
     "packages/common",
     "packages/raydium",
     "packages/pumpfun",
+    "packages/pumpswap",
     "packages/bonkswap",
     "packages/jupiter",
     "packages/meteora",
@@ -54,6 +55,7 @@ meteora = { version = "0.1.0", path = "packages/meteora" }
 orca = { version = "0.1.0", path = "packages/orca" }
 phoenix = { version = "0.1.0", path = "packages/phoenix" }
 pumpfun = { version = "0.1.0", path = "packages/pumpfun" }
+pumpswap = { version = "0.1.0", path = "packages/pumpswap" }
 raydium = { version = "0.1.0", path = "packages/raydium" }
 stabble = { version = "0.1.0", path = "packages/stabble" }
 drift = { version = "0.1.0", path = "packages/drift" }
