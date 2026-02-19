@@ -36,6 +36,7 @@ This crate bundles thin, `no_std`-friendly byte-codecs that turn on-chain **inst
 | Sanctum | Liquid Staking | `5ocnV1qiCgaQR8Jb8xWnVbApfaygJ8tNoZfgPwsgx9kx` |
 | OKX DEX | Aggregation Router V2 | `6m2CDdhRgxpH4WjvdzxAYbGxwdGUz5MziiL5jek2kBma` |
 | DFlow | Swap Aggregator V4 | `DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH` |
+| GoonFi | DEX | `goonERTdGsjnkZqWuVjs73BZ3Pb9qoCUdBUL17BnS5j` |
 | Saros | AMM Swap | `SSwapUtytfBdBn1b9NUGG6foMVPtcWgpRU32HToDUZr` |
 | SolFi | Swap | `SoLFiHG9TfgtdUXUjWAxi3LtvYuFyDLVhBWxdMZxyCe` |
 | SolFi | Swap V2 | `SV2EYYJyRz2YhfXwXnhNAevDEui5Q6yrfyo13WtupPF` |
@@ -44,6 +45,7 @@ This crate bundles thin, `no_std`-friendly byte-codecs that turn on-chain **inst
 | Byreal CLMM | Swap | `REALQqNEomY6cQGZJUGwywTBD2UmDT32rZcNnfxQ5N2` |
 | Heaven DEX | Swap | `HEAVENoP2qxoeuF8Dj2oT1GHEnu49U5mJYkdeC8BAX2o` |
 | Lifinity | AMM V2 | `2wT8Yq49kHgDzXuPxZSaeLaH1qbmGXtEyPy64bL7aD3c` |
+| Moonshot | Token Launchpad | `MoonCVVNZFSYkqNXP6bxHLPL6QQJiMagDL3qcqUQTrG` |
 | Obric | V2 | `coUnmi3oBUtwtd9fU42p6jg75UmdnNMgBQMedGNYEAs` |
 | Obric | V3 | `ob2wXVFGiWXkPwYv8CSpPMm5m3NR7DjSrVJAHGSb9Gu` |
 | Plasma | AMM | `srAMMzfVHVAtgSJc8iH6CfKzuWuUTzLHVCE81QU1rgi` |
