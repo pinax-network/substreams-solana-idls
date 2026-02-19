@@ -41,6 +41,7 @@ members = [
     "packages/metaplex",
     "packages/moonshot",
     "packages/aldrin",
+    "packages/spl",
 ]
 
 [dependencies]
@@ -79,6 +80,7 @@ magiceden = { version = "0.1.0", path = "packages/magiceden" }
 metaplex = { version = "0.1.0", path = "packages/metaplex" }
 moonshot = { version = "0.1.0", path = "packages/moonshot" }
 aldrin = { version = "0.1.0", path = "packages/aldrin" }
+spl = { version = "0.1.0", path = "packages/spl" }
 
 [workspace.dependencies]
 substreams = "0.6.2"

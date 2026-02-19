@@ -15,6 +15,8 @@ pub enum ParseError {
     RaydiumUnknown(u8),
     #[error("unknown Pump.fun discriminator {0:?}")]
     PumpFunUnknown([u8; 8]),
+    #[error("unknown SPL discriminator {0}")]
+    SplUnknown(u8),
     #[error("invalid payload length: expected {expected} bytes, got {got}")]
     InvalidLength { expected: usize, got: usize },
     #[error("unknown Token Metadata discriminator {0}")]
