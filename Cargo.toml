@@ -29,6 +29,9 @@ members = [
     "packages/tesserav",
     "packages/humidifi",
     "packages/openbook",
+    "packages/lifinity",
+    "packages/obric",
+    "packages/plasma",
 ]
 
 [dependencies]
@@ -55,6 +58,9 @@ byreal = { version = "0.1.0", path = "packages/byreal" }
 tensor = { version = "0.1.0", path = "packages/tensor" }
 tesserav = { version = "0.1.0", path = "packages/tesserav" }
 humidifi = { version = "0.1.0", path = "packages/humidifi" }
+lifinity = { version = "0.1.0", path = "packages/lifinity" }
+obric = { version = "0.1.0", path = "packages/obric" }
+plasma = { version = "0.1.0", path = "packages/plasma" }
 
 [workspace.dependencies]
 substreams = "0.6.2"
