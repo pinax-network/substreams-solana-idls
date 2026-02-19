@@ -18,8 +18,9 @@ jobs:
         with:
           toolchain: "1.80"
           targets: wasm32-unknown-unknown
-          components: clippy
+          components: clippy, rustfmt
       - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --all -- --check
       - run: cargo clippy --workspace -- -D warnings
       - run: cargo test --workspace
       - run: cargo check --workspace --target wasm32-unknown-unknown
