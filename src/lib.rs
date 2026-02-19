@@ -3,6 +3,7 @@ pub use common;
 pub use drift;
 pub use humidifi;
 pub use jupiter;
+pub use marinade;
 pub use meteora;
 pub use okx;
 pub use orca;

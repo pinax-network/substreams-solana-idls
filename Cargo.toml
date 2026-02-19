@@ -16,6 +16,7 @@ members = [
     "packages/orca",
     "packages/drift",
     "packages/phoenix",
+    "packages/marinade",
     "packages/stabble",
     "packages/pancakeswap",
     "packages/dflow",
@@ -31,6 +32,7 @@ members = [
 bonkswap = { version = "0.1.0", path = "packages/bonkswap" }
 common = { version = "0.1.0", path = "packages/common" }
 jupiter = { version = "0.1.0", path = "packages/jupiter" }
+marinade = { version = "0.1.0", path = "packages/marinade" }
 meteora = { version = "0.1.0", path = "packages/meteora" }
 orca = { version = "0.1.0", path = "packages/orca" }
 phoenix = { version = "0.1.0", path = "packages/phoenix" }
