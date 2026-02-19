@@ -1,5 +1,5 @@
-use pancakeswap::instructions;
 use pancakeswap::events;
+use pancakeswap::instructions;
 
 #[test]
 fn unknown_discriminator() {

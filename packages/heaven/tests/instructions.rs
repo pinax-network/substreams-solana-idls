@@ -16,18 +16,28 @@ fn parse_sell() {
 }
 
 #[test]
-fn unknown() { assert!(unpack(&[0u8; 16]).is_err()); }
+fn unknown() {
+    assert!(unpack(&[0u8; 16]).is_err());
+}
 #[test]
-fn too_short() { assert!(unpack(&[0u8; 4]).is_err()); }
+fn too_short() {
+    assert!(unpack(&[0u8; 4]).is_err());
+}
 
 #[test]
 fn parse_sell_log() {
     let disc: [u8; 8] = [189, 219, 127, 211, 78, 230, 97, 238];
-    let log = logs::SellLog { user: Pubkey::new_unique(), mint: Pubkey::new_unique(), amount: 42 };
+    let log = logs::SellLog {
+        user: Pubkey::new_unique(),
+        mint: Pubkey::new_unique(),
+        amount: 42,
+    };
     let mut data = disc.to_vec();
     data.extend(borsh::to_vec(&log).unwrap());
     assert!(matches!(logs::unpack(&data).unwrap(), logs::HeavenLog::Sell(l) if l.amount == 42));
 }
 
 #[test]
-fn log_unknown() { assert!(logs::unpack(&[0u8; 16]).is_err()); }
+fn log_unknown() {
+    assert!(logs::unpack(&[0u8; 16]).is_err());
+}

@@ -1,5 +1,5 @@
-use byreal::clmm::instructions;
 use byreal::clmm::events;
+use byreal::clmm::instructions;
 
 #[test]
 fn unknown_discriminator() {

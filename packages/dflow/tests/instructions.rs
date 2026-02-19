@@ -1,5 +1,5 @@
-use dflow::v4::instructions::{self, DflowV4Instruction};
 use dflow::v4::events::{self, DflowV4Event};
+use dflow::v4::instructions::{self, DflowV4Instruction};
 
 #[test]
 fn unknown_returns_unknown_variant() {
@@ -8,7 +8,9 @@ fn unknown_returns_unknown_variant() {
 }
 
 #[test]
-fn too_short() { assert!(instructions::unpack(&[0u8; 4]).is_err()); }
+fn too_short() {
+    assert!(instructions::unpack(&[0u8; 4]).is_err());
+}
 
 #[test]
 fn event_unknown_returns_unknown_variant() {

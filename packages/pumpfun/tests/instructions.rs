@@ -3,7 +3,10 @@ use pumpfun::bonding_curve::instructions::*;
 #[test]
 fn parse_buy_instruction() {
     let disc: [u8; 8] = [102, 6, 61, 18, 1, 218, 235, 234];
-    let buy = BuyInstruction { amount: 1_000_000, max_sol_cost: 500_000 };
+    let buy = BuyInstruction {
+        amount: 1_000_000,
+        max_sol_cost: 500_000,
+    };
     let mut data = disc.to_vec();
     data.extend(borsh::to_vec(&buy).unwrap());
 
@@ -20,7 +23,10 @@ fn parse_buy_instruction() {
 #[test]
 fn parse_sell_instruction() {
     let disc: [u8; 8] = [51, 230, 133, 164, 1, 127, 131, 173];
-    let sell = SellInstruction { amount: 2_000_000, min_sol_output: 100_000 };
+    let sell = SellInstruction {
+        amount: 2_000_000,
+        min_sol_output: 100_000,
+    };
     let mut data = disc.to_vec();
     data.extend(borsh::to_vec(&sell).unwrap());
 

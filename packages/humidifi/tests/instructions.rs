@@ -5,7 +5,10 @@ use solana_program::pubkey::Pubkey;
 fn parse_mystery() {
     let instr = MysteryInstruction {
         unknown_pubkey: Pubkey::new_unique(),
-        field1: 100, field2: 200, field3: 300, flag: 1,
+        field1: 100,
+        field2: 200,
+        field3: 300,
+        flag: 1,
     };
     let mut data = MYSTERY_INSTRUCTION.to_vec();
     data.extend(borsh::to_vec(&instr).unwrap());
@@ -13,6 +16,10 @@ fn parse_mystery() {
 }
 
 #[test]
-fn unknown() { assert!(unpack(&[0u8; 16]).is_err()); }
+fn unknown() {
+    assert!(unpack(&[0u8; 16]).is_err());
+}
 #[test]
-fn too_short() { assert!(unpack(&[0u8; 4]).is_err()); }
+fn too_short() {
+    assert!(unpack(&[0u8; 4]).is_err());
+}

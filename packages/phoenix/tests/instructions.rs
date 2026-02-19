@@ -1,5 +1,5 @@
-use phoenix::instructions::{self, PhonenixInstruction};
 use phoenix::events;
+use phoenix::instructions::{self, PhonenixInstruction};
 
 #[test]
 fn parse_swap() {
@@ -26,4 +26,6 @@ fn too_short() {
 }
 
 #[test]
-fn event_unknown() { assert!(events::unpack(&[0u8; 24]).is_err()); }
+fn event_unknown() {
+    assert!(events::unpack(&[0u8; 24]).is_err());
+}
