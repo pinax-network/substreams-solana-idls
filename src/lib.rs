@@ -14,6 +14,7 @@ pub use marinade;
 pub use metaplex;
 pub use meteora;
 pub use moonshot;
+pub use native;
 pub use obric;
 pub use okx;
 pub use openbook;

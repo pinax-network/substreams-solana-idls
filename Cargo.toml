@@ -40,6 +40,7 @@ members = [
     "packages/magiceden",
     "packages/metaplex",
     "packages/moonshot",
+    "packages/native",
     "packages/aldrin",
     "packages/spl",
 ]
@@ -79,6 +80,7 @@ dumpfun = { version = "0.1.0", path = "packages/dumpfun" }
 magiceden = { version = "0.1.0", path = "packages/magiceden" }
 metaplex = { version = "0.1.0", path = "packages/metaplex" }
 moonshot = { version = "0.1.0", path = "packages/moonshot" }
+native = { version = "0.1.0", path = "packages/native" }
 aldrin = { version = "0.1.0", path = "packages/aldrin" }
 spl = { version = "0.1.0", path = "packages/spl" }
 
