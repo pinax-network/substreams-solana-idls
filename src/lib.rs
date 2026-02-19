@@ -6,6 +6,7 @@ pub use jupiter;
 pub use marinade;
 pub use meteora;
 pub use okx;
+pub use openbook;
 pub use orca;
 pub use pancakeswap;
 pub use phoenix;

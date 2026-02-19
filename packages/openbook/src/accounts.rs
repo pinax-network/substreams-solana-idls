@@ -1,0 +1,435 @@
+use borsh::{BorshDeserialize, BorshSerialize};
+use solana_program::pubkey::Pubkey;
+use substreams_solana::block_view::InstructionView;
+
+accounts!(
+    CreateMarketAccounts,
+    get_create_market_accounts,
+    {
+        market,
+        market_authority,
+        bids,
+        asks,
+        event_heap,
+        payer,
+        market_base_vault,
+        market_quote_vault,
+        base_mint,
+        quote_mint,
+        system_program,
+        token_program,
+        associated_token_program,
+        oracle_a,
+        oracle_b,
+        collect_fee_admin,
+        open_orders_admin,
+        consume_events_admin,
+        close_market_admin,
+        event_authority,
+        program
+    }
+);
+
+accounts!(
+    CloseMarketAccounts,
+    get_close_market_accounts,
+    {
+        close_market_admin,
+        market,
+        bids,
+        asks,
+        event_heap,
+        sol_destination,
+        token_program
+    }
+);
+
+accounts!(
+    CreateOpenOrdersIndexerAccounts,
+    get_create_open_orders_indexer_accounts,
+    {
+        payer,
+        owner,
+        open_orders_indexer,
+        system_program
+    }
+);
+
+accounts!(
+    CloseOpenOrdersIndexerAccounts,
+    get_close_open_orders_indexer_accounts,
+    {
+        owner,
+        open_orders_indexer,
+        sol_destination,
+        token_program
+    }
+);
+
+accounts!(
+    CreateOpenOrdersAccountAccounts,
+    get_create_open_orders_account_accounts,
+    {
+        payer,
+        owner,
+        delegate_account,
+        open_orders_indexer,
+        open_orders_account,
+        market,
+        system_program
+    }
+);
+
+accounts!(
+    CloseOpenOrdersAccountAccounts,
+    get_close_open_orders_account_accounts,
+    {
+        owner,
+        open_orders_indexer,
+        open_orders_account,
+        sol_destination,
+        system_program
+    }
+);
+
+accounts!(
+    PlaceOrderAccounts,
+    get_place_order_accounts,
+    {
+        signer,
+        open_orders_account,
+        open_orders_admin,
+        user_token_account,
+        market,
+        bids,
+        asks,
+        event_heap,
+        market_vault,
+        oracle_a,
+        oracle_b,
+        token_program
+    }
+);
+
+accounts!(
+    EditOrderAccounts,
+    get_edit_order_accounts,
+    {
+        signer,
+        open_orders_account,
+        open_orders_admin,
+        user_token_account,
+        market,
+        bids,
+        asks,
+        event_heap,
+        market_vault,
+        oracle_a,
+        oracle_b,
+        token_program
+    }
+);
+
+accounts!(
+    EditOrderPeggedAccounts,
+    get_edit_order_pegged_accounts,
+    {
+        signer,
+        open_orders_account,
+        open_orders_admin,
+        user_token_account,
+        market,
+        bids,
+        asks,
+        event_heap,
+        market_vault,
+        oracle_a,
+        oracle_b,
+        token_program
+    }
+);
+
+accounts!(
+    PlaceOrdersAccounts,
+    get_place_orders_accounts,
+    {
+        signer,
+        open_orders_account,
+        open_orders_admin,
+        user_quote_account,
+        user_base_account,
+        market,
+        bids,
+        asks,
+        event_heap,
+        market_quote_vault,
+        market_base_vault,
+        oracle_a,
+        oracle_b,
+        token_program
+    }
+);
+
+accounts!(
+    CancelAllAndPlaceOrdersAccounts,
+    get_cancel_all_and_place_orders_accounts,
+    {
+        signer,
+        open_orders_account,
+        open_orders_admin,
+        user_quote_account,
+        user_base_account,
+        market,
+        bids,
+        asks,
+        event_heap,
+        market_quote_vault,
+        market_base_vault,
+        oracle_a,
+        oracle_b,
+        token_program
+    }
+);
+
+accounts!(
+    PlaceOrderPeggedAccounts,
+    get_place_order_pegged_accounts,
+    {
+        signer,
+        open_orders_account,
+        open_orders_admin,
+        user_token_account,
+        market,
+        bids,
+        asks,
+        event_heap,
+        market_vault,
+        oracle_a,
+        oracle_b,
+        token_program
+    }
+);
+
+accounts!(
+    PlaceTakeOrderAccounts,
+    get_place_take_order_accounts,
+    {
+        signer,
+        penalty_payer,
+        market,
+        market_authority,
+        bids,
+        asks,
+        market_base_vault,
+        market_quote_vault,
+        event_heap,
+        user_base_account,
+        user_quote_account,
+        oracle_a,
+        oracle_b,
+        token_program,
+        system_program,
+        open_orders_admin
+    }
+);
+
+accounts!(
+    ConsumeEventsAccounts,
+    get_consume_events_accounts,
+    {
+        consume_events_admin,
+        market,
+        event_heap
+    }
+);
+
+accounts!(
+    ConsumeGivenEventsAccounts,
+    get_consume_given_events_accounts,
+    {
+        consume_events_admin,
+        market,
+        event_heap
+    }
+);
+
+accounts!(
+    CancelOrderAccounts,
+    get_cancel_order_accounts,
+    {
+        signer,
+        open_orders_account,
+        market,
+        bids,
+        asks
+    }
+);
+
+accounts!(
+    CancelOrderByClientOrderIdAccounts,
+    get_cancel_order_by_client_order_id_accounts,
+    {
+        signer,
+        open_orders_account,
+        market,
+        bids,
+        asks
+    }
+);
+
+accounts!(
+    CancelAllOrdersAccounts,
+    get_cancel_all_orders_accounts,
+    {
+        signer,
+        open_orders_account,
+        market,
+        bids,
+        asks
+    }
+);
+
+accounts!(
+    DepositAccounts,
+    get_deposit_accounts,
+    {
+        owner,
+        user_base_account,
+        user_quote_account,
+        open_orders_account,
+        market,
+        market_base_vault,
+        market_quote_vault,
+        token_program
+    }
+);
+
+accounts!(
+    RefillAccounts,
+    get_refill_accounts,
+    {
+        owner,
+        user_base_account,
+        user_quote_account,
+        open_orders_account,
+        market,
+        market_base_vault,
+        market_quote_vault,
+        token_program
+    }
+);
+
+accounts!(
+    SettleFundsAccounts,
+    get_settle_funds_accounts,
+    {
+        owner,
+        penalty_payer,
+        open_orders_account,
+        market,
+        market_authority,
+        market_base_vault,
+        market_quote_vault,
+        user_base_account,
+        user_quote_account,
+        referrer_account,
+        token_program,
+        system_program
+    }
+);
+
+accounts!(
+    SettleFundsExpiredAccounts,
+    get_settle_funds_expired_accounts,
+    {
+        close_market_admin,
+        owner,
+        penalty_payer,
+        open_orders_account,
+        market,
+        market_authority,
+        market_base_vault,
+        market_quote_vault,
+        user_base_account,
+        user_quote_account,
+        referrer_account,
+        token_program,
+        system_program
+    }
+);
+
+accounts!(
+    SweepFeesAccounts,
+    get_sweep_fees_accounts,
+    {
+        collect_fee_admin,
+        market,
+        market_authority,
+        market_quote_vault,
+        token_receiver_account,
+        token_program
+    }
+);
+
+accounts!(
+    SetDelegateAccounts,
+    get_set_delegate_accounts,
+    {
+        owner,
+        open_orders_account,
+        delegate_account
+    }
+);
+
+accounts!(
+    SetMarketExpiredAccounts,
+    get_set_market_expired_accounts,
+    {
+        close_market_admin,
+        market
+    }
+);
+
+accounts!(
+    PruneOrdersAccounts,
+    get_prune_orders_accounts,
+    {
+        close_market_admin,
+        open_orders_account,
+        market,
+        bids,
+        asks
+    }
+);
+
+accounts!(
+    StubOracleCreateAccounts,
+    get_stub_oracle_create_accounts,
+    {
+        payer,
+        owner,
+        oracle,
+        mint,
+        system_program
+    }
+);
+
+accounts!(
+    StubOracleCloseAccounts,
+    get_stub_oracle_close_accounts,
+    {
+        owner,
+        oracle,
+        sol_destination,
+        token_program
+    }
+);
+
+accounts!(
+    StubOracleSetAccounts,
+    get_stub_oracle_set_accounts,
+    {
+        owner,
+        oracle
+    }
+);

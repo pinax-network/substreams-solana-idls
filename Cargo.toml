@@ -28,6 +28,7 @@ members = [
     "packages/tensor",
     "packages/tesserav",
     "packages/humidifi",
+    "packages/openbook",
 ]
 
 [dependencies]
@@ -46,6 +47,7 @@ pancakeswap = { version = "0.1.0", path = "packages/pancakeswap" }
 dflow = { version = "0.1.0", path = "packages/dflow" }
 solfi = { version = "0.1.0", path = "packages/solfi" }
 okx = { version = "0.1.0", path = "packages/okx" }
+openbook = { version = "0.1.0", path = "packages/openbook" }
 sanctum = { version = "0.1.0", path = "packages/sanctum" }
 saros = { version = "0.1.0", path = "packages/saros" }
 heaven = { version = "0.1.0", path = "packages/heaven" }

@@ -852,6 +852,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08d65885ee38876c4f86fa503fb49d7b507c2b62552df7c70b2fce627e06381"
 
 [[package]]
+name = "openbook"
+version = "0.1.0"
+dependencies = [
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+]
+
+[[package]]
 name = "orca"
 version = "0.1.0"
 dependencies = [
@@ -2255,6 +2266,7 @@ dependencies = [
  "marinade",
  "meteora",
  "okx",
+ "openbook",
  "orca",
  "pancakeswap",
  "phoenix",
