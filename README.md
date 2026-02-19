@@ -50,6 +50,21 @@ This crate bundles thin, `no_std`-friendly byte-codecs that turn on-chain **inst
 | Obric | V2 | `coUnmi3oBUtwtd9fU42p6jg75UmdnNMgBQMedGNYEAs` |
 | Obric | V3 | `ob2wXVFGiWXkPwYv8CSpPMm5m3NR7DjSrVJAHGSb9Gu` |
 | Plasma | AMM | `srAMMzfVHVAtgSJc8iH6CfKzuWuUTzLHVCE81QU1rgi` |
+| Boop | Token Launchpad | `boop8hVGQGqehUK2iVEMEnMrL5E7ZbEYKRBBRCkjGrf` |
+| DumpFun | Token Launchpad | `BSfD6SHZigAfDWSjzD5Q41jw8LmKwtmjskCH9EXqjkAQ` |
+| MagicEden | NFT Marketplace M2 | `M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K` |
+| MagicEden | NFT Marketplace M3 | `M3mxk5W2tt27WGT7THox7PmgRDp4m6NEhL5xvxrBfS1` |
+| Aldrin | AMM Swap | `AMM55ShdkoGRB5jVYPjWziwk8m5MpwyDgsMWHaMSQWH6` |
+| Serum | DEX V3 | `9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin` |
+| Metaplex | Token Metadata | `metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s` |
+| Metaplex | Bubblegum (cNFTs) | `BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY` |
+| SPL | Token Program | `TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA` |
+| SPL | Token-2022 | `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb` |
+| SPL | Token Swap | `SwaPpA9LAaLfeLi3a68M4DjnLqgtticKg6CnyNwgAC8` |
+| SPL | Token Lending | `LendZqTs7gn5CTSJU1jWKhKuVpjJGom45nnwPb2AMTi` |
+| Native | System Program | `11111111111111111111111111111111` |
+| Native | Stake Program | `Stake11111111111111111111111111111111111111` |
+| Native | Vote Program | `Vote111111111111111111111111111111111111111` |
 
 > Want another program supported? Open an issue or PR with the program ID and IDL link.
 
@@ -61,7 +76,7 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-substreams-solana-idls = { git = "https://github.com/pinax-network/substreams-solana-idls", tag = "v0.6.x" }
+substreams-solana-idls = { git = "https://github.com/pinax-network/substreams-solana-idls", tag = "v0.7.0" }
 ```
 
 ## Module Layout
@@ -108,7 +123,8 @@ Swap `pumpfun` for any supported protocol and you get the same ergonomic API.
 
 ## Contributing
 
-* Add a new folder under `src/<protocol>` with `instructions.rs`, `events.rs`, and `mod.rs`.
+* Add a new module under `src/<protocol>/` with `instructions.rs`, `events.rs`, and `mod.rs`.
+* Register the module in `src/lib.rs`.
 * Follow existing modules for structure & doc style.
 * Keep dependencies minimal (`borsh`, `solana_program` only).
 
