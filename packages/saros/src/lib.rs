@@ -1,6 +1,7 @@
 extern crate common;
 use substreams_solana::b58;
 
+pub mod accounts;
 pub mod instructions;
 
 /// Saros swap program
