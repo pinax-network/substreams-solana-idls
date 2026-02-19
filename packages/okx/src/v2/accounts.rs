@@ -1,4 +1,4 @@
-//! DFlow Swap Aggregator V4 account extraction helpers.
+//! OKX DEX Aggregation Router V2 account extraction helpers.
 
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
@@ -7,11 +7,11 @@ use substreams_solana::block_view::InstructionView;
 use common::accounts;
 
 // -----------------------------------------------------------------------------
-// Swap accounts
+// Swap V3 accounts (fixed prefix accounts before dynamic route accounts)
 // -----------------------------------------------------------------------------
 accounts!(
-    SwapAccounts,
-    get_swap_accounts,
+    SwapV3Accounts,
+    get_swap_v3_accounts,
     {
         /// The user/payer performing the swap
         payer,
@@ -22,8 +22,6 @@ accounts!(
         /// Source token mint
         source_mint,
         /// Destination token mint
-        destination_mint,
-        /// SPL Token program
-        token_program
+        destination_mint
     }
 );
