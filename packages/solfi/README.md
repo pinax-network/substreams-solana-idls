@@ -1,16 +1,29 @@
-# SolFi
+# SolFi 💀
 
-> 💀 **Dead protocol** — Decoders preserved for historical indexing.
-
-SolFi was a swap protocol on Solana with two versions.
+Dead swap protocol on Solana — V1 and V2.
 
 ## Programs
 
-| Program | Program ID |
-|---------|-----------|
-| SolFi Swap V1 | `SoLFiHG9TfgtdUXUjWAxi3LtvYuFyDLVhBWxdMZxyCe` |
-| SolFi Swap V2 | `SV2EYYJyRz2YhfXwXnhNAevDEui5Q6yrfyo13WtupPF` |
+### V1
 
-## Status
+| | |
+|---|---|
+| **Program ID** | `SoLFiHG9TfgtdUXUjWAxi3LtvYuFyDLVhBWxdMZxyCe` |
 
-- V1 + V2 swap instructions: implemented
+### V2
+
+| | |
+|---|---|
+| **Program ID** | `SV2EYYJyRz2YhfXwXnhNAevDEui5Q6yrfyo13WtupPF` |
+
+## Instructions Decoded
+
+### V1 / V2
+
+- `Swap` — Execute a token swap
+
+## Events Decoded
+
+### V1 / V2
+
+- `SwapEvent` — Swap executed

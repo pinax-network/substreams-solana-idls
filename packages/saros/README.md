@@ -1,19 +1,15 @@
 # Saros
 
-> ❓ **Partial support** — Decoder partially implemented.
-
-Saros is an AMM swap protocol on Solana.
+AMM swap on Solana.
 
 ## Program
 
-| Program | Program ID |
-|---------|-----------|
-| Saros AMM | `SSwapUtytfBdBn1b9NUGG6foMVPtcWgpRU32HToDUZr` |
+| | |
+|---|---|
+| **Program ID** | `SSwapUtytfBdBn1b9NUGG6foMVPtcWgpRU32HToDUZr` |
+| **Framework** | Custom |
+| **Website** | [saros.finance](https://saros.finance) |
 
-## Status
+## Instructions Decoded
 
-- Swap instructions: partial
-
-## Links
-
-- [Saros](https://saros.finance)
+- `Swap` — Execute a token swap
