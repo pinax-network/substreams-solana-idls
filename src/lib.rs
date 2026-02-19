@@ -23,6 +23,7 @@ pub use pancakeswap;
 pub use phoenix;
 pub use plasma;
 pub use pumpfun;
+pub use pumpswap;
 pub use raydium;
 pub use sanctum;
 pub use serum;
