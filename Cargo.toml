@@ -38,6 +38,7 @@ members = [
     "packages/darklake",
     "packages/dumpfun",
     "packages/magiceden",
+    "packages/metaplex",
     "packages/moonshot",
     "packages/aldrin",
 ]
@@ -75,6 +76,7 @@ boop = { version = "0.1.0", path = "packages/boop" }
 darklake = { version = "0.1.0", path = "packages/darklake" }
 dumpfun = { version = "0.1.0", path = "packages/dumpfun" }
 magiceden = { version = "0.1.0", path = "packages/magiceden" }
+metaplex = { version = "0.1.0", path = "packages/metaplex" }
 moonshot = { version = "0.1.0", path = "packages/moonshot" }
 aldrin = { version = "0.1.0", path = "packages/aldrin" }
 

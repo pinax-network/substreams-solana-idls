@@ -27,6 +27,7 @@ This crate bundles thin, `no_std`-friendly byte-codecs that turn on-chain **inst
 | Meteora | DLLM | `LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo` |
 | Openbook | V2 Order Book | `opnb2LAfJYbRMAHHvqjCwQxanZn7ReEHp1k81EohpZb` |
 | Phoenix | on-chain CLOB | `PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY` |
+| Darklake | Dark Pool DEX | `darkr3FB87qAZmgLwKov6Hk9Yiah5UT4rUYu8Zhthw1` |
 | Drift | V2 Perpetual | `dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH` |
 | Tensor | NFT Marketplace | `TCMPhJdwDryooaGtiocG1u3xcYbRpiJzb283XfCZsDp` |
 | Stabble | Stable Swap | `swapFpHZwjELNnjvThjajtiVmkz3yPQEHjLtka2fwHW` |
