@@ -1,19 +1,20 @@
-# Byreal CLMM
+# Byreal
 
-> 🚧 **In progress** — Decoder partially implemented.
-
-Byreal is a concentrated liquidity market maker (CLMM) on Solana.
+Concentrated liquidity market maker (CLMM) on Solana.
 
 ## Program
 
-| Program | Program ID |
-|---------|-----------|
-| Byreal CLMM | `REALQqNEomY6cQGZJUGwywTBD2UmDT32rZcNnfxQ5N2` |
+| | |
+|---|---|
+| **Program ID** | `REALQqNEomY6cQGZJUGwywTBD2UmDT32rZcNnfxQ5N2` |
+| **Framework** | Anchor |
+| **Website** | [byreal.org](https://byreal.org) |
 
-## Status
+## Instructions Decoded
 
-- CLMM swap events: partial
+- `Swap` — Execute a swap
+- `SwapV2` — Execute a swap (V2)
 
-## Links
+## Events Decoded
 
-- [Byreal](https://byreal.org)
+- `SwapEvent` — Swap executed
