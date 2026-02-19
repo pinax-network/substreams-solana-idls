@@ -703,6 +703,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "lifinity"
+version = "0.1.0"
+dependencies = [
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+]
+
+[[package]]
 name = "linux-raw-sys"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -826,6 +837,17 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.106",
+]
+
+[[package]]
+name = "obric"
+version = "0.1.0"
+dependencies = [
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
 ]
 
 [[package]]
@@ -973,6 +995,17 @@ dependencies = [
 
 [[package]]
 name = "phoenix"
+version = "0.1.0"
+dependencies = [
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+]
+
+[[package]]
+name = "plasma"
 version = "0.1.0"
 dependencies = [
  "borsh 1.5.7",
@@ -2263,13 +2296,16 @@ dependencies = [
  "heaven",
  "humidifi",
  "jupiter",
+ "lifinity",
  "marinade",
  "meteora",
+ "obric",
  "okx",
  "openbook",
  "orca",
  "pancakeswap",
  "phoenix",
+ "plasma",
  "pumpfun",
  "raydium",
  "sanctum",
