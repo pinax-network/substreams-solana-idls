@@ -20,6 +20,7 @@ members = [
     "packages/stabble",
     "packages/pancakeswap",
     "packages/dflow",
+    "packages/goonfi",
     "packages/solfi",
     "packages/sanctum",
     "packages/saros",
@@ -35,6 +36,7 @@ members = [
     "packages/boop",
     "packages/dumpfun",
     "packages/magiceden",
+    "packages/moonshot",
     "packages/aldrin",
 ]
 
@@ -52,6 +54,7 @@ stabble = { version = "0.1.0", path = "packages/stabble" }
 drift = { version = "0.1.0", path = "packages/drift" }
 pancakeswap = { version = "0.1.0", path = "packages/pancakeswap" }
 dflow = { version = "0.1.0", path = "packages/dflow" }
+goonfi = { version = "0.1.0", path = "packages/goonfi" }
 solfi = { version = "0.1.0", path = "packages/solfi" }
 okx = { version = "0.1.0", path = "packages/okx" }
 openbook = { version = "0.1.0", path = "packages/openbook" }
@@ -68,6 +71,7 @@ plasma = { version = "0.1.0", path = "packages/plasma" }
 boop = { version = "0.1.0", path = "packages/boop" }
 dumpfun = { version = "0.1.0", path = "packages/dumpfun" }
 magiceden = { version = "0.1.0", path = "packages/magiceden" }
+moonshot = { version = "0.1.0", path = "packages/moonshot" }
 aldrin = { version = "0.1.0", path = "packages/aldrin" }
 
 [workspace.dependencies]
