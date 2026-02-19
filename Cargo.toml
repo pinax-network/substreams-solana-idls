@@ -32,6 +32,10 @@ members = [
     "packages/lifinity",
     "packages/obric",
     "packages/plasma",
+    "packages/boop",
+    "packages/dumpfun",
+    "packages/magiceden",
+    "packages/aldrin",
 ]
 
 [dependencies]
@@ -61,6 +65,10 @@ humidifi = { version = "0.1.0", path = "packages/humidifi" }
 lifinity = { version = "0.1.0", path = "packages/lifinity" }
 obric = { version = "0.1.0", path = "packages/obric" }
 plasma = { version = "0.1.0", path = "packages/plasma" }
+boop = { version = "0.1.0", path = "packages/boop" }
+dumpfun = { version = "0.1.0", path = "packages/dumpfun" }
+magiceden = { version = "0.1.0", path = "packages/magiceden" }
+aldrin = { version = "0.1.0", path = "packages/aldrin" }
 
 [workspace.dependencies]
 substreams = "0.6.2"

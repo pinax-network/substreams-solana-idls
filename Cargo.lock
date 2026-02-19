@@ -24,6 +24,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "aldrin"
+version = "0.1.0"
+dependencies = [
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+]
+
+[[package]]
 name = "anyhow"
 version = "1.0.99"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -119,6 +130,17 @@ dependencies = [
 
 [[package]]
 name = "bonkswap"
+version = "0.1.0"
+dependencies = [
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+]
+
+[[package]]
+name = "boop"
 version = "0.1.0"
 dependencies = [
  "borsh 1.5.7",
@@ -409,6 +431,17 @@ name = "drift"
 version = "0.1.0"
 dependencies = [
  "base64 0.22.1",
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+]
+
+[[package]]
+name = "dumpfun"
+version = "0.1.0"
+dependencies = [
  "borsh 1.5.7",
  "common",
  "solana-program",
@@ -734,6 +767,17 @@ name = "log"
 version = "0.4.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432"
+
+[[package]]
+name = "magiceden"
+version = "0.1.0"
+dependencies = [
+ "borsh 1.5.7",
+ "common",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+]
 
 [[package]]
 name = "marinade"
@@ -2288,15 +2332,19 @@ dependencies = [
 name = "substreams-solana-idls"
 version = "0.6.0"
 dependencies = [
+ "aldrin",
  "bonkswap",
+ "boop",
  "byreal",
  "common",
  "dflow",
  "drift",
+ "dumpfun",
  "heaven",
  "humidifi",
  "jupiter",
  "lifinity",
+ "magiceden",
  "marinade",
  "meteora",
  "obric",
