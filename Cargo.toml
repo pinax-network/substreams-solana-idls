@@ -24,6 +24,7 @@ members = [
     "packages/solfi",
     "packages/sanctum",
     "packages/saros",
+    "packages/serum",
     "packages/heaven",
     "packages/byreal",
     "packages/tensor",
@@ -34,8 +35,10 @@ members = [
     "packages/obric",
     "packages/plasma",
     "packages/boop",
+    "packages/darklake",
     "packages/dumpfun",
     "packages/magiceden",
+    "packages/metaplex",
     "packages/moonshot",
     "packages/aldrin",
 ]
@@ -60,6 +63,7 @@ okx = { version = "0.1.0", path = "packages/okx" }
 openbook = { version = "0.1.0", path = "packages/openbook" }
 sanctum = { version = "0.1.0", path = "packages/sanctum" }
 saros = { version = "0.1.0", path = "packages/saros" }
+serum = { version = "0.1.0", path = "packages/serum" }
 heaven = { version = "0.1.0", path = "packages/heaven" }
 byreal = { version = "0.1.0", path = "packages/byreal" }
 tensor = { version = "0.1.0", path = "packages/tensor" }
@@ -69,8 +73,10 @@ lifinity = { version = "0.1.0", path = "packages/lifinity" }
 obric = { version = "0.1.0", path = "packages/obric" }
 plasma = { version = "0.1.0", path = "packages/plasma" }
 boop = { version = "0.1.0", path = "packages/boop" }
+darklake = { version = "0.1.0", path = "packages/darklake" }
 dumpfun = { version = "0.1.0", path = "packages/dumpfun" }
 magiceden = { version = "0.1.0", path = "packages/magiceden" }
+metaplex = { version = "0.1.0", path = "packages/metaplex" }
 moonshot = { version = "0.1.0", path = "packages/moonshot" }
 aldrin = { version = "0.1.0", path = "packages/aldrin" }
 

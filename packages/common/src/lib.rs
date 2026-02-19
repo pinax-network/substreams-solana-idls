@@ -17,6 +17,8 @@ pub enum ParseError {
     PumpFunUnknown([u8; 8]),
     #[error("invalid payload length: expected {expected} bytes, got {got}")]
     InvalidLength { expected: usize, got: usize },
+    #[error("unknown Token Metadata discriminator {0}")]
+    TokenMetadataUnknown(u8),
     #[error("Borsh decode error: {0}")]
     Decode(#[from] borsh::io::Error),
 }
