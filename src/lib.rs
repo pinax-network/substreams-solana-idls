@@ -11,5 +11,7 @@ pub use pancakeswap;
 pub use phoenix;
 pub use pumpfun;
 pub use raydium;
+pub use sanctum;
 pub use stabble;
+pub use tensor;
 pub use tesserav;

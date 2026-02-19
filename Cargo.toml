@@ -21,9 +21,11 @@ members = [
     "packages/pancakeswap",
     "packages/dflow",
     "packages/solfi",
+    "packages/sanctum",
     "packages/saros",
     "packages/heaven",
     "packages/byreal",
+    "packages/tensor",
     "packages/tesserav",
     "packages/humidifi",
 ]
@@ -44,9 +46,11 @@ pancakeswap = { version = "0.1.0", path = "packages/pancakeswap" }
 dflow = { version = "0.1.0", path = "packages/dflow" }
 solfi = { version = "0.1.0", path = "packages/solfi" }
 okx = { version = "0.1.0", path = "packages/okx" }
+sanctum = { version = "0.1.0", path = "packages/sanctum" }
 saros = { version = "0.1.0", path = "packages/saros" }
 heaven = { version = "0.1.0", path = "packages/heaven" }
 byreal = { version = "0.1.0", path = "packages/byreal" }
+tensor = { version = "0.1.0", path = "packages/tensor" }
 tesserav = { version = "0.1.0", path = "packages/tesserav" }
 humidifi = { version = "0.1.0", path = "packages/humidifi" }
 
