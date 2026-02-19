@@ -24,17 +24,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "aldrin"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
 name = "anyhow"
 version = "1.0.99"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -126,28 +115,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3078c7629b62d3f0439517fa394996acacc5cbc91c5a20d8c658e77abd503a71"
 dependencies = [
  "generic-array",
-]
-
-[[package]]
-name = "bonkswap"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
-name = "boop"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
 ]
 
 [[package]]
@@ -250,18 +217,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "byreal"
-version = "0.1.0"
-dependencies = [
- "base64 0.22.1",
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
 name = "bytemuck"
 version = "1.23.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -305,15 +260,6 @@ name = "cfg_aliases"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "613afe47fcd5fac7ccf1db93babcb082c5994d996f20b8b159f2ad1658eb5724"
-
-[[package]]
-name = "common"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "solana-program",
- "thiserror 2.0.16",
-]
 
 [[package]]
 name = "console_error_panic_hook"
@@ -395,29 +341,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "darklake"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
-name = "dflow"
-version = "0.1.0"
-dependencies = [
- "base64 0.22.1",
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
 name = "digest"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -435,29 +358,6 @@ dependencies = [
  "block-buffer 0.10.4",
  "crypto-common",
  "subtle",
-]
-
-[[package]]
-name = "drift"
-version = "0.1.0"
-dependencies = [
- "base64 0.22.1",
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
-name = "dumpfun"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
 ]
 
 [[package]]
@@ -583,17 +483,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "goonfi"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
 name = "hashbrown"
 version = "0.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -607,18 +496,6 @@ name = "hashbrown"
 version = "0.15.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9229cfe53dfd69f0609a49f65461bd93001ea1ef889cd5529dd176593f5338a1"
-
-[[package]]
-name = "heaven"
-version = "0.1.0"
-dependencies = [
- "base64 0.22.1",
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
 
 [[package]]
 name = "heck"
@@ -639,16 +516,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7ebdb29d2ea9ed0083cd8cece49bbd968021bd99b0849edb4a9a7ee0fdf6a4e0"
 
 [[package]]
-name = "humidifi"
-version = "0.1.0"
-dependencies = [
- "base64 0.22.1",
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
+name = "hex-literal"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6fe2267d4ed49bc07b63801559be28c718ea06c4738b7a03c94df7386d2cde46"
 
 [[package]]
 name = "indexmap"
@@ -677,17 +548,6 @@ checksum = "0c0b063578492ceec17683ef2f8c5e89121fbd0b172cbc280635ab7567db2738"
 dependencies = [
  "once_cell",
  "wasm-bindgen",
-]
-
-[[package]]
-name = "jupiter"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
 ]
 
 [[package]]
@@ -758,17 +618,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "lifinity"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
 name = "linux-raw-sys"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -791,28 +640,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432"
 
 [[package]]
-name = "magiceden"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
-name = "marinade"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
 name = "memchr"
 version = "2.7.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -828,54 +655,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "metaplex"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
-name = "meteora"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
-name = "moonshot"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
 name = "multimap"
 version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1d87ecb2933e8aeadb3e3a02b828fed80a7528047e68b4f424523a0981a3a084"
-
-[[package]]
-name = "native"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
 
 [[package]]
 name = "num-bigint"
@@ -939,28 +722,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "obric"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
-name = "okx"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
 name = "once_cell"
 version = "1.21.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -973,46 +734,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08d65885ee38876c4f86fa503fb49d7b507c2b62552df7c70b2fce627e06381"
 
 [[package]]
-name = "openbook"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
-name = "orca"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
 name = "pad"
 version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d2ad9b889f1b12e0b9ee24db044b5129150d5eada288edc800f789928dc8c0e3"
 dependencies = [
  "unicode-width",
-]
-
-[[package]]
-name = "pancakeswap"
-version = "0.1.0"
-dependencies = [
- "base64 0.22.1",
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
 ]
 
 [[package]]
@@ -1090,28 +817,6 @@ checksum = "3672b37090dbd86368a4145bc067582552b29c27377cad4e0a306c97f9bd7772"
 dependencies = [
  "fixedbitset",
  "indexmap",
-]
-
-[[package]]
-name = "phoenix"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
-name = "plasma"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
 ]
 
 [[package]]
@@ -1213,28 +918,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pumpfun"
-version = "0.1.2"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
-name = "pumpswap"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
 name = "quote"
 version = "1.0.40"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1321,18 +1004,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "raydium"
-version = "0.1.0"
-dependencies = [
- "base64 0.22.1",
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
 name = "redox_syscall"
 version = "0.5.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1399,28 +1070,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b39cdef0fa800fc44525c84ccb54a029961a8215f9619753635a9c0d2538d46d"
 
 [[package]]
-name = "sanctum"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
-name = "saros"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
 name = "scopeguard"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1470,17 +1119,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.106",
-]
-
-[[package]]
-name = "serum"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
 ]
 
 [[package]]
@@ -2323,40 +1961,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "solfi"
-version = "0.1.0"
-dependencies = [
- "base64 0.22.1",
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
-name = "spl"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
-name = "stabble"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
 name = "substreams"
 version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2365,7 +1969,7 @@ dependencies = [
  "anyhow",
  "bigdecimal",
  "hex",
- "hex-literal",
+ "hex-literal 0.3.4",
  "num-bigint",
  "num-integer",
  "num-traits",
@@ -2418,46 +2022,16 @@ dependencies = [
 
 [[package]]
 name = "substreams-solana-idls"
-version = "0.6.0"
+version = "0.7.0"
 dependencies = [
- "aldrin",
- "bonkswap",
- "boop",
- "byreal",
- "common",
- "darklake",
- "dflow",
- "drift",
- "dumpfun",
- "goonfi",
- "heaven",
- "humidifi",
- "jupiter",
- "lifinity",
- "magiceden",
- "marinade",
- "metaplex",
- "meteora",
- "moonshot",
- "native",
- "obric",
- "okx",
- "openbook",
- "orca",
- "pancakeswap",
- "phoenix",
- "plasma",
- "pumpfun",
- "pumpswap",
- "raydium",
- "sanctum",
- "saros",
- "serum",
- "solfi",
- "spl",
- "stabble",
- "tensor",
- "tesserav",
+ "base64 0.22.1",
+ "borsh 1.5.7",
+ "hex-literal 0.4.1",
+ "sha2 0.10.9",
+ "solana-program",
+ "substreams",
+ "substreams-solana",
+ "thiserror 2.0.16",
 ]
 
 [[package]]
@@ -2508,28 +2082,6 @@ dependencies = [
  "once_cell",
  "rustix",
  "windows-sys",
-]
-
-[[package]]
-name = "tensor"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
-]
-
-[[package]]
-name = "tesserav"
-version = "0.1.0"
-dependencies = [
- "borsh 1.5.7",
- "common",
- "solana-program",
- "substreams",
- "substreams-solana",
 ]
 
 [[package]]

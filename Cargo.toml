@@ -1,95 +1,16 @@
 [package]
 name = "substreams-solana-idls"
-version = "0.6.0"
+version = "0.7.0"
 edition = "2021"
 
-[workspace]
-members = [
-    ".",
-    "packages/common",
-    "packages/raydium",
-    "packages/pumpfun",
-    "packages/pumpswap",
-    "packages/bonkswap",
-    "packages/jupiter",
-    "packages/meteora",
-    "packages/okx",
-    "packages/orca",
-    "packages/drift",
-    "packages/phoenix",
-    "packages/marinade",
-    "packages/stabble",
-    "packages/pancakeswap",
-    "packages/dflow",
-    "packages/goonfi",
-    "packages/solfi",
-    "packages/sanctum",
-    "packages/saros",
-    "packages/serum",
-    "packages/heaven",
-    "packages/byreal",
-    "packages/tensor",
-    "packages/tesserav",
-    "packages/humidifi",
-    "packages/openbook",
-    "packages/lifinity",
-    "packages/obric",
-    "packages/plasma",
-    "packages/boop",
-    "packages/darklake",
-    "packages/dumpfun",
-    "packages/magiceden",
-    "packages/metaplex",
-    "packages/moonshot",
-    "packages/native",
-    "packages/aldrin",
-    "packages/spl",
-]
-
 [dependencies]
-bonkswap = { version = "0.1.0", path = "packages/bonkswap" }
-common = { version = "0.1.0", path = "packages/common" }
-jupiter = { version = "0.1.0", path = "packages/jupiter" }
-marinade = { version = "0.1.0", path = "packages/marinade" }
-meteora = { version = "0.1.0", path = "packages/meteora" }
-orca = { version = "0.1.0", path = "packages/orca" }
-phoenix = { version = "0.1.0", path = "packages/phoenix" }
-pumpfun = { version = "0.1.0", path = "packages/pumpfun" }
-pumpswap = { version = "0.1.0", path = "packages/pumpswap" }
-raydium = { version = "0.1.0", path = "packages/raydium" }
-stabble = { version = "0.1.0", path = "packages/stabble" }
-drift = { version = "0.1.0", path = "packages/drift" }
-pancakeswap = { version = "0.1.0", path = "packages/pancakeswap" }
-dflow = { version = "0.1.0", path = "packages/dflow" }
-goonfi = { version = "0.1.0", path = "packages/goonfi" }
-solfi = { version = "0.1.0", path = "packages/solfi" }
-okx = { version = "0.1.0", path = "packages/okx" }
-openbook = { version = "0.1.0", path = "packages/openbook" }
-sanctum = { version = "0.1.0", path = "packages/sanctum" }
-saros = { version = "0.1.0", path = "packages/saros" }
-serum = { version = "0.1.0", path = "packages/serum" }
-heaven = { version = "0.1.0", path = "packages/heaven" }
-byreal = { version = "0.1.0", path = "packages/byreal" }
-tensor = { version = "0.1.0", path = "packages/tensor" }
-tesserav = { version = "0.1.0", path = "packages/tesserav" }
-humidifi = { version = "0.1.0", path = "packages/humidifi" }
-lifinity = { version = "0.1.0", path = "packages/lifinity" }
-obric = { version = "0.1.0", path = "packages/obric" }
-plasma = { version = "0.1.0", path = "packages/plasma" }
-boop = { version = "0.1.0", path = "packages/boop" }
-darklake = { version = "0.1.0", path = "packages/darklake" }
-dumpfun = { version = "0.1.0", path = "packages/dumpfun" }
-magiceden = { version = "0.1.0", path = "packages/magiceden" }
-metaplex = { version = "0.1.0", path = "packages/metaplex" }
-moonshot = { version = "0.1.0", path = "packages/moonshot" }
-native = { version = "0.1.0", path = "packages/native" }
-aldrin = { version = "0.1.0", path = "packages/aldrin" }
-spl = { version = "0.1.0", path = "packages/spl" }
-
-[workspace.dependencies]
 substreams = "0.6.2"
 substreams-solana = "0.14.1"
 solana-program = "2.3.0"
 borsh = { version = "1.5.7", features = ["derive"] }
 thiserror = "2.0.16"
 base64 = "0.22.1"
+sha2 = "0.10.8"
+
+[dev-dependencies]
+hex-literal = "0.4.1"
