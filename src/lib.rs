@@ -25,6 +25,7 @@ pub mod okx;
 pub mod openbook;
 pub mod orca;
 pub mod pancakeswap;
+pub mod penguin;
 pub mod phoenix;
 pub mod plasma;
 pub mod pumpfun;
