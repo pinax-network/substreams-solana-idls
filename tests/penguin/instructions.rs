@@ -2,13 +2,11 @@ use substreams_solana_idls::penguin::instructions::*;
 
 #[test]
 fn parse_swap() {
-    let instr = SwapInstruction {
-        amount_in: 1_000_000,
-        minimum_amount_out: 500_000,
-    };
+    // Manually encode: amount_in (u64 LE) + minimum_amount_out (u64 LE)
     let mut data = vec![SWAP];
-    data.extend(borsh::to_vec(&instr).unwrap());
-    assert!(matches!(unpack(&data).unwrap(), PenguinInstruction::Swap(s) if s.amount_in == 1_000_000));
+    data.extend(1_000_000u64.to_le_bytes());
+    data.extend(500_000u64.to_le_bytes());
+    assert!(matches!(unpack(&data).unwrap(), TokenSwapInstruction::Swap { amount_in, .. } if amount_in == 1_000_000));
 }
 
 #[test]
