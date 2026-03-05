@@ -57,17 +57,32 @@ Add to your `Cargo.toml`:
 substreams-solana-idls = { git = "https://github.com/pinax-network/substreams-solana-idls", tag = "v0.6.x" }
 ```
 
-## Module Layout
+## Workspace Layout
+
+This repository is a Rust workspace, with one crate per protocol under `packages/`.
 
 ```
-substreams_solana_idls::
-├── <protocol>::PROGRAM_ID        // Program ID constant
-├── <protocol>::instructions      // Instruction enum + `unpack(&[u8])`
-├── <protocol>::accounts          // Account structs + `get_*_accounts`
-└── <protocol>::events            // Event enum + `unpack(&[u8])`
+substreams-solana-idls/
+├── src/lib.rs            # Root crate re-exports selected protocol crates
+├── packages/common       # Shared parsing helpers and ParseError
+└── packages/<protocol>   # Protocol-specific decoders and tests
 ```
 
-Every protocol lives in its own module so you only pull in what you need.
+Most protocol crates follow this internal shape:
+
+```
+packages/<protocol>/src/
+├── lib.rs                # Module declarations + PROGRAM_ID constants
+├── instructions.rs       # Instruction enum + unpack(&[u8])
+├── events.rs             # Event enum/structs + unpack(&[u8])
+├── accounts.rs           # Account parsing helpers (when available)
+└── <variant>/...         # Versioned modules (v4, v6, clmm, amm, etc.)
+```
+
+Examples:
+- `packages/jupiter/src/v4/*` and `packages/jupiter/src/v6/*`
+- `packages/raydium/src/amm/v4/*`, `clmm/v3/*`, `cpmm/*`, `stable/*`, `launchpad/*`
+- `packages/pumpfun/src/bonding_curve/*` and `packages/pumpfun/src/amm/*`
 
 ---
 
@@ -95,14 +110,24 @@ fn map_events(block: Block) -> Result<Events, Error> {
 }
 ```
 
-Swap `pumpfun` for any supported protocol and you get the same ergonomic API.
+Swap `pumpfun` for any protocol that is re-exported in `src/lib.rs`.
+
+## Build & Test
+
+```bash
+cargo fmt --all -- --check
+cargo clippy --workspace -- -D warnings
+cargo test --workspace
+cargo check --workspace --target wasm32-unknown-unknown
+```
 
 ---
 
 ## Contributing
 
-* Add a new folder under `src/<protocol>` with `instructions.rs`, `events.rs`, and `mod.rs`.
-* Follow existing modules for structure & doc style.
-* Keep dependencies minimal (`borsh`, `solana_program` only).
+* Add a new workspace crate under `packages/<protocol>`.
+* Register it in root `Cargo.toml` under both `[workspace].members` and `[dependencies]`.
+* Export it from `src/lib.rs` if it should be reachable via `substreams_solana_idls::<protocol>`.
+* Follow existing package structure (`lib.rs`, `instructions.rs`, `events.rs`, `accounts.rs` and/or variant submodules).
 
 PRs and issues welcome!
