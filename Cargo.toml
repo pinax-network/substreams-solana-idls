@@ -1,59 +1,20 @@
 [package]
 name = "substreams-solana-idls"
-version = "0.6.0"
+version = "1.0.0"
 edition = "2021"
-
-[workspace]
-members = [
-    ".",
-    "packages/common",
-    "packages/raydium",
-    "packages/pumpfun",
-    "packages/bonkswap",
-    "packages/jupiter",
-    "packages/meteora",
-    "packages/okx",
-    "packages/orca",
-    "packages/drift",
-    "packages/phoenix",
-    "packages/marinade",
-    "packages/stabble",
-    "packages/pancakeswap",
-    "packages/dflow",
-    "packages/solfi",
-    "packages/saros",
-    "packages/heaven",
-    "packages/byreal",
-    "packages/tesserav",
-    "packages/humidifi",
-]
+description = "Type-safe Solana instruction, event & account decoders for Substreams"
+license = "MIT"
+repository = "https://github.com/pinax-network/substreams-solana-idls"
+documentation = "https://docs.rs/substreams-solana-idls"
 
 [dependencies]
-bonkswap = { version = "0.1.0", path = "packages/bonkswap" }
-common = { version = "0.1.0", path = "packages/common" }
-jupiter = { version = "0.1.0", path = "packages/jupiter" }
-marinade = { version = "0.1.0", path = "packages/marinade" }
-meteora = { version = "0.1.0", path = "packages/meteora" }
-orca = { version = "0.1.0", path = "packages/orca" }
-phoenix = { version = "0.1.0", path = "packages/phoenix" }
-pumpfun = { version = "0.1.0", path = "packages/pumpfun" }
-raydium = { version = "0.1.0", path = "packages/raydium" }
-stabble = { version = "0.1.0", path = "packages/stabble" }
-drift = { version = "0.1.0", path = "packages/drift" }
-pancakeswap = { version = "0.1.0", path = "packages/pancakeswap" }
-dflow = { version = "0.1.0", path = "packages/dflow" }
-solfi = { version = "0.1.0", path = "packages/solfi" }
-okx = { version = "0.1.0", path = "packages/okx" }
-saros = { version = "0.1.0", path = "packages/saros" }
-heaven = { version = "0.1.0", path = "packages/heaven" }
-byreal = { version = "0.1.0", path = "packages/byreal" }
-tesserav = { version = "0.1.0", path = "packages/tesserav" }
-humidifi = { version = "0.1.0", path = "packages/humidifi" }
-
-[workspace.dependencies]
 substreams = "0.6.2"
 substreams-solana = "0.14.1"
 solana-program = "2.3.0"
 borsh = { version = "1.5.7", features = ["derive"] }
 thiserror = "2.0.16"
 base64 = "0.22.1"
+sha2 = "0.10.8"
+
+[dev-dependencies]
+hex-literal = "0.4.1"
