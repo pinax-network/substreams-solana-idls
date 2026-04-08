@@ -15,6 +15,7 @@ borsh = { version = "1.5.7", features = ["derive"] }
 thiserror = "2.0.16"
 base64 = "0.22.1"
 sha2 = "0.10.8"
+mpl-token-metadata = "5.1.1"
 
 [dev-dependencies]
 hex-literal = "0.4.1"
