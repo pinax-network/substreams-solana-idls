@@ -3,6 +3,8 @@ use substreams_solana_idls::common::ParseError;
 use substreams_solana_idls::metaplex::bubblegum::instructions as bgum_ix;
 use substreams_solana_idls::metaplex::token_metadata::instructions as tm_ix;
 
+use crate::metaplex_fixtures;
+
 #[test]
 fn token_metadata_unknown_discriminator() {
     // discriminator 255 is not valid
@@ -127,6 +129,42 @@ fn token_metadata_update_v1() {
         }
         _ => panic!("expected Update"),
     }
+}
+
+#[test]
+fn token_metadata_real_create_metadata_account_v3() {
+    let ix = tm_ix::unpack(metaplex_fixtures::REAL_CREATE_METADATA_ACCOUNT_V3_IX).unwrap();
+    match ix {
+        tm_ix::TokenMetadataInstruction::CreateMetadataAccountV3(args) => {
+            assert_eq!(args.data.name, "MOO DOG");
+            assert_eq!(args.data.symbol, "MOODOG");
+            assert_eq!(args.data.uri, "https://ipfs.io/ipfs/QmbeFeWTrm1u1ev5VreMoqNK4aVuxtBXKpMdTrjdnHj7P3");
+            assert_eq!(args.data.seller_fee_basis_points, 0);
+            assert!(!args.is_mutable);
+            assert!(args.collection_details.is_none());
+        }
+        _ => panic!("expected CreateMetadataAccountV3"),
+    }
+}
+
+#[test]
+fn token_metadata_real_legacy_instruction_payloads() {
+    assert_eq!(
+        tm_ix::unpack(metaplex_fixtures::REAL_CREATE_METADATA_ACCOUNT_IX).unwrap(),
+        tm_ix::TokenMetadataInstruction::CreateMetadataAccount
+    );
+    assert_eq!(
+        tm_ix::unpack(metaplex_fixtures::REAL_CREATE_MASTER_EDITION_IX).unwrap(),
+        tm_ix::TokenMetadataInstruction::CreateMasterEdition
+    );
+    assert_eq!(
+        tm_ix::unpack(metaplex_fixtures::REAL_MINT_NEW_EDITION_VIA_TOKEN_IX).unwrap(),
+        tm_ix::TokenMetadataInstruction::MintNewEditionFromMasterEditionViaToken
+    );
+    assert_eq!(
+        tm_ix::unpack(metaplex_fixtures::REAL_UPDATE_METADATA_ACCOUNT_IX).unwrap(),
+        tm_ix::TokenMetadataInstruction::UpdateMetadataAccount
+    );
 }
 
 #[test]
