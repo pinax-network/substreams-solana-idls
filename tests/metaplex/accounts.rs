@@ -16,6 +16,14 @@ enum Key {
     MetadataV1,
     ReservationListV2,
     MasterEditionV2,
+    EditionMarker,
+    UseAuthorityRecord,
+    CollectionAuthorityRecord,
+    TokenOwnedEscrow,
+    TokenRecord,
+    MetadataDelegate,
+    EditionMarkerV2,
+    HolderDelegate,
 }
 
 #[derive(BorshSerialize)]
@@ -34,6 +42,33 @@ enum TokenStandard {
     NonFungibleEdition,
     ProgrammableNonFungible,
     ProgrammableNonFungibleEdition,
+}
+
+#[allow(dead_code)]
+#[derive(BorshSerialize)]
+enum TokenDelegateRole {
+    Sale,
+    Transfer,
+    Utility,
+    Staking,
+    Standard,
+    LockedTransfer,
+    Migration,
+}
+
+#[allow(dead_code)]
+#[derive(BorshSerialize)]
+enum TokenState {
+    Unlocked,
+    Locked,
+    Listed,
+}
+
+#[allow(dead_code)]
+#[derive(BorshSerialize)]
+enum EscrowAuthority {
+    TokenOwner,
+    Creator(Pubkey),
 }
 
 #[derive(BorshSerialize)]
@@ -85,6 +120,80 @@ struct MasterEditionFixture {
     key: Key,
     supply: u64,
     max_supply: Option<u64>,
+}
+
+#[derive(BorshSerialize)]
+struct ReservationV1Fixture {
+    address: Pubkey,
+    spots_remaining: u8,
+    total_spots: u8,
+}
+
+#[derive(BorshSerialize)]
+struct ReservationFixture {
+    address: Pubkey,
+    spots_remaining: u64,
+    total_spots: u64,
+}
+
+#[derive(BorshSerialize)]
+struct ReservationListV1Fixture {
+    key: Key,
+    master_edition: Pubkey,
+    supply_snapshot: Option<u64>,
+    reservations: Vec<ReservationV1Fixture>,
+}
+
+#[derive(BorshSerialize)]
+struct ReservationListV2Fixture {
+    key: Key,
+    master_edition: Pubkey,
+    supply_snapshot: Option<u64>,
+    reservations: Vec<ReservationFixture>,
+    total_reservation_spots: u64,
+    current_reservation_spots: u64,
+}
+
+#[derive(BorshSerialize)]
+struct UseAuthorityRecordFixture {
+    key: Key,
+    allowed_uses: u64,
+    bump: u8,
+}
+
+#[derive(BorshSerialize)]
+struct CollectionAuthorityRecordFixture {
+    key: Key,
+    bump: u8,
+    update_authority: Option<Pubkey>,
+}
+
+#[derive(BorshSerialize)]
+struct TokenOwnedEscrowFixture {
+    key: Key,
+    base_token: Pubkey,
+    authority: EscrowAuthority,
+    bump: u8,
+}
+
+#[derive(BorshSerialize)]
+struct TokenRecordFixture {
+    key: Key,
+    bump: u8,
+    state: TokenState,
+    rule_set_revision: Option<u64>,
+    delegate: Option<Pubkey>,
+    delegate_role: Option<TokenDelegateRole>,
+    locked_transfer: Option<Pubkey>,
+}
+
+#[derive(BorshSerialize)]
+struct DelegateRecordFixture {
+    key: Key,
+    bump: u8,
+    mint: Pubkey,
+    delegate: Pubkey,
+    update_authority: Pubkey,
 }
 
 #[test]
@@ -151,6 +260,176 @@ fn token_metadata_master_edition_v2_account() {
             assert_eq!(parsed.max_supply, Some(100));
         }
         _ => panic!("expected MasterEditionV2 account"),
+    }
+}
+
+#[test]
+fn token_metadata_reservation_list_accounts() {
+    let master_edition = "11111111111111111111111111111112".parse().expect("parse master edition");
+    let reservation_address = "So11111111111111111111111111111111111111112".parse().expect("parse reservation address");
+
+    let reservation_list_v1 = ReservationListV1Fixture {
+        key: Key::ReservationListV1,
+        master_edition,
+        supply_snapshot: Some(7),
+        reservations: vec![ReservationV1Fixture {
+            address: reservation_address,
+            spots_remaining: 2,
+            total_spots: 3,
+        }],
+    };
+
+    let data = to_vec(&reservation_list_v1).expect("serialize reservation list v1");
+    match tm_accounts::unpack(&data).expect("decode reservation list v1") {
+        tm_accounts::TokenMetadataAccount::ReservationListV1(parsed) => {
+            assert_eq!(parsed.master_edition, master_edition);
+            assert_eq!(parsed.supply_snapshot, Some(7));
+            assert_eq!(parsed.reservations.len(), 1);
+            assert_eq!(parsed.reservations[0].address, reservation_address);
+            assert_eq!(parsed.reservations[0].spots_remaining, 2);
+            assert_eq!(parsed.reservations[0].total_spots, 3);
+        }
+        _ => panic!("expected ReservationListV1 account"),
+    }
+
+    let reservation_list_v2 = ReservationListV2Fixture {
+        key: Key::ReservationListV2,
+        master_edition,
+        supply_snapshot: Some(11),
+        reservations: vec![ReservationFixture {
+            address: reservation_address,
+            spots_remaining: 5,
+            total_spots: 8,
+        }],
+        total_reservation_spots: 8,
+        current_reservation_spots: 5,
+    };
+
+    let data = to_vec(&reservation_list_v2).expect("serialize reservation list v2");
+    match tm_accounts::unpack(&data).expect("decode reservation list v2") {
+        tm_accounts::TokenMetadataAccount::ReservationListV2(parsed) => {
+            assert_eq!(parsed.master_edition, master_edition);
+            assert_eq!(parsed.supply_snapshot, Some(11));
+            assert_eq!(parsed.reservations.len(), 1);
+            assert_eq!(parsed.reservations[0].address, reservation_address);
+            assert_eq!(parsed.reservations[0].spots_remaining, 5);
+            assert_eq!(parsed.reservations[0].total_spots, 8);
+            assert_eq!(parsed.total_reservation_spots, 8);
+            assert_eq!(parsed.current_reservation_spots, 5);
+        }
+        _ => panic!("expected ReservationListV2 account"),
+    }
+}
+
+#[test]
+fn token_metadata_additional_record_accounts() {
+    let mint = "So11111111111111111111111111111111111111112".parse().expect("parse mint");
+    let delegate = "TSLvdd1pWpHVjahSpsvCXUbgwsL3JAcvokwaKt1eokM".parse().expect("parse delegate");
+    let update_authority = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+        .parse()
+        .expect("parse update authority");
+    let locked_transfer = "SysvarRent111111111111111111111111111111111".parse().expect("parse locked transfer");
+
+    let use_authority = UseAuthorityRecordFixture {
+        key: Key::UseAuthorityRecord,
+        allowed_uses: 9,
+        bump: 250,
+    };
+    let data = to_vec(&use_authority).expect("serialize use authority");
+    match tm_accounts::unpack(&data).expect("decode use authority") {
+        tm_accounts::TokenMetadataAccount::UseAuthorityRecord(parsed) => {
+            assert_eq!(parsed.allowed_uses, 9);
+            assert_eq!(parsed.bump, 250);
+        }
+        _ => panic!("expected UseAuthorityRecord account"),
+    }
+
+    let collection_authority = CollectionAuthorityRecordFixture {
+        key: Key::CollectionAuthorityRecord,
+        bump: 7,
+        update_authority: Some(update_authority),
+    };
+    let data = to_vec(&collection_authority).expect("serialize collection authority");
+    match tm_accounts::unpack(&data).expect("decode collection authority") {
+        tm_accounts::TokenMetadataAccount::CollectionAuthorityRecord(parsed) => {
+            assert_eq!(parsed.bump, 7);
+            assert_eq!(parsed.update_authority, Some(update_authority));
+        }
+        _ => panic!("expected CollectionAuthorityRecord account"),
+    }
+
+    let token_owned_escrow = TokenOwnedEscrowFixture {
+        key: Key::TokenOwnedEscrow,
+        base_token: mint,
+        authority: EscrowAuthority::Creator(update_authority),
+        bump: 3,
+    };
+    let data = to_vec(&token_owned_escrow).expect("serialize token owned escrow");
+    match tm_accounts::unpack(&data).expect("decode token owned escrow") {
+        tm_accounts::TokenMetadataAccount::TokenOwnedEscrow(parsed) => {
+            assert_eq!(parsed.base_token, mint);
+            assert_eq!(parsed.authority, tm_accounts::EscrowAuthority::Creator(update_authority));
+            assert_eq!(parsed.bump, 3);
+        }
+        _ => panic!("expected TokenOwnedEscrow account"),
+    }
+
+    let token_record = TokenRecordFixture {
+        key: Key::TokenRecord,
+        bump: 42,
+        state: TokenState::Listed,
+        rule_set_revision: Some(12),
+        delegate: Some(delegate),
+        delegate_role: Some(TokenDelegateRole::Transfer),
+        locked_transfer: Some(locked_transfer),
+    };
+    let data = to_vec(&token_record).expect("serialize token record");
+    match tm_accounts::unpack(&data).expect("decode token record") {
+        tm_accounts::TokenMetadataAccount::TokenRecord(parsed) => {
+            assert_eq!(parsed.bump, 42);
+            assert_eq!(parsed.state, tm_accounts::TokenState::Listed);
+            assert_eq!(parsed.rule_set_revision, Some(12));
+            assert_eq!(parsed.delegate, Some(delegate));
+            assert_eq!(parsed.delegate_role, Some(tm_accounts::TokenDelegateRole::Transfer));
+            assert_eq!(parsed.locked_transfer, Some(locked_transfer));
+        }
+        _ => panic!("expected TokenRecord account"),
+    }
+
+    let metadata_delegate = DelegateRecordFixture {
+        key: Key::MetadataDelegate,
+        bump: 5,
+        mint,
+        delegate,
+        update_authority,
+    };
+    let data = to_vec(&metadata_delegate).expect("serialize metadata delegate");
+    match tm_accounts::unpack(&data).expect("decode metadata delegate") {
+        tm_accounts::TokenMetadataAccount::MetadataDelegateRecord(parsed) => {
+            assert_eq!(parsed.bump, 5);
+            assert_eq!(parsed.mint, mint);
+            assert_eq!(parsed.delegate, delegate);
+            assert_eq!(parsed.update_authority, update_authority);
+        }
+        _ => panic!("expected MetadataDelegateRecord account"),
+    }
+
+    let holder_delegate = DelegateRecordFixture {
+        key: Key::HolderDelegate,
+        bump: 6,
+        mint,
+        delegate,
+        update_authority,
+    };
+    let data = to_vec(&holder_delegate).expect("serialize holder delegate");
+    match tm_accounts::unpack(&data).expect("decode holder delegate") {
+        tm_accounts::TokenMetadataAccount::HolderDelegateRecord(parsed) => {
+            assert_eq!(parsed.bump, 6);
+            assert_eq!(parsed.mint, mint);
+            assert_eq!(parsed.delegate, delegate);
+            assert_eq!(parsed.update_authority, update_authority);
+        }
+        _ => panic!("expected HolderDelegateRecord account"),
     }
 }
 
