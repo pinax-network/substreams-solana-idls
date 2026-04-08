@@ -101,7 +101,7 @@ pub const REAL_CREATE_METADATA_ACCOUNT_V3_IX: &[u8] = &hex!(
 // https://github.com/ilmoi/nft-armory-node/blob/e964544081baa71afcbbaf2066c9175b33e54104/txs/Jt6MQf7aaBQ26sftFC9vFxPL8gh3aQ9RkncHNm2N4sV66p6fee2UJyxJGJjLXfWzShVfMGDPgucMLJCu7kL2LWL.json
 // Signature:
 // Jt6MQf7aaBQ26sftFC9vFxPL8gh3aQ9RkncHNm2N4sV66p6fee2UJyxJGJjLXfWzShVfMGDPgucMLJCu7kL2LWL
-// Inner instruction: Metaplex `Create Metadata Accounts`
+// Inner instruction: Metaplex `Create Metadata Account`
 pub const REAL_CREATE_METADATA_ACCOUNT_IX: &[u8] = &hex!(
     "
     00
@@ -149,7 +149,7 @@ pub const REAL_MINT_NEW_EDITION_VIA_TOKEN_IX: &[u8] = &hex!("0b ae 01 00 00 00 0
 // https://github.com/ilmoi/nft-armory-node/blob/e964544081baa71afcbbaf2066c9175b33e54104/txs/Jt6MQf7aaBQ26sftFC9vFxPL8gh3aQ9RkncHNm2N4sV66p6fee2UJyxJGJjLXfWzShVfMGDPgucMLJCu7kL2LWL.json
 // Signature:
 // Jt6MQf7aaBQ26sftFC9vFxPL8gh3aQ9RkncHNm2N4sV66p6fee2UJyxJGJjLXfWzShVfMGDPgucMLJCu7kL2LWL
-// Inner instruction: Metaplex `Update Metadata Accounts`
+// Inner instruction: Metaplex `Update Metadata Account`
 pub const REAL_UPDATE_METADATA_ACCOUNT_IX: &[u8] =
     &hex!("01 00 01 9a 24 91 9c 11 f7 cf 47 7b 45 75 f9 14 04 57 96 ec a0 e4 18 26 df 1d 8f 09 64 22 5e d9 92 67 18 01 01");
 
