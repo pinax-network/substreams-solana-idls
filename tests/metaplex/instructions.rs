@@ -11,7 +11,23 @@ fn token_metadata_unknown_discriminator() {
 
 #[test]
 fn token_metadata_empty() {
-    assert!(tm_ix::unpack(&[]).is_err());
+    assert!(matches!(tm_ix::unpack(&[]), Err(ParseError::TooShort(0))));
+}
+
+#[test]
+fn token_metadata_create_requires_subdiscriminator() {
+    assert!(matches!(
+        tm_ix::unpack(&[tm_ix::CREATE]),
+        Err(ParseError::InvalidLength { expected: 1, got: 0 })
+    ));
+}
+
+#[test]
+fn token_metadata_update_requires_subdiscriminator() {
+    assert!(matches!(
+        tm_ix::unpack(&[tm_ix::UPDATE]),
+        Err(ParseError::InvalidLength { expected: 1, got: 0 })
+    ));
 }
 
 #[test]

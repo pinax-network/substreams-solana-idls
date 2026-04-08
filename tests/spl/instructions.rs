@@ -1,5 +1,7 @@
 // ---- token ----
 
+use substreams_solana_idls::common::ParseError;
+
 #[test]
 fn token_transfer() {
     let mut data = vec![substreams_solana_idls::spl::token::instructions::TRANSFER];
@@ -10,7 +12,18 @@ fn token_transfer() {
 
 #[test]
 fn token_empty() {
-    assert!(substreams_solana_idls::spl::token::instructions::unpack(&[]).is_err());
+    assert!(matches!(
+        substreams_solana_idls::spl::token::instructions::unpack(&[]),
+        Err(ParseError::TooShort(0))
+    ));
+}
+
+#[test]
+fn token_transfer_reports_actual_available_length() {
+    assert!(matches!(
+        substreams_solana_idls::spl::token::instructions::unpack(&[substreams_solana_idls::spl::token::instructions::TRANSFER]),
+        Err(ParseError::TooShort(1))
+    ));
 }
 
 #[test]
@@ -41,7 +54,10 @@ fn token_2022_transfer() {
 
 #[test]
 fn token_2022_empty() {
-    assert!(substreams_solana_idls::spl::token_2022::instructions::unpack(&[]).is_err());
+    assert!(matches!(
+        substreams_solana_idls::spl::token_2022::instructions::unpack(&[]),
+        Err(ParseError::TooShort(0))
+    ));
 }
 
 #[test]
@@ -80,7 +96,10 @@ fn token_swap_swap() {
 
 #[test]
 fn token_swap_empty() {
-    assert!(substreams_solana_idls::spl::token_swap::instructions::unpack(&[]).is_err());
+    assert!(matches!(
+        substreams_solana_idls::spl::token_swap::instructions::unpack(&[]),
+        Err(ParseError::TooShort(0))
+    ));
 }
 
 #[test]
@@ -103,7 +122,10 @@ fn token_lending_deposit() {
 
 #[test]
 fn token_lending_empty() {
-    assert!(substreams_solana_idls::spl::token_lending::instructions::unpack(&[]).is_err());
+    assert!(matches!(
+        substreams_solana_idls::spl::token_lending::instructions::unpack(&[]),
+        Err(ParseError::TooShort(0))
+    ));
 }
 
 #[test]

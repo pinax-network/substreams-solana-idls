@@ -2,8 +2,7 @@
 mod tests {
     use base64::Engine;
     use substreams::hex;
-    use substreams_solana_idls::raydium;
-
+    use substreams_solana_idls::common::ParseError;
     #[test]
     fn unpack_amm_v4_swap_event() {
         // https://solscan.io/tx/57d3uDBdPyrHX44aPzWVznDn39qx3ixFdRVieEfvhKtYErtgbYUpetApiZaYDSHCsfQWmqJryjknyFYT2U21oqrU
@@ -44,6 +43,14 @@ mod tests {
             }
             _ => panic!("Expected a Event"),
         }
+    }
+
+    #[test]
+    fn unpack_amm_v4_empty_event_reports_actual_length() {
+        assert!(matches!(
+            substreams_solana_idls::raydium::amm::v4::logs::unpack(&[]),
+            Err(ParseError::TooShort(0))
+        ));
     }
 
     #[test]

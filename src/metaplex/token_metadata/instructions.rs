@@ -305,7 +305,7 @@ impl<'a> TryFrom<&'a [u8]> for TokenMetadataInstruction {
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
         if data.is_empty() {
-            return Err(ParseError::TooShort(0));
+            return Err(ParseError::TooShort(data.len()));
         }
 
         let discriminator = data[0];
@@ -355,7 +355,10 @@ impl<'a> TryFrom<&'a [u8]> for TokenMetadataInstruction {
             TRANSFER_OUT_OF_ESCROW => Self::TransferOutOfEscrow,
             BURN => Self::Burn,
             CREATE => {
-                let (subdiscriminator, args_payload) = payload.split_first().ok_or(ParseError::TooShort(1))?;
+                let (subdiscriminator, args_payload) = payload.split_first().ok_or(ParseError::InvalidLength {
+                    expected: 1,
+                    got: payload.len(),
+                })?;
                 if *subdiscriminator != 0 {
                     return Err(ParseError::TokenMetadataSubdiscriminatorUnknown(*subdiscriminator));
                 }
@@ -369,7 +372,10 @@ impl<'a> TryFrom<&'a [u8]> for TokenMetadataInstruction {
             MIGRATE => Self::Migrate,
             TRANSFER => Self::Transfer,
             UPDATE => {
-                let (subdiscriminator, args_payload) = payload.split_first().ok_or(ParseError::TooShort(1))?;
+                let (subdiscriminator, args_payload) = payload.split_first().ok_or(ParseError::InvalidLength {
+                    expected: 1,
+                    got: payload.len(),
+                })?;
                 if *subdiscriminator != 0 {
                     return Err(ParseError::TokenMetadataSubdiscriminatorUnknown(*subdiscriminator));
                 }

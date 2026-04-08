@@ -7,7 +7,7 @@ use thiserror::Error;
 #[derive(Error, Debug)]
 #[non_exhaustive]
 pub enum ParseError {
-    #[error("payload too short: {0} bytes (need at least 16)")]
+    #[error("payload too short: got {0} bytes")]
     TooShort(usize),
     #[error("unknown discriminator {0:?}")]
     Unknown([u8; 8]),

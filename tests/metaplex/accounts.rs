@@ -1,5 +1,6 @@
 use borsh::{to_vec, BorshSerialize};
 use solana_program::pubkey::Pubkey;
+use substreams_solana_idls::common::ParseError;
 use substreams_solana_idls::metaplex::token_metadata::accounts as tm_accounts;
 
 #[allow(dead_code)]
@@ -90,7 +91,7 @@ fn token_metadata_unknown_account_key() {
 
 #[test]
 fn token_metadata_empty_account() {
-    assert!(tm_accounts::unpack(&[]).is_err());
+    assert!(matches!(tm_accounts::unpack(&[]), Err(ParseError::TooShort(0))));
 }
 
 #[test]
