@@ -51,7 +51,7 @@ impl TryFrom<&[u8]> for TokenLendingInstruction {
 
     fn try_from(data: &[u8]) -> Result<Self, Self::Error> {
         if data.is_empty() {
-            return Err(ParseError::TooShort(0));
+            return Err(ParseError::TooShort(data.len()));
         }
         let rest = &data[1..];
         match data[0] {

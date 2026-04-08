@@ -135,7 +135,7 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumV4Log {
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
         if data.is_empty() {
-            return Err(ParseError::TooShort(0));
+            return Err(ParseError::TooShort(data.len()));
         }
 
         // First byte is Raydium’s log_type discriminator

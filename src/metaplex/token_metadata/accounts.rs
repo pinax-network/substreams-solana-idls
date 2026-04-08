@@ -2,9 +2,7 @@
 
 use crate::common::ParseError;
 
-pub use mpl_token_metadata::accounts::{
-    DeprecatedMasterEditionV1, Edition, EditionMarker, EditionMarkerV2, MasterEdition, Metadata,
-};
+pub use mpl_token_metadata::accounts::{DeprecatedMasterEditionV1, Edition, EditionMarker, EditionMarkerV2, MasterEdition, Metadata};
 pub use mpl_token_metadata::types::TokenStandard;
 
 // Account kind values come from the Metaplex `Key` enum stored as the first byte.
@@ -36,14 +34,12 @@ pub enum TokenMetadataAccount {
 
 pub fn unpack(data: &[u8]) -> Result<TokenMetadataAccount, ParseError> {
     let Some(discriminator) = data.first().copied() else {
-        return Err(ParseError::TooShort(0));
+        return Err(ParseError::TooShort(data.len()));
     };
 
     match discriminator {
         METADATA_ACCOUNT => Ok(TokenMetadataAccount::Metadata(Metadata::from_bytes(data)?)),
-        MASTER_EDITION_V1_ACCOUNT => Ok(TokenMetadataAccount::MasterEditionV1(
-            DeprecatedMasterEditionV1::from_bytes(data)?,
-        )),
+        MASTER_EDITION_V1_ACCOUNT => Ok(TokenMetadataAccount::MasterEditionV1(DeprecatedMasterEditionV1::from_bytes(data)?)),
         MASTER_EDITION_V2_ACCOUNT => Ok(TokenMetadataAccount::MasterEditionV2(MasterEdition::from_bytes(data)?)),
         EDITION_ACCOUNT => Ok(TokenMetadataAccount::Edition(Edition::from_bytes(data)?)),
         EDITION_MARKER_ACCOUNT => Ok(TokenMetadataAccount::EditionMarker(EditionMarker::from_bytes(data)?)),

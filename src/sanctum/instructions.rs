@@ -79,7 +79,7 @@ impl<'a> TryFrom<&'a [u8]> for SanctumInstruction {
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
         if data.is_empty() {
-            return Err(ParseError::TooShort(0));
+            return Err(ParseError::TooShort(data.len()));
         }
 
         let disc = data[0];
