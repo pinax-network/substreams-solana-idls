@@ -6,6 +6,10 @@ Type-safe Solana instruction & event decoders for Substreams.
 
 See **[.agents/skills/](.agents/skills/)** for all workflows and conventions.
 
+## Domain Knowledge
+
+- **[docs/metaplex.md](docs/metaplex.md)** — Metaplex Token Metadata & Bubblegum decoding reference (discriminators, account layouts, instructions, PDA derivation, serialization)
+
 ## Quick Start
 
 ```bash
