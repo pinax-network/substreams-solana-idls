@@ -3,6 +3,8 @@ use solana_program::pubkey::Pubkey;
 use substreams_solana_idls::common::ParseError;
 use substreams_solana_idls::metaplex::token_metadata::accounts as tm_accounts;
 
+use crate::metaplex_fixtures;
+
 #[allow(dead_code)]
 #[derive(BorshSerialize)]
 enum Key {
@@ -148,5 +150,47 @@ fn token_metadata_master_edition_v2_account() {
             assert_eq!(parsed.max_supply, Some(100));
         }
         _ => panic!("expected MasterEditionV2 account"),
+    }
+}
+
+#[test]
+fn token_metadata_real_metadata_account() {
+    let data = metaplex_fixtures::real_metadata_account();
+    match tm_accounts::unpack(&data).expect("decode metadata account") {
+        tm_accounts::TokenMetadataAccount::Metadata(parsed) => {
+            assert_eq!(parsed.update_authority.to_string(), "TSLvdd1pWpHVjahSpsvCXUbgwsL3JAcvokwaKt1eokM");
+            assert_eq!(parsed.mint.to_string(), "5dNYcCZXEGfGgbdUdq7MMR7KLsNJLLLgL83wLH8Fpump");
+            assert_eq!(parsed.name, "MOO DOG");
+            assert_eq!(parsed.symbol, "MOODOG");
+            assert_eq!(parsed.uri, "https://ipfs.io/ipfs/QmbeFeWTrm1u1ev5VreMoqNK4aVuxtBXKpMdTrjdnHj7P3");
+            assert_eq!(parsed.seller_fee_basis_points, 0);
+            assert!(!parsed.primary_sale_happened);
+            assert!(!parsed.is_mutable);
+            assert_eq!(parsed.edition_nonce, None);
+            assert_eq!(parsed.token_standard, None);
+        }
+        _ => panic!("expected Metadata account"),
+    }
+}
+
+#[test]
+fn token_metadata_real_master_edition_v2_account() {
+    match tm_accounts::unpack(metaplex_fixtures::REAL_MASTER_EDITION_ACCOUNT).expect("decode master edition account") {
+        tm_accounts::TokenMetadataAccount::MasterEditionV2(parsed) => {
+            assert_eq!(parsed.supply, 0);
+            assert_eq!(parsed.max_supply, Some(0));
+        }
+        _ => panic!("expected MasterEditionV2 account"),
+    }
+}
+
+#[test]
+fn token_metadata_real_edition_account() {
+    match tm_accounts::unpack(metaplex_fixtures::REAL_EDITION_ACCOUNT).expect("decode edition account") {
+        tm_accounts::TokenMetadataAccount::Edition(parsed) => {
+            assert_eq!(parsed.parent.to_string(), "DDvbjs9KUjUKXWfAdheK6fFfdvHkgaERghaWTUpXHzFe");
+            assert_eq!(parsed.edition, 430);
+        }
+        _ => panic!("expected Edition account"),
     }
 }
