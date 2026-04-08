@@ -1,4 +1,5 @@
 use borsh::to_vec;
+use solana_program::pubkey::Pubkey;
 use substreams_solana_idls::common::ParseError;
 use substreams_solana_idls::metaplex::bubblegum::instructions as bgum_ix;
 use substreams_solana_idls::metaplex::token_metadata::instructions as tm_ix;
@@ -51,6 +52,45 @@ fn token_metadata_create_master_edition_v3() {
             assert_eq!(args.max_supply, Some(100));
         }
         _ => panic!("expected CreateMasterEditionV3"),
+    }
+}
+
+#[test]
+fn token_metadata_create_metadata_account_v2() {
+    let args = tm_ix::CreateMetadataAccountV2Args {
+        data: tm_ix::DataV2 {
+            name: "Wrapped SOL".to_string(),
+            symbol: "WSOL".to_string(),
+            uri: "https://example.com/wsol.json".to_string(),
+            seller_fee_basis_points: 0,
+            creators: Some(vec![tm_ix::Creator {
+                address: Pubkey::new_from_array([1; 32]),
+                verified: true,
+                share: 100,
+            }]),
+            collection: Some(tm_ix::Collection {
+                verified: false,
+                key: Pubkey::new_from_array([2; 32]),
+            }),
+            uses: None,
+        },
+        is_mutable: true,
+    };
+
+    let mut data = vec![tm_ix::CREATE_METADATA_ACCOUNT_V2];
+    data.extend_from_slice(&to_vec(&args).unwrap());
+
+    let ix = tm_ix::unpack(&data).unwrap();
+    match ix {
+        tm_ix::TokenMetadataInstruction::CreateMetadataAccountV2(parsed) => {
+            assert_eq!(parsed.data.name, "Wrapped SOL");
+            assert_eq!(parsed.data.symbol, "WSOL");
+            assert_eq!(parsed.data.uri, "https://example.com/wsol.json");
+            assert_eq!(parsed.data.creators, args.data.creators);
+            assert_eq!(parsed.data.collection, args.data.collection);
+            assert!(parsed.is_mutable);
+        }
+        _ => panic!("expected CreateMetadataAccountV2"),
     }
 }
 
@@ -148,19 +188,101 @@ fn token_metadata_real_create_metadata_account_v3() {
 }
 
 #[test]
+fn token_metadata_set_collection_size() {
+    let args = tm_ix::SetCollectionSizeArgs { size: 123 };
+
+    let mut data = vec![tm_ix::SET_COLLECTION_SIZE];
+    data.extend_from_slice(&to_vec(&args).unwrap());
+
+    let ix = tm_ix::unpack(&data).unwrap();
+    match ix {
+        tm_ix::TokenMetadataInstruction::SetCollectionSize(parsed) => {
+            assert_eq!(parsed.size, 123);
+        }
+        _ => panic!("expected SetCollectionSize"),
+    }
+}
+
+#[test]
+fn token_metadata_burn_v1() {
+    let args = tm_ix::BurnArgs::V1 { amount: 7 };
+
+    let mut data = vec![tm_ix::BURN];
+    data.extend_from_slice(&to_vec(&args).unwrap());
+
+    let ix = tm_ix::unpack(&data).unwrap();
+    assert_eq!(ix, tm_ix::TokenMetadataInstruction::Burn(tm_ix::BurnArgs::V1 { amount: 7 }));
+}
+
+#[test]
+fn token_metadata_mint_v1() {
+    let args = tm_ix::MintArgs::V1 {
+        amount: 5,
+        authorization_data: None,
+    };
+
+    let mut data = vec![tm_ix::MINT];
+    data.extend_from_slice(&to_vec(&args).unwrap());
+
+    let ix = tm_ix::unpack(&data).unwrap();
+    assert_eq!(
+        ix,
+        tm_ix::TokenMetadataInstruction::Mint(tm_ix::MintArgs::V1 {
+            amount: 5,
+            authorization_data: None,
+        })
+    );
+}
+
+#[test]
+fn token_metadata_delegate_standard_v1() {
+    let args = tm_ix::DelegateArgs::StandardV1 { amount: 9 };
+
+    let mut data = vec![tm_ix::DELEGATE];
+    data.extend_from_slice(&to_vec(&args).unwrap());
+
+    let ix = tm_ix::unpack(&data).unwrap();
+    assert_eq!(ix, tm_ix::TokenMetadataInstruction::Delegate(tm_ix::DelegateArgs::StandardV1 { amount: 9 }));
+}
+
+#[test]
+fn token_metadata_transfer_v1() {
+    let args = tm_ix::TransferArgs::V1 {
+        amount: 11,
+        authorization_data: None,
+    };
+
+    let mut data = vec![tm_ix::TRANSFER];
+    data.extend_from_slice(&to_vec(&args).unwrap());
+
+    let ix = tm_ix::unpack(&data).unwrap();
+    assert_eq!(
+        ix,
+        tm_ix::TokenMetadataInstruction::Transfer(tm_ix::TransferArgs::V1 {
+            amount: 11,
+            authorization_data: None,
+        })
+    );
+}
+
+#[test]
 fn token_metadata_real_legacy_instruction_payloads() {
     assert_eq!(
         tm_ix::unpack(metaplex_fixtures::REAL_CREATE_METADATA_ACCOUNT_IX).unwrap(),
         tm_ix::TokenMetadataInstruction::CreateMetadataAccount
     );
-    assert_eq!(
-        tm_ix::unpack(metaplex_fixtures::REAL_CREATE_MASTER_EDITION_IX).unwrap(),
-        tm_ix::TokenMetadataInstruction::CreateMasterEdition
-    );
-    assert_eq!(
-        tm_ix::unpack(metaplex_fixtures::REAL_MINT_NEW_EDITION_VIA_TOKEN_IX).unwrap(),
-        tm_ix::TokenMetadataInstruction::MintNewEditionFromMasterEditionViaToken
-    );
+    match tm_ix::unpack(metaplex_fixtures::REAL_CREATE_MASTER_EDITION_IX).unwrap() {
+        tm_ix::TokenMetadataInstruction::CreateMasterEdition(args) => {
+            assert_eq!(args.max_supply, Some(0));
+        }
+        _ => panic!("expected CreateMasterEdition"),
+    }
+    match tm_ix::unpack(metaplex_fixtures::REAL_MINT_NEW_EDITION_VIA_TOKEN_IX).unwrap() {
+        tm_ix::TokenMetadataInstruction::MintNewEditionFromMasterEditionViaToken(args) => {
+            assert_eq!(args.edition, 430);
+        }
+        _ => panic!("expected MintNewEditionFromMasterEditionViaToken"),
+    }
     assert_eq!(
         tm_ix::unpack(metaplex_fixtures::REAL_UPDATE_METADATA_ACCOUNT_IX).unwrap(),
         tm_ix::TokenMetadataInstruction::UpdateMetadataAccount
