@@ -1,6 +1,7 @@
 use borsh::{to_vec, BorshSerialize};
 use solana_program::pubkey::Pubkey;
 use substreams_solana_idls::common::ParseError;
+use substreams_solana_idls::metaplex::bubblegum::accounts as bg_accounts;
 use substreams_solana_idls::metaplex::token_metadata::accounts as tm_accounts;
 
 use crate::metaplex_fixtures;
@@ -192,5 +193,55 @@ fn token_metadata_real_edition_account() {
             assert_eq!(parsed.edition, 430);
         }
         _ => panic!("expected Edition account"),
+    }
+}
+
+#[test]
+fn bubblegum_empty_account() {
+    assert!(matches!(bg_accounts::unpack(&[]), Err(ParseError::TooShort(0))));
+}
+
+#[test]
+fn bubblegum_unknown_account_discriminator() {
+    assert!(matches!(
+        bg_accounts::unpack(&[0; 8]),
+        Err(ParseError::AnchorUnknown(discriminator)) if discriminator == [0; 8]
+    ));
+}
+
+#[test]
+fn bubblegum_tree_config_account() {
+    let fixture = bg_accounts::TreeConfig {
+        tree_creator: Pubkey::new_unique(),
+        tree_delegate: Pubkey::new_unique(),
+        total_mint_capacity: 1_000,
+        num_minted: 25,
+        is_public: true,
+        is_decompressible: 1,
+    };
+
+    let mut data = bg_accounts::TREE_CONFIG_ACCOUNT.to_vec();
+    data.extend_from_slice(&to_vec(&fixture).expect("serialize tree config account"));
+
+    match bg_accounts::unpack(&data).expect("decode tree config account") {
+        bg_accounts::BubblegumAccount::TreeConfig(parsed) => assert_eq!(parsed, fixture),
+        _ => panic!("expected TreeConfig account"),
+    }
+}
+
+#[test]
+fn bubblegum_voucher_account() {
+    let fixture = bg_accounts::Voucher {
+        leaf_schema: Pubkey::new_unique(),
+        index: 42,
+        merkle_tree: Pubkey::new_unique(),
+    };
+
+    let mut data = bg_accounts::VOUCHER_ACCOUNT.to_vec();
+    data.extend_from_slice(&to_vec(&fixture).expect("serialize voucher account"));
+
+    match bg_accounts::unpack(&data).expect("decode voucher account") {
+        bg_accounts::BubblegumAccount::Voucher(parsed) => assert_eq!(parsed, fixture),
+        _ => panic!("expected Voucher account"),
     }
 }

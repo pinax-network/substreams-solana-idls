@@ -1,5 +1,6 @@
 //! Metaplex Bubblegum on-chain accounts.
 
+use crate::common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
 
@@ -22,4 +23,25 @@ pub struct Voucher {
     pub leaf_schema: Pubkey,
     pub index: u32,
     pub merkle_tree: Pubkey,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum BubblegumAccount {
+    TreeConfig(TreeConfig),
+    Voucher(Voucher),
+}
+
+pub fn unpack(data: &[u8]) -> Result<BubblegumAccount, ParseError> {
+    if data.len() < 8 {
+        return Err(ParseError::TooShort(data.len()));
+    }
+
+    let (disc, rest) = data.split_at(8);
+    let discriminator: [u8; 8] = disc.try_into().expect("slice len 8");
+
+    Ok(match discriminator {
+        TREE_CONFIG_ACCOUNT => BubblegumAccount::TreeConfig(TreeConfig::try_from_slice(rest)?),
+        VOUCHER_ACCOUNT => BubblegumAccount::Voucher(Voucher::try_from_slice(rest)?),
+        other => return Err(ParseError::AnchorUnknown(other)),
+    })
 }
