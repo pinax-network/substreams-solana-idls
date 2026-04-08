@@ -178,9 +178,62 @@ fn bubblegum_too_short() {
 }
 
 #[test]
-fn bubblegum_transfer() {
-    let mut data = bgum_ix::TRANSFER.to_vec();
-    data.extend_from_slice(&[0u8; 64]); // dummy payload
-    let ix = bgum_ix::unpack(&data).unwrap();
-    assert_eq!(ix, bgum_ix::BubblegumInstruction::Transfer);
+fn bubblegum_known_discriminators() {
+    let cases = [
+        (bgum_ix::BURN, bgum_ix::BubblegumInstruction::Burn),
+        (
+            bgum_ix::CANCEL_REDEEM,
+            bgum_ix::BubblegumInstruction::CancelRedeem,
+        ),
+        (bgum_ix::CREATE_TREE, bgum_ix::BubblegumInstruction::CreateTree),
+        (
+            bgum_ix::DECOMPRESS_V1,
+            bgum_ix::BubblegumInstruction::DecompressV1,
+        ),
+        (bgum_ix::DELEGATE, bgum_ix::BubblegumInstruction::Delegate),
+        (
+            bgum_ix::MINT_TO_COLLECTION_V1,
+            bgum_ix::BubblegumInstruction::MintToCollectionV1,
+        ),
+        (bgum_ix::MINT_V1, bgum_ix::BubblegumInstruction::MintV1),
+        (bgum_ix::REDEEM, bgum_ix::BubblegumInstruction::Redeem),
+        (
+            bgum_ix::SET_AND_VERIFY_COLLECTION,
+            bgum_ix::BubblegumInstruction::SetAndVerifyCollection,
+        ),
+        (
+            bgum_ix::SET_DECOMPRESSIBLE_STATE,
+            bgum_ix::BubblegumInstruction::SetDecompressibleState,
+        ),
+        (
+            bgum_ix::SET_TREE_DELEGATE,
+            bgum_ix::BubblegumInstruction::SetTreeDelegate,
+        ),
+        (bgum_ix::TRANSFER, bgum_ix::BubblegumInstruction::Transfer),
+        (
+            bgum_ix::UNVERIFY_COLLECTION,
+            bgum_ix::BubblegumInstruction::UnverifyCollection,
+        ),
+        (
+            bgum_ix::UNVERIFY_CREATOR,
+            bgum_ix::BubblegumInstruction::UnverifyCreator,
+        ),
+        (
+            bgum_ix::VERIFY_COLLECTION,
+            bgum_ix::BubblegumInstruction::VerifyCollection,
+        ),
+        (
+            bgum_ix::VERIFY_CREATOR,
+            bgum_ix::BubblegumInstruction::VerifyCreator,
+        ),
+        (
+            bgum_ix::UPDATE_METADATA,
+            bgum_ix::BubblegumInstruction::UpdateMetadata,
+        ),
+    ];
+
+    for (discriminator, expected) in cases {
+        let ix = bgum_ix::unpack(&discriminator).unwrap();
+        assert_eq!(ix, expected);
+    }
 }
