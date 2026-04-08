@@ -200,7 +200,10 @@ fn bubblegum_known_discriminators() {
     ];
 
     for (discriminator, expected) in cases {
-        let ix = bgum_ix::unpack(&discriminator).unwrap();
+        // Append trailing payload bytes to verify unpack tolerates extra data
+        let mut data = discriminator.to_vec();
+        data.extend_from_slice(&[0u8; 32]);
+        let ix = bgum_ix::unpack(&data).unwrap();
         assert_eq!(ix, expected);
     }
 }
