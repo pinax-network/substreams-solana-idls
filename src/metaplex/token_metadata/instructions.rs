@@ -126,6 +126,19 @@ pub struct CreateMasterEditionV3Args {
 }
 
 #[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct CreateMetadataAccountArgs {
+    pub data: Data,
+    pub is_mutable: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct UpdateMetadataAccountArgs {
+    pub data: Option<Data>,
+    pub update_authority: Option<Pubkey>,
+    pub primary_sale_happened: Option<bool>,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
 pub struct CreateMetadataAccountV2Args {
     pub data: DataV2,
     pub is_mutable: bool,
@@ -335,8 +348,8 @@ pub enum TransferArgs {
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum TokenMetadataInstruction {
-    CreateMetadataAccount,
-    UpdateMetadataAccount,
+    CreateMetadataAccount(CreateMetadataAccountArgs),
+    UpdateMetadataAccount(UpdateMetadataAccountArgs),
     DeprecatedCreateMasterEdition,
     DeprecatedMintNewEditionFromMasterEditionViaPrintingToken,
     UpdatePrimarySaleHappenedViaToken,
@@ -406,8 +419,8 @@ impl<'a> TryFrom<&'a [u8]> for TokenMetadataInstruction {
         let payload = &data[1..];
 
         Ok(match discriminator {
-            CREATE_METADATA_ACCOUNT => Self::CreateMetadataAccount,
-            UPDATE_METADATA_ACCOUNT => Self::UpdateMetadataAccount,
+            CREATE_METADATA_ACCOUNT => Self::CreateMetadataAccount(CreateMetadataAccountArgs::try_from_slice(payload)?),
+            UPDATE_METADATA_ACCOUNT => Self::UpdateMetadataAccount(UpdateMetadataAccountArgs::try_from_slice(payload)?),
             DEPRECATED_CREATE_MASTER_EDITION => Self::DeprecatedCreateMasterEdition,
             DEPRECATED_MINT_NEW_EDITION_FROM_MASTER_EDITION_VIA_PRINTING_TOKEN => Self::DeprecatedMintNewEditionFromMasterEditionViaPrintingToken,
             UPDATE_PRIMARY_SALE_HAPPENED_VIA_TOKEN => Self::UpdatePrimarySaleHappenedViaToken,
