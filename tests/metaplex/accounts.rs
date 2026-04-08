@@ -196,9 +196,17 @@ struct DelegateRecordFixture {
     update_authority: Pubkey,
 }
 
+// ── Token Metadata accounts: error handling ────────────────────────────
+
 #[test]
 fn token_metadata_unknown_account_key() {
-    assert!(tm_accounts::unpack(&[255]).is_err());
+    assert!(matches!(tm_accounts::unpack(&[255]), Err(ParseError::TokenMetadataUnknown(255))));
+}
+
+#[test]
+fn token_metadata_uninitialized_account_key() {
+    // Key 0 (Uninitialized) is intentionally unsupported
+    assert!(matches!(tm_accounts::unpack(&[0]), Err(ParseError::TokenMetadataUnknown(0))));
 }
 
 #[test]
@@ -433,6 +441,66 @@ fn token_metadata_additional_record_accounts() {
     }
 }
 
+// ── Token Metadata accounts: metadata with all optional fields ─────────
+
+#[test]
+fn token_metadata_metadata_account_full() {
+    let fixture = MetadataFixture {
+        key: Key::MetadataV1,
+        update_authority: "11111111111111111111111111111112".parse().expect("parse"),
+        mint: "So11111111111111111111111111111111111111112".parse().expect("parse"),
+        name: "Full NFT".to_string(),
+        symbol: "FULL".to_string(),
+        uri: "https://example.com/full.json".to_string(),
+        seller_fee_basis_points: 500,
+        creators: Some(vec![
+            Creator { address: Pubkey::new_from_array([1; 32]), verified: true, share: 80 },
+            Creator { address: Pubkey::new_from_array([2; 32]), verified: false, share: 20 },
+        ]),
+        primary_sale_happened: true,
+        is_mutable: false,
+        edition_nonce: Some(253),
+        token_standard: Some(TokenStandard::ProgrammableNonFungible),
+        collection: None,
+        uses: Some(Uses { use_method: UseMethod::Burn, remaining: 5, total: 10 }),
+        collection_details: None,
+        programmable_config: None,
+    };
+
+    let data = to_vec(&fixture).expect("serialize");
+    match tm_accounts::unpack(&data).expect("decode") {
+        tm_accounts::TokenMetadataAccount::Metadata(parsed) => {
+            assert_eq!(parsed.name, "Full NFT");
+            assert_eq!(parsed.seller_fee_basis_points, 500);
+            assert!(parsed.primary_sale_happened);
+            assert!(!parsed.is_mutable);
+            assert_eq!(parsed.edition_nonce, Some(253));
+            assert_eq!(parsed.token_standard, Some(tm_accounts::TokenStandard::ProgrammableNonFungible));
+            assert_eq!(parsed.creators.as_ref().unwrap().len(), 2);
+        }
+        _ => panic!("expected Metadata account"),
+    }
+}
+
+#[test]
+fn token_metadata_master_edition_v2_unlimited() {
+    let fixture = MasterEditionFixture {
+        key: Key::MasterEditionV2,
+        supply: 0,
+        max_supply: None,
+    };
+    let data = to_vec(&fixture).expect("serialize");
+    match tm_accounts::unpack(&data).expect("decode") {
+        tm_accounts::TokenMetadataAccount::MasterEditionV2(parsed) => {
+            assert_eq!(parsed.supply, 0);
+            assert_eq!(parsed.max_supply, None);
+        }
+        _ => panic!("expected MasterEditionV2 account"),
+    }
+}
+
+// ── Token Metadata accounts: real mainnet fixtures ─────────────────────
+
 #[test]
 fn token_metadata_real_metadata_account() {
     let data = metaplex_fixtures::real_metadata_account();
@@ -474,6 +542,8 @@ fn token_metadata_real_edition_account() {
         _ => panic!("expected Edition account"),
     }
 }
+
+// ── Bubblegum accounts ─────────────────────────────────────────────────
 
 #[test]
 fn bubblegum_empty_account() {
@@ -522,5 +592,34 @@ fn bubblegum_voucher_account() {
     match bg_accounts::unpack(&data).expect("decode voucher account") {
         bg_accounts::BubblegumAccount::Voucher(parsed) => assert_eq!(parsed, fixture),
         _ => panic!("expected Voucher account"),
+    }
+}
+
+#[test]
+fn bubblegum_too_short_for_discriminator() {
+    assert!(matches!(bg_accounts::unpack(&[1, 2, 3]), Err(ParseError::TooShort(3))));
+}
+
+#[test]
+fn bubblegum_tree_config_private_tree() {
+    let fixture = bg_accounts::TreeConfig {
+        tree_creator: Pubkey::new_unique(),
+        tree_delegate: Pubkey::new_unique(),
+        total_mint_capacity: 16_384,
+        num_minted: 0,
+        is_public: false,
+        is_decompressible: 0,
+    };
+
+    let mut data = bg_accounts::TREE_CONFIG_ACCOUNT.to_vec();
+    data.extend_from_slice(&to_vec(&fixture).expect("serialize"));
+    match bg_accounts::unpack(&data).expect("decode") {
+        bg_accounts::BubblegumAccount::TreeConfig(parsed) => {
+            assert!(!parsed.is_public);
+            assert_eq!(parsed.is_decompressible, 0);
+            assert_eq!(parsed.total_mint_capacity, 16_384);
+            assert_eq!(parsed.num_minted, 0);
+        }
+        _ => panic!("expected TreeConfig"),
     }
 }
