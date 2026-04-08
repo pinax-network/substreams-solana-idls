@@ -51,8 +51,6 @@ fn token_metadata_update_v1_unknown_subdiscriminator() {
 #[test]
 fn token_metadata_no_arg_discriminators() {
     let cases: Vec<(u8, tm_ix::TokenMetadataInstruction)> = vec![
-        (tm_ix::CREATE_METADATA_ACCOUNT, tm_ix::TokenMetadataInstruction::CreateMetadataAccount),
-        (tm_ix::UPDATE_METADATA_ACCOUNT, tm_ix::TokenMetadataInstruction::UpdateMetadataAccount),
         (tm_ix::DEPRECATED_CREATE_MASTER_EDITION, tm_ix::TokenMetadataInstruction::DeprecatedCreateMasterEdition),
         (
             tm_ix::DEPRECATED_MINT_NEW_EDITION_FROM_MASTER_EDITION_VIA_PRINTING_TOKEN,
@@ -136,6 +134,311 @@ fn token_metadata_discriminator_values_are_sequential() {
     assert_eq!(tm_ix::UPDATE, 50);
     assert_eq!(tm_ix::VERIFY, 52);
     assert_eq!(tm_ix::PRINT, 55);
+}
+
+// ── Token Metadata: V1 instruction args (disc 0 & 1) ─────────────────
+
+#[test]
+fn token_metadata_create_metadata_account_v1() {
+    let args = tm_ix::CreateMetadataAccountArgs {
+        data: tm_ix::Data {
+            name: "SaibaGang #1".to_string(),
+            symbol: "SBAG".to_string(),
+            uri: "https://arweave.net/abc123".to_string(),
+            seller_fee_basis_points: 500,
+            creators: Some(vec![tm_ix::Creator {
+                address: Pubkey::new_from_array([1; 32]),
+                verified: true,
+                share: 100,
+            }]),
+        },
+        is_mutable: true,
+    };
+
+    let mut data = vec![tm_ix::CREATE_METADATA_ACCOUNT];
+    data.extend_from_slice(&to_vec(&args).unwrap());
+
+    match tm_ix::unpack(&data).unwrap() {
+        tm_ix::TokenMetadataInstruction::CreateMetadataAccount(parsed) => {
+            assert_eq!(parsed.data.name, "SaibaGang #1");
+            assert_eq!(parsed.data.symbol, "SBAG");
+            assert_eq!(parsed.data.uri, "https://arweave.net/abc123");
+            assert_eq!(parsed.data.seller_fee_basis_points, 500);
+            assert_eq!(parsed.data.creators.as_ref().unwrap().len(), 1);
+            assert!(parsed.is_mutable);
+        }
+        _ => panic!("expected CreateMetadataAccount"),
+    }
+}
+
+#[test]
+fn token_metadata_create_metadata_account_v1_minimal() {
+    let args = tm_ix::CreateMetadataAccountArgs {
+        data: tm_ix::Data {
+            name: "".to_string(),
+            symbol: "".to_string(),
+            uri: "".to_string(),
+            seller_fee_basis_points: 0,
+            creators: None,
+        },
+        is_mutable: false,
+    };
+
+    let mut data = vec![tm_ix::CREATE_METADATA_ACCOUNT];
+    data.extend_from_slice(&to_vec(&args).unwrap());
+
+    match tm_ix::unpack(&data).unwrap() {
+        tm_ix::TokenMetadataInstruction::CreateMetadataAccount(parsed) => {
+            assert_eq!(parsed.data.name, "");
+            assert!(parsed.data.creators.is_none());
+            assert!(!parsed.is_mutable);
+        }
+        _ => panic!("expected CreateMetadataAccount"),
+    }
+}
+
+#[test]
+fn token_metadata_update_metadata_account_v1() {
+    let args = tm_ix::UpdateMetadataAccountArgs {
+        data: Some(tm_ix::Data {
+            name: "Updated NFT".to_string(),
+            symbol: "UNFT".to_string(),
+            uri: "https://arweave.net/updated".to_string(),
+            seller_fee_basis_points: 250,
+            creators: None,
+        }),
+        update_authority: Some(Pubkey::new_from_array([3; 32])),
+        primary_sale_happened: Some(true),
+    };
+
+    let mut data = vec![tm_ix::UPDATE_METADATA_ACCOUNT];
+    data.extend_from_slice(&to_vec(&args).unwrap());
+
+    match tm_ix::unpack(&data).unwrap() {
+        tm_ix::TokenMetadataInstruction::UpdateMetadataAccount(parsed) => {
+            assert_eq!(parsed.data.as_ref().unwrap().name, "Updated NFT");
+            assert_eq!(parsed.data.as_ref().unwrap().symbol, "UNFT");
+            assert_eq!(parsed.data.as_ref().unwrap().uri, "https://arweave.net/updated");
+            assert_eq!(parsed.data.as_ref().unwrap().seller_fee_basis_points, 250);
+            assert_eq!(parsed.update_authority, Some(Pubkey::new_from_array([3; 32])));
+            assert_eq!(parsed.primary_sale_happened, Some(true));
+        }
+        _ => panic!("expected UpdateMetadataAccount"),
+    }
+}
+
+#[test]
+fn token_metadata_update_metadata_account_v1_all_none() {
+    let args = tm_ix::UpdateMetadataAccountArgs {
+        data: None,
+        update_authority: None,
+        primary_sale_happened: None,
+    };
+
+    let mut data = vec![tm_ix::UPDATE_METADATA_ACCOUNT];
+    data.extend_from_slice(&to_vec(&args).unwrap());
+
+    match tm_ix::unpack(&data).unwrap() {
+        tm_ix::TokenMetadataInstruction::UpdateMetadataAccount(parsed) => {
+            assert!(parsed.data.is_none());
+            assert!(parsed.update_authority.is_none());
+            assert!(parsed.primary_sale_happened.is_none());
+        }
+        _ => panic!("expected UpdateMetadataAccount"),
+    }
+}
+
+// ── Token Metadata: all create/update variants return name/symbol/uri ─
+
+#[test]
+fn all_create_metadata_variants_return_name_symbol_uri() {
+    let name = "Test Token";
+    let symbol = "TST";
+    let uri = "https://example.com/meta.json";
+
+    // V1 (disc 0)
+    let v1_args = tm_ix::CreateMetadataAccountArgs {
+        data: tm_ix::Data {
+            name: name.to_string(),
+            symbol: symbol.to_string(),
+            uri: uri.to_string(),
+            seller_fee_basis_points: 0,
+            creators: None,
+        },
+        is_mutable: false,
+    };
+    let mut data = vec![tm_ix::CREATE_METADATA_ACCOUNT];
+    data.extend_from_slice(&to_vec(&v1_args).unwrap());
+    match tm_ix::unpack(&data).unwrap() {
+        tm_ix::TokenMetadataInstruction::CreateMetadataAccount(p) => {
+            assert_eq!(p.data.name, name);
+            assert_eq!(p.data.symbol, symbol);
+            assert_eq!(p.data.uri, uri);
+        }
+        other => panic!("expected CreateMetadataAccount, got {:?}", other),
+    }
+
+    // V2 (disc 16)
+    let v2_args = tm_ix::CreateMetadataAccountV2Args {
+        data: tm_ix::DataV2 {
+            name: name.to_string(),
+            symbol: symbol.to_string(),
+            uri: uri.to_string(),
+            seller_fee_basis_points: 0,
+            creators: None,
+            collection: None,
+            uses: None,
+        },
+        is_mutable: false,
+    };
+    let mut data = vec![tm_ix::CREATE_METADATA_ACCOUNT_V2];
+    data.extend_from_slice(&to_vec(&v2_args).unwrap());
+    match tm_ix::unpack(&data).unwrap() {
+        tm_ix::TokenMetadataInstruction::CreateMetadataAccountV2(p) => {
+            assert_eq!(p.data.name, name);
+            assert_eq!(p.data.symbol, symbol);
+            assert_eq!(p.data.uri, uri);
+        }
+        other => panic!("expected CreateMetadataAccountV2, got {:?}", other),
+    }
+
+    // V3 (disc 33)
+    let v3_args = tm_ix::CreateMetadataAccountV3Args {
+        data: tm_ix::DataV2 {
+            name: name.to_string(),
+            symbol: symbol.to_string(),
+            uri: uri.to_string(),
+            seller_fee_basis_points: 0,
+            creators: None,
+            collection: None,
+            uses: None,
+        },
+        is_mutable: false,
+        collection_details: None,
+    };
+    let mut data = vec![tm_ix::CREATE_METADATA_ACCOUNT_V3];
+    data.extend_from_slice(&to_vec(&v3_args).unwrap());
+    match tm_ix::unpack(&data).unwrap() {
+        tm_ix::TokenMetadataInstruction::CreateMetadataAccountV3(p) => {
+            assert_eq!(p.data.name, name);
+            assert_eq!(p.data.symbol, symbol);
+            assert_eq!(p.data.uri, uri);
+        }
+        other => panic!("expected CreateMetadataAccountV3, got {:?}", other),
+    }
+
+    // Create V1 unified (disc 42)
+    let create_args = tm_ix::CreateV1InstructionArgs {
+        name: name.to_string(),
+        symbol: symbol.to_string(),
+        uri: uri.to_string(),
+        seller_fee_basis_points: 0,
+        creators: None,
+        primary_sale_happened: false,
+        is_mutable: false,
+        token_standard: tm_ix::TokenStandard::NonFungible,
+        collection: None,
+        uses: None,
+        collection_details: None,
+        rule_set: None,
+        decimals: None,
+        print_supply: None,
+    };
+    let mut data = vec![tm_ix::CREATE, 0];
+    data.extend_from_slice(&to_vec(&create_args).unwrap());
+    match tm_ix::unpack(&data).unwrap() {
+        tm_ix::TokenMetadataInstruction::Create(p) => {
+            assert_eq!(p.name, name);
+            assert_eq!(p.symbol, symbol);
+            assert_eq!(p.uri, uri);
+        }
+        other => panic!("expected Create, got {:?}", other),
+    }
+}
+
+#[test]
+fn all_update_metadata_variants_return_name_symbol_uri() {
+    let name = "Updated Token";
+    let symbol = "UPD";
+    let uri = "https://example.com/updated.json";
+
+    // V1 (disc 1)
+    let v1_args = tm_ix::UpdateMetadataAccountArgs {
+        data: Some(tm_ix::Data {
+            name: name.to_string(),
+            symbol: symbol.to_string(),
+            uri: uri.to_string(),
+            seller_fee_basis_points: 0,
+            creators: None,
+        }),
+        update_authority: None,
+        primary_sale_happened: None,
+    };
+    let mut data = vec![tm_ix::UPDATE_METADATA_ACCOUNT];
+    data.extend_from_slice(&to_vec(&v1_args).unwrap());
+    match tm_ix::unpack(&data).unwrap() {
+        tm_ix::TokenMetadataInstruction::UpdateMetadataAccount(p) => {
+            assert_eq!(p.data.as_ref().unwrap().name, name);
+            assert_eq!(p.data.as_ref().unwrap().symbol, symbol);
+            assert_eq!(p.data.as_ref().unwrap().uri, uri);
+        }
+        other => panic!("expected UpdateMetadataAccount, got {:?}", other),
+    }
+
+    // V2 (disc 15)
+    let v2_args = tm_ix::UpdateMetadataAccountV2Args {
+        data: Some(tm_ix::DataV2 {
+            name: name.to_string(),
+            symbol: symbol.to_string(),
+            uri: uri.to_string(),
+            seller_fee_basis_points: 0,
+            creators: None,
+            collection: None,
+            uses: None,
+        }),
+        update_authority: None,
+        primary_sale_happened: None,
+        is_mutable: None,
+    };
+    let mut data = vec![tm_ix::UPDATE_METADATA_ACCOUNT_V2];
+    data.extend_from_slice(&to_vec(&v2_args).unwrap());
+    match tm_ix::unpack(&data).unwrap() {
+        tm_ix::TokenMetadataInstruction::UpdateMetadataAccountV2(p) => {
+            assert_eq!(p.data.as_ref().unwrap().name, name);
+            assert_eq!(p.data.as_ref().unwrap().symbol, symbol);
+            assert_eq!(p.data.as_ref().unwrap().uri, uri);
+        }
+        other => panic!("expected UpdateMetadataAccountV2, got {:?}", other),
+    }
+
+    // Update V1 unified (disc 50)
+    let update_args = tm_ix::UpdateV1InstructionArgs {
+        new_update_authority: None,
+        data: Some(tm_ix::Data {
+            name: name.to_string(),
+            symbol: symbol.to_string(),
+            uri: uri.to_string(),
+            seller_fee_basis_points: 0,
+            creators: None,
+        }),
+        primary_sale_happened: None,
+        is_mutable: None,
+        collection: tm_ix::CollectionToggle::None,
+        collection_details: tm_ix::CollectionDetailsToggle::None,
+        uses: tm_ix::UsesToggle::None,
+        rule_set: tm_ix::RuleSetToggle::None,
+        authorization_data: None,
+    };
+    let mut data = vec![tm_ix::UPDATE, 0];
+    data.extend_from_slice(&to_vec(&update_args).unwrap());
+    match tm_ix::unpack(&data).unwrap() {
+        tm_ix::TokenMetadataInstruction::Update(p) => {
+            assert_eq!(p.data.as_ref().unwrap().name, name);
+            assert_eq!(p.data.as_ref().unwrap().symbol, symbol);
+            assert_eq!(p.data.as_ref().unwrap().uri, uri);
+        }
+        other => panic!("expected Update, got {:?}", other),
+    }
 }
 
 // ── Token Metadata: parsed instruction args ────────────────────────────
@@ -580,10 +883,17 @@ fn token_metadata_real_create_metadata_account_v3() {
 
 #[test]
 fn token_metadata_real_create_metadata_account() {
-    assert_eq!(
-        tm_ix::unpack(metaplex_fixtures::REAL_CREATE_METADATA_ACCOUNT_IX).unwrap(),
-        tm_ix::TokenMetadataInstruction::CreateMetadataAccount
-    );
+    match tm_ix::unpack(metaplex_fixtures::REAL_CREATE_METADATA_ACCOUNT_IX).unwrap() {
+        tm_ix::TokenMetadataInstruction::CreateMetadataAccount(args) => {
+            assert_eq!(args.data.name, "SaibaGang #1092\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");
+            assert_eq!(args.data.symbol, "SBAGNG\0\0\0\0");
+            assert!(args.data.uri.starts_with("https://arweave.net/"));
+            assert_eq!(args.data.seller_fee_basis_points, 500);
+            assert_eq!(args.data.creators.as_ref().unwrap().len(), 5);
+            assert!(args.is_mutable);
+        }
+        _ => panic!("expected CreateMetadataAccount"),
+    }
 }
 
 #[test]
@@ -608,10 +918,14 @@ fn token_metadata_real_mint_new_edition_via_token() {
 
 #[test]
 fn token_metadata_real_update_metadata_account() {
-    assert_eq!(
-        tm_ix::unpack(metaplex_fixtures::REAL_UPDATE_METADATA_ACCOUNT_IX).unwrap(),
-        tm_ix::TokenMetadataInstruction::UpdateMetadataAccount
-    );
+    match tm_ix::unpack(metaplex_fixtures::REAL_UPDATE_METADATA_ACCOUNT_IX).unwrap() {
+        tm_ix::TokenMetadataInstruction::UpdateMetadataAccount(args) => {
+            assert!(args.data.is_none());
+            assert!(args.update_authority.is_some());
+            assert_eq!(args.primary_sale_happened, Some(true));
+        }
+        _ => panic!("expected UpdateMetadataAccount"),
+    }
 }
 
 // ── Bubblegum: error handling ──────────────────────────────────────────
