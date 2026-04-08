@@ -357,7 +357,7 @@ impl<'a> TryFrom<&'a [u8]> for TokenMetadataInstruction {
             CREATE => {
                 let (subdiscriminator, args_payload) = payload.split_first().ok_or(ParseError::TooShort(1))?;
                 if *subdiscriminator != 0 {
-                    return Err(ParseError::TokenMetadataUnknown(*subdiscriminator));
+                    return Err(ParseError::TokenMetadataSubdiscriminatorUnknown(*subdiscriminator));
                 }
                 Self::Create(CreateV1InstructionArgs::try_from_slice(args_payload)?)
             }
@@ -371,7 +371,7 @@ impl<'a> TryFrom<&'a [u8]> for TokenMetadataInstruction {
             UPDATE => {
                 let (subdiscriminator, args_payload) = payload.split_first().ok_or(ParseError::TooShort(1))?;
                 if *subdiscriminator != 0 {
-                    return Err(ParseError::TokenMetadataUnknown(*subdiscriminator));
+                    return Err(ParseError::TokenMetadataSubdiscriminatorUnknown(*subdiscriminator));
                 }
                 Self::Update(UpdateV1InstructionArgs::try_from_slice(args_payload)?)
             }

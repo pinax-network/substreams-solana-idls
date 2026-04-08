@@ -5,6 +5,7 @@ pub mod accounts;
 use thiserror::Error;
 
 #[derive(Error, Debug)]
+#[non_exhaustive]
 pub enum ParseError {
     #[error("payload too short: {0} bytes (need at least 16)")]
     TooShort(usize),
@@ -22,6 +23,8 @@ pub enum ParseError {
     InvalidLength { expected: usize, got: usize },
     #[error("unknown Token Metadata discriminator {0}")]
     TokenMetadataUnknown(u8),
+    #[error("unknown Token Metadata V1 sub-discriminator {0}")]
+    TokenMetadataSubdiscriminatorUnknown(u8),
     #[error("Borsh decode error: {0}")]
     Decode(#[from] borsh::io::Error),
 }
