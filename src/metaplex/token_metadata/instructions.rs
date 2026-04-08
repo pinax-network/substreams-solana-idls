@@ -126,6 +126,27 @@ pub struct CreateMasterEditionV3Args {
 }
 
 #[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct CreateMetadataAccountV2Args {
+    pub data: DataV2,
+    pub is_mutable: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct CreateMasterEditionArgs {
+    pub max_supply: Option<u64>,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct MintNewEditionFromMasterEditionViaTokenArgs {
+    pub edition: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct SetCollectionSizeArgs {
+    pub size: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateMetadataAccountV2Args {
     pub data: Option<DataV2>,
     pub update_authority: Option<Pubkey>,
@@ -237,6 +258,99 @@ pub struct UpdateV1InstructionArgs {
     pub authorization_data: Option<AuthorizationData>,
 }
 
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub enum BurnArgs {
+    V1 { amount: u64 },
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct BurnInstructionArgs {
+    pub burn_args: BurnArgs,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub enum MintArgs {
+    V1 {
+        amount: u64,
+        authorization_data: Option<AuthorizationData>,
+    },
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct MintInstructionArgs {
+    pub mint_args: MintArgs,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub enum DelegateArgs {
+    CollectionV1 {
+        authorization_data: Option<AuthorizationData>,
+    },
+    SaleV1 {
+        amount: u64,
+        authorization_data: Option<AuthorizationData>,
+    },
+    TransferV1 {
+        amount: u64,
+        authorization_data: Option<AuthorizationData>,
+    },
+    DataV1 {
+        authorization_data: Option<AuthorizationData>,
+    },
+    UtilityV1 {
+        amount: u64,
+        authorization_data: Option<AuthorizationData>,
+    },
+    StakingV1 {
+        amount: u64,
+        authorization_data: Option<AuthorizationData>,
+    },
+    StandardV1 {
+        amount: u64,
+    },
+    LockedTransferV1 {
+        amount: u64,
+        locked_address: Pubkey,
+        authorization_data: Option<AuthorizationData>,
+    },
+    ProgrammableConfigV1 {
+        authorization_data: Option<AuthorizationData>,
+    },
+    AuthorityItemV1 {
+        authorization_data: Option<AuthorizationData>,
+    },
+    DataItemV1 {
+        authorization_data: Option<AuthorizationData>,
+    },
+    CollectionItemV1 {
+        authorization_data: Option<AuthorizationData>,
+    },
+    ProgrammableConfigItemV1 {
+        authorization_data: Option<AuthorizationData>,
+    },
+    PrintDelegateV1 {
+        authorization_data: Option<AuthorizationData>,
+    },
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct DelegateInstructionArgs {
+    pub delegate_args: DelegateArgs,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub enum TransferArgs {
+    V1 {
+        amount: u64,
+        authorization_data: Option<AuthorizationData>,
+    },
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct TransferInstructionArgs {
+    pub transfer_args: TransferArgs,
+}
+
 // ── Instruction enum ────────────────────────────────────────────────────
 
 #[derive(Debug, Clone, PartialEq)]
@@ -251,13 +365,13 @@ pub enum TokenMetadataInstruction {
     SignMetadata,
     DeprecatedMintPrintingTokensViaToken,
     DeprecatedMintPrintingTokens,
-    CreateMasterEdition,
-    MintNewEditionFromMasterEditionViaToken,
+    CreateMasterEdition(CreateMasterEditionArgs),
+    MintNewEditionFromMasterEditionViaToken(MintNewEditionFromMasterEditionViaTokenArgs),
     ConvertMasterEditionV1ToV2,
     MintNewEditionFromMasterEditionViaVaultProxy,
     PuffMetadata,
     UpdateMetadataAccountV2(UpdateMetadataAccountV2Args),
-    CreateMetadataAccountV2,
+    CreateMetadataAccountV2(CreateMetadataAccountV2Args),
     CreateMasterEditionV3(CreateMasterEditionV3Args),
     VerifyCollection,
     Utilize,
@@ -275,22 +389,22 @@ pub enum TokenMetadataInstruction {
     UnverifySizedCollectionItem,
     SetAndVerifySizedCollectionItem,
     CreateMetadataAccountV3(CreateMetadataAccountV3Args),
-    SetCollectionSize,
+    SetCollectionSize(SetCollectionSizeArgs),
     SetTokenStandard,
     BubblegumSetCollectionSize,
     BurnEditionNft,
     CreateEscrowAccount,
     CloseEscrowAccount,
     TransferOutOfEscrow,
-    Burn,
+    Burn(BurnArgs),
     Create(CreateV1InstructionArgs),
-    Mint,
-    Delegate,
+    Mint(MintArgs),
+    Delegate(DelegateArgs),
     Revoke,
     Lock,
     Unlock,
     Migrate,
-    Transfer,
+    Transfer(TransferArgs),
     Update(UpdateV1InstructionArgs),
     Use,
     Verify,
@@ -322,13 +436,15 @@ impl<'a> TryFrom<&'a [u8]> for TokenMetadataInstruction {
             SIGN_METADATA => Self::SignMetadata,
             DEPRECATED_MINT_PRINTING_TOKENS_VIA_TOKEN => Self::DeprecatedMintPrintingTokensViaToken,
             DEPRECATED_MINT_PRINTING_TOKENS => Self::DeprecatedMintPrintingTokens,
-            CREATE_MASTER_EDITION => Self::CreateMasterEdition,
-            MINT_NEW_EDITION_FROM_MASTER_EDITION_VIA_TOKEN => Self::MintNewEditionFromMasterEditionViaToken,
+            CREATE_MASTER_EDITION => Self::CreateMasterEdition(CreateMasterEditionArgs::try_from_slice(payload)?),
+            MINT_NEW_EDITION_FROM_MASTER_EDITION_VIA_TOKEN => {
+                Self::MintNewEditionFromMasterEditionViaToken(MintNewEditionFromMasterEditionViaTokenArgs::try_from_slice(payload)?)
+            }
             CONVERT_MASTER_EDITION_V1_TO_V2 => Self::ConvertMasterEditionV1ToV2,
             MINT_NEW_EDITION_FROM_MASTER_EDITION_VIA_VAULT_PROXY => Self::MintNewEditionFromMasterEditionViaVaultProxy,
             PUFF_METADATA => Self::PuffMetadata,
             UPDATE_METADATA_ACCOUNT_V2 => Self::UpdateMetadataAccountV2(UpdateMetadataAccountV2Args::try_from_slice(payload)?),
-            CREATE_METADATA_ACCOUNT_V2 => Self::CreateMetadataAccountV2,
+            CREATE_METADATA_ACCOUNT_V2 => Self::CreateMetadataAccountV2(CreateMetadataAccountV2Args::try_from_slice(payload)?),
             CREATE_MASTER_EDITION_V3 => Self::CreateMasterEditionV3(CreateMasterEditionV3Args::try_from_slice(payload)?),
             VERIFY_COLLECTION => Self::VerifyCollection,
             UTILIZE => Self::Utilize,
@@ -346,14 +462,14 @@ impl<'a> TryFrom<&'a [u8]> for TokenMetadataInstruction {
             UNVERIFY_SIZED_COLLECTION_ITEM => Self::UnverifySizedCollectionItem,
             SET_AND_VERIFY_SIZED_COLLECTION_ITEM => Self::SetAndVerifySizedCollectionItem,
             CREATE_METADATA_ACCOUNT_V3 => Self::CreateMetadataAccountV3(CreateMetadataAccountV3Args::try_from_slice(payload)?),
-            SET_COLLECTION_SIZE => Self::SetCollectionSize,
+            SET_COLLECTION_SIZE => Self::SetCollectionSize(SetCollectionSizeArgs::try_from_slice(payload)?),
             SET_TOKEN_STANDARD => Self::SetTokenStandard,
             BUBBLEGUM_SET_COLLECTION_SIZE => Self::BubblegumSetCollectionSize,
             BURN_EDITION_NFT => Self::BurnEditionNft,
             CREATE_ESCROW_ACCOUNT => Self::CreateEscrowAccount,
             CLOSE_ESCROW_ACCOUNT => Self::CloseEscrowAccount,
             TRANSFER_OUT_OF_ESCROW => Self::TransferOutOfEscrow,
-            BURN => Self::Burn,
+            BURN => Self::Burn(BurnInstructionArgs::try_from_slice(payload)?.burn_args),
             CREATE => {
                 let (subdiscriminator, args_payload) = payload.split_first().ok_or(ParseError::InvalidLength {
                     expected: 1,
@@ -364,13 +480,13 @@ impl<'a> TryFrom<&'a [u8]> for TokenMetadataInstruction {
                 }
                 Self::Create(CreateV1InstructionArgs::try_from_slice(args_payload)?)
             }
-            MINT => Self::Mint,
-            DELEGATE => Self::Delegate,
+            MINT => Self::Mint(MintInstructionArgs::try_from_slice(payload)?.mint_args),
+            DELEGATE => Self::Delegate(DelegateInstructionArgs::try_from_slice(payload)?.delegate_args),
             REVOKE => Self::Revoke,
             LOCK => Self::Lock,
             UNLOCK => Self::Unlock,
             MIGRATE => Self::Migrate,
-            TRANSFER => Self::Transfer,
+            TRANSFER => Self::Transfer(TransferInstructionArgs::try_from_slice(payload)?.transfer_args),
             UPDATE => {
                 let (subdiscriminator, args_payload) = payload.split_first().ok_or(ParseError::InvalidLength {
                     expected: 1,
