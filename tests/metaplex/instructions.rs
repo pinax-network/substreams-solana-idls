@@ -205,9 +205,7 @@ fn token_metadata_set_collection_size() {
 
 #[test]
 fn token_metadata_burn_v1() {
-    let args = tm_ix::BurnInstructionArgs {
-        burn_args: tm_ix::BurnArgs::V1 { amount: 7 },
-    };
+    let args = tm_ix::BurnArgs::V1 { amount: 7 };
 
     let mut data = vec![tm_ix::BURN];
     data.extend_from_slice(&to_vec(&args).unwrap());
@@ -218,11 +216,9 @@ fn token_metadata_burn_v1() {
 
 #[test]
 fn token_metadata_mint_v1() {
-    let args = tm_ix::MintInstructionArgs {
-        mint_args: tm_ix::MintArgs::V1 {
-            amount: 5,
-            authorization_data: None,
-        },
+    let args = tm_ix::MintArgs::V1 {
+        amount: 5,
+        authorization_data: None,
     };
 
     let mut data = vec![tm_ix::MINT];
@@ -240,9 +236,7 @@ fn token_metadata_mint_v1() {
 
 #[test]
 fn token_metadata_delegate_standard_v1() {
-    let args = tm_ix::DelegateInstructionArgs {
-        delegate_args: tm_ix::DelegateArgs::StandardV1 { amount: 9 },
-    };
+    let args = tm_ix::DelegateArgs::StandardV1 { amount: 9 };
 
     let mut data = vec![tm_ix::DELEGATE];
     data.extend_from_slice(&to_vec(&args).unwrap());
@@ -253,11 +247,9 @@ fn token_metadata_delegate_standard_v1() {
 
 #[test]
 fn token_metadata_transfer_v1() {
-    let args = tm_ix::TransferInstructionArgs {
-        transfer_args: tm_ix::TransferArgs::V1 {
-            amount: 11,
-            authorization_data: None,
-        },
+    let args = tm_ix::TransferArgs::V1 {
+        amount: 11,
+        authorization_data: None,
     };
 
     let mut data = vec![tm_ix::TRANSFER];

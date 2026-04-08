@@ -264,21 +264,11 @@ pub enum BurnArgs {
 }
 
 #[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
-pub struct BurnInstructionArgs {
-    pub burn_args: BurnArgs,
-}
-
-#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
 pub enum MintArgs {
     V1 {
         amount: u64,
         authorization_data: Option<AuthorizationData>,
     },
-}
-
-#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
-pub struct MintInstructionArgs {
-    pub mint_args: MintArgs,
 }
 
 #[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
@@ -334,21 +324,11 @@ pub enum DelegateArgs {
 }
 
 #[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
-pub struct DelegateInstructionArgs {
-    pub delegate_args: DelegateArgs,
-}
-
-#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
 pub enum TransferArgs {
     V1 {
         amount: u64,
         authorization_data: Option<AuthorizationData>,
     },
-}
-
-#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
-pub struct TransferInstructionArgs {
-    pub transfer_args: TransferArgs,
 }
 
 // ── Instruction enum ────────────────────────────────────────────────────
@@ -469,7 +449,7 @@ impl<'a> TryFrom<&'a [u8]> for TokenMetadataInstruction {
             CREATE_ESCROW_ACCOUNT => Self::CreateEscrowAccount,
             CLOSE_ESCROW_ACCOUNT => Self::CloseEscrowAccount,
             TRANSFER_OUT_OF_ESCROW => Self::TransferOutOfEscrow,
-            BURN => Self::Burn(BurnInstructionArgs::try_from_slice(payload)?.burn_args),
+            BURN => Self::Burn(BurnArgs::try_from_slice(payload)?),
             CREATE => {
                 let (subdiscriminator, args_payload) = payload.split_first().ok_or(ParseError::InvalidLength {
                     expected: 1,
@@ -480,13 +460,13 @@ impl<'a> TryFrom<&'a [u8]> for TokenMetadataInstruction {
                 }
                 Self::Create(CreateV1InstructionArgs::try_from_slice(args_payload)?)
             }
-            MINT => Self::Mint(MintInstructionArgs::try_from_slice(payload)?.mint_args),
-            DELEGATE => Self::Delegate(DelegateInstructionArgs::try_from_slice(payload)?.delegate_args),
+            MINT => Self::Mint(MintArgs::try_from_slice(payload)?),
+            DELEGATE => Self::Delegate(DelegateArgs::try_from_slice(payload)?),
             REVOKE => Self::Revoke,
             LOCK => Self::Lock,
             UNLOCK => Self::Unlock,
             MIGRATE => Self::Migrate,
-            TRANSFER => Self::Transfer(TransferInstructionArgs::try_from_slice(payload)?.transfer_args),
+            TRANSFER => Self::Transfer(TransferArgs::try_from_slice(payload)?),
             UPDATE => {
                 let (subdiscriminator, args_payload) = payload.split_first().ok_or(ParseError::InvalidLength {
                     expected: 1,
