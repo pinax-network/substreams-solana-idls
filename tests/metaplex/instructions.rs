@@ -1,6 +1,7 @@
+use borsh::to_vec;
+use substreams_solana_idls::common::ParseError;
 use substreams_solana_idls::metaplex::bubblegum::instructions as bgum_ix;
 use substreams_solana_idls::metaplex::token_metadata::instructions as tm_ix;
-use borsh::to_vec;
 
 #[test]
 fn token_metadata_unknown_discriminator() {
@@ -68,6 +69,12 @@ fn token_metadata_create_v1() {
         }
         _ => panic!("expected Create"),
     }
+}
+
+#[test]
+fn token_metadata_create_v1_unknown_subdiscriminator() {
+    let err = tm_ix::unpack(&[tm_ix::CREATE, 1]).unwrap_err();
+    assert!(matches!(err, ParseError::TokenMetadataSubdiscriminatorUnknown(1)));
 }
 
 #[test]
