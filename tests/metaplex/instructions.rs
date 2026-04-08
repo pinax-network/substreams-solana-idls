@@ -1,5 +1,6 @@
 use substreams_solana_idls::metaplex::bubblegum::instructions as bgum_ix;
 use substreams_solana_idls::metaplex::token_metadata::instructions as tm_ix;
+use borsh::to_vec;
 
 #[test]
 fn token_metadata_unknown_discriminator() {
@@ -31,6 +32,77 @@ fn token_metadata_create_master_edition_v3() {
             assert_eq!(args.max_supply, Some(100));
         }
         _ => panic!("expected CreateMasterEditionV3"),
+    }
+}
+
+#[test]
+fn token_metadata_create_v1() {
+    let args = tm_ix::CreateV1InstructionArgs {
+        name: "Wrapped SOL".to_string(),
+        symbol: "WSOL".to_string(),
+        uri: "https://example.com/wsol.json".to_string(),
+        seller_fee_basis_points: 0,
+        creators: None,
+        primary_sale_happened: false,
+        is_mutable: true,
+        token_standard: tm_ix::TokenStandard::Fungible,
+        collection: None,
+        uses: None,
+        collection_details: None,
+        rule_set: None,
+        decimals: Some(9),
+        print_supply: None,
+    };
+
+    let mut data = vec![tm_ix::CREATE];
+    data.push(0);
+    data.extend_from_slice(&to_vec(&args).unwrap());
+
+    let ix = tm_ix::unpack(&data).unwrap();
+    match ix {
+        tm_ix::TokenMetadataInstruction::Create(parsed) => {
+            assert_eq!(parsed.name, "Wrapped SOL");
+            assert_eq!(parsed.symbol, "WSOL");
+            assert_eq!(parsed.uri, "https://example.com/wsol.json");
+            assert_eq!(parsed.decimals, Some(9));
+        }
+        _ => panic!("expected Create"),
+    }
+}
+
+#[test]
+fn token_metadata_update_v1() {
+    let args = tm_ix::UpdateV1InstructionArgs {
+        new_update_authority: None,
+        data: Some(tm_ix::Data {
+            name: "Wrapped SOL".to_string(),
+            symbol: "WSOL".to_string(),
+            uri: "https://example.com/wsol.json".to_string(),
+            seller_fee_basis_points: 0,
+            creators: None,
+        }),
+        primary_sale_happened: None,
+        is_mutable: Some(true),
+        collection: tm_ix::CollectionToggle::None,
+        collection_details: tm_ix::CollectionDetailsToggle::None,
+        uses: tm_ix::UsesToggle::None,
+        rule_set: tm_ix::RuleSetToggle::None,
+        authorization_data: None,
+    };
+
+    let mut data = vec![tm_ix::UPDATE];
+    data.push(0);
+    data.extend_from_slice(&to_vec(&args).unwrap());
+
+    let ix = tm_ix::unpack(&data).unwrap();
+    match ix {
+        tm_ix::TokenMetadataInstruction::Update(parsed) => {
+            let parsed_data = parsed.data.expect("expected data");
+            assert_eq!(parsed_data.name, "Wrapped SOL");
+            assert_eq!(parsed_data.symbol, "WSOL");
+            assert_eq!(parsed_data.uri, "https://example.com/wsol.json");
+        }
+        _ => panic!("expected Update"),
     }
 }
 

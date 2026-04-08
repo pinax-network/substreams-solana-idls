@@ -5,6 +5,7 @@
 use crate::common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
+use std::collections::HashMap;
 
 // ── Discriminator constants (u8 index) ──────────────────────────────────
 pub const CREATE_METADATA_ACCOUNT: u8 = 0;
@@ -93,6 +94,15 @@ pub struct CollectionDetails {
 }
 
 #[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct Data {
+    pub name: String,
+    pub symbol: String,
+    pub uri: String,
+    pub seller_fee_basis_points: u16,
+    pub creators: Option<Vec<Creator>>,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
 pub struct DataV2 {
     pub name: String,
     pub symbol: String,
@@ -121,6 +131,110 @@ pub struct UpdateMetadataAccountV2Args {
     pub update_authority: Option<Pubkey>,
     pub primary_sale_happened: Option<bool>,
     pub is_mutable: Option<bool>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Hash, BorshSerialize, BorshDeserialize)]
+pub enum TokenStandard {
+    NonFungible,
+    FungibleAsset,
+    Fungible,
+    NonFungibleEdition,
+    ProgrammableNonFungible,
+    ProgrammableNonFungibleEdition,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub enum PrintSupply {
+    Zero,
+    Limited(u64),
+    Unlimited,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub enum CollectionToggle {
+    None,
+    Clear,
+    Set(Collection),
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub enum CollectionDetailsToggle {
+    None,
+    Clear,
+    Set(CollectionDetails),
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub enum UsesToggle {
+    None,
+    Clear,
+    Set(Uses),
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub enum RuleSetToggle {
+    None,
+    Clear,
+    Set(Pubkey),
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct SeedsVec {
+    pub seeds: Vec<Vec<u8>>,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct ProofInfo {
+    pub proof: Vec<[u8; 32]>,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub enum PayloadType {
+    Pubkey(Pubkey),
+    Seeds(SeedsVec),
+    MerkleProof(ProofInfo),
+    Number(u64),
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct Payload {
+    pub map: HashMap<String, PayloadType>,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct AuthorizationData {
+    pub payload: Payload,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct CreateV1InstructionArgs {
+    pub name: String,
+    pub symbol: String,
+    pub uri: String,
+    pub seller_fee_basis_points: u16,
+    pub creators: Option<Vec<Creator>>,
+    pub primary_sale_happened: bool,
+    pub is_mutable: bool,
+    pub token_standard: TokenStandard,
+    pub collection: Option<Collection>,
+    pub uses: Option<Uses>,
+    pub collection_details: Option<CollectionDetails>,
+    pub rule_set: Option<Pubkey>,
+    pub decimals: Option<u8>,
+    pub print_supply: Option<PrintSupply>,
+}
+
+#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+pub struct UpdateV1InstructionArgs {
+    pub new_update_authority: Option<Pubkey>,
+    pub data: Option<Data>,
+    pub primary_sale_happened: Option<bool>,
+    pub is_mutable: Option<bool>,
+    pub collection: CollectionToggle,
+    pub collection_details: CollectionDetailsToggle,
+    pub uses: UsesToggle,
+    pub rule_set: RuleSetToggle,
+    pub authorization_data: Option<AuthorizationData>,
 }
 
 // ── Instruction enum ────────────────────────────────────────────────────
@@ -169,7 +283,7 @@ pub enum TokenMetadataInstruction {
     CloseEscrowAccount,
     TransferOutOfEscrow,
     Burn,
-    Create,
+    Create(CreateV1InstructionArgs),
     Mint,
     Delegate,
     Revoke,
@@ -177,7 +291,7 @@ pub enum TokenMetadataInstruction {
     Unlock,
     Migrate,
     Transfer,
-    Update,
+    Update(UpdateV1InstructionArgs),
     Use,
     Verify,
     Unverify,
@@ -240,7 +354,13 @@ impl<'a> TryFrom<&'a [u8]> for TokenMetadataInstruction {
             CLOSE_ESCROW_ACCOUNT => Self::CloseEscrowAccount,
             TRANSFER_OUT_OF_ESCROW => Self::TransferOutOfEscrow,
             BURN => Self::Burn,
-            CREATE => Self::Create,
+            CREATE => {
+                let (subdiscriminator, args_payload) = payload.split_first().ok_or(ParseError::TooShort(1))?;
+                if *subdiscriminator != 0 {
+                    return Err(ParseError::TokenMetadataUnknown(*subdiscriminator));
+                }
+                Self::Create(CreateV1InstructionArgs::try_from_slice(args_payload)?)
+            }
             MINT => Self::Mint,
             DELEGATE => Self::Delegate,
             REVOKE => Self::Revoke,
@@ -248,7 +368,13 @@ impl<'a> TryFrom<&'a [u8]> for TokenMetadataInstruction {
             UNLOCK => Self::Unlock,
             MIGRATE => Self::Migrate,
             TRANSFER => Self::Transfer,
-            UPDATE => Self::Update,
+            UPDATE => {
+                let (subdiscriminator, args_payload) = payload.split_first().ok_or(ParseError::TooShort(1))?;
+                if *subdiscriminator != 0 {
+                    return Err(ParseError::TokenMetadataUnknown(*subdiscriminator));
+                }
+                Self::Update(UpdateV1InstructionArgs::try_from_slice(args_payload)?)
+            }
             USE => Self::Use,
             VERIFY => Self::Verify,
             UNVERIFY => Self::Unverify,
