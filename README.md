@@ -24,7 +24,7 @@ This crate bundles thin, `no_std`-friendly byte-codecs that turn on-chain **inst
 | Orca | Whirlpool (CLMM) | `whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc` |
 | Meteora | Pools | `Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB` |
 | Meteora | DAMM V2 | `cpamdpZCGKUy5JxQXB4dcpGPiikHawvSWAd6mEn1sGG` |
-| Meteora | DLLM | `LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo` |
+| Meteora | DLMM | `LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo` |
 | Openbook | V2 Order Book | `opnb2LAfJYbRMAHHvqjCwQxanZn7ReEHp1k81EohpZb` |
 | Phoenix | on-chain CLOB | `PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY` |
 | Darklake | Dark Pool DEX | `darkr3FB87qAZmgLwKov6Hk9Yiah5UT4rUYu8Zhthw1` |

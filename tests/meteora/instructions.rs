@@ -1,6 +1,6 @@
 use substreams_solana_idls::meteora::amm::instructions as amm_ix;
 use substreams_solana_idls::meteora::daam::instructions as daam_ix;
-use substreams_solana_idls::meteora::dllm::instructions as dllm_ix;
+use substreams_solana_idls::meteora::dlmm::instructions as dlmm_ix;
 
 #[test]
 fn amm_unknown_discriminator() {
@@ -23,11 +23,11 @@ fn daam_too_short() {
 }
 
 #[test]
-fn dllm_unknown_discriminator() {
-    assert!(dllm_ix::unpack(&[0u8; 16]).is_err());
+fn dlmm_unknown_discriminator() {
+    assert!(dlmm_ix::unpack(&[0u8; 16]).is_err());
 }
 
 #[test]
-fn dllm_too_short() {
-    assert!(dllm_ix::unpack(&[0u8; 4]).is_err());
+fn dlmm_too_short() {
+    assert!(dlmm_ix::unpack(&[0u8; 4]).is_err());
 }

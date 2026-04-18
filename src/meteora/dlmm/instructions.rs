@@ -462,7 +462,7 @@ pub const WITHDRAW_PROTOCOL_FEE: [u8; 8] = [158, 201, 158, 189, 33, 93, 162, 103
 // Instruction enumeration
 // -----------------------------------------------------------------------------
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub enum MeteoraDllmInstruction {
+pub enum MeteoraDlmmInstruction {
     AddLiquidity(AddLiquidityInstruction),
     AddLiquidity2(AddLiquidity2Instruction),
     AddLiquidityByStrategy(AddLiquidityByStrategyInstruction),
@@ -900,7 +900,7 @@ pub struct WithdrawProtocolFeeInstruction {
 // -----------------------------------------------------------------------------
 // Borsh deserialisation helper
 // -----------------------------------------------------------------------------
-impl<'a> TryFrom<&'a [u8]> for MeteoraDllmInstruction {
+impl<'a> TryFrom<&'a [u8]> for MeteoraDlmmInstruction {
     type Error = ParseError;
 
     fn try_from(data: &'a [u8]) -> Result<Self, Self::Error> {
@@ -987,6 +987,6 @@ impl<'a> TryFrom<&'a [u8]> for MeteoraDllmInstruction {
     }
 }
 
-pub fn unpack(data: &[u8]) -> Result<MeteoraDllmInstruction, ParseError> {
-    MeteoraDllmInstruction::try_from(data)
+pub fn unpack(data: &[u8]) -> Result<MeteoraDlmmInstruction, ParseError> {
+    MeteoraDlmmInstruction::try_from(data)
 }
