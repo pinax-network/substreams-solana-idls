@@ -8,6 +8,7 @@ use solana_program::pubkey::Pubkey;
 // Discriminators
 // -------------------------------------------------------------------------
 const BUY: [u8; 8] = [102, 6, 61, 18, 1, 218, 235, 234]; // 33e685a4017f83ad
+const BUY_EXACT_QUOTE_IN: [u8; 8] = [198, 46, 21, 82, 180, 217, 232, 112]; // c62e1552b4d9e870
 const SELL: [u8; 8] = [51, 230, 133, 164, 1, 127, 131, 173]; // 66063d1201daebea
 const CREATE_CONFIG: [u8; 8] = [201, 207, 243, 114, 75, 111, 47, 189];
 const CREATE_POOL: [u8; 8] = [233, 146, 209, 142, 207, 104, 64, 188]; // e992d18ecf6840bc
@@ -26,6 +27,7 @@ const WITHDRAW: [u8; 8] = [183, 18, 70, 156, 148, 109, 161, 34];
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum PumpFunAmmInstruction {
     Buy(BuyInstruction),
+    BuyExactQuoteIn(BuyExactQuoteInInstruction),
     CreateConfig(CreateConfigInstruction),
     CreatePoolV1(CreatePoolInstructionV1),
     CreatePoolV2(CreatePoolInstructionV2),
@@ -46,6 +48,11 @@ pub enum PumpFunAmmInstruction {
 pub struct BuyInstruction {
     pub base_amount_out: u64,
     pub max_quote_amount_in: u64,
+}
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct BuyExactQuoteInInstruction {
+    pub spendable_quote_in: u64,
+    pub min_base_amount_out: u64,
 }
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateConfigInstruction {
@@ -116,6 +123,7 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunAmmInstruction {
 
         Ok(match discriminator {
             BUY => Self::Buy(BuyInstruction::try_from_slice(payload)?),
+            BUY_EXACT_QUOTE_IN => Self::BuyExactQuoteIn(BuyExactQuoteInInstruction::try_from_slice(payload)?),
             SELL => Self::Sell(SellInstruction::try_from_slice(payload)?),
             CREATE_CONFIG => Self::CreateConfig(CreateConfigInstruction::try_from_slice(payload)?),
             CREATE_POOL => Self::CreatePoolV2(CreatePoolInstructionV2::try_from_slice(payload)?),
