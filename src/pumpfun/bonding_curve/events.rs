@@ -260,3 +260,208 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunEvent {
 pub fn unpack(data: &[u8]) -> Result<PumpFunEvent, ParseError> {
     PumpFunEvent::try_from(data)
 }
+
+// -----------------------------------------------------------------------------
+// Permissive trade-event decoder
+// -----------------------------------------------------------------------------
+
+/// Minimal trade-event view used by downstream sinks.
+///
+/// Only includes the leading-layout fields that have remained at fixed byte
+/// offsets across every known on-chain schema bump (V0 → V1 → V2 → V3 and the
+/// post-2025-10-17 variant that introduced `ix_name` / cashback / extra volume
+/// fields). Everything after `user` is intentionally ignored so the decoder
+/// stays correct as the program continues to append fields.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct TradeEventMinimal {
+    /// SPL mint of the bonding-curve token.
+    pub mint: [u8; 32],
+    /// Lamports moved on the SOL side.
+    pub sol_amount: u64,
+    /// Token amount moved on the SPL side.
+    pub token_amount: u64,
+    /// `true` for buys (SOL → SPL), `false` for sells.
+    pub is_buy: bool,
+    /// Trader wallet (Pubkey).
+    pub user: [u8; 32],
+}
+
+/// Anchor self-CPI envelope tag prepended by `emit_cpi!` to event-carrying
+/// inner-instruction data: `[ANCHOR_SELF_CPI_TAG][event_disc][payload]`.
+const ANCHOR_SELF_CPI_TAG: [u8; 8] = [0xe4, 0x45, 0xa5, 0x2e, 0x51, 0xcb, 0x9a, 0x1d];
+
+// Stable byte offsets within the TradeEvent payload (after the 16-byte
+// preamble has been stripped). Layout:
+//   [mint: pubkey (32B)] [sol_amount: u64] [token_amount: u64]
+//   [is_buy: bool] [user: pubkey (32B)] ...
+const MINT_OFFSET: usize = 0;
+const SOL_AMOUNT_OFFSET: usize = 32;
+const TOKEN_AMOUNT_OFFSET: usize = 40;
+const IS_BUY_OFFSET: usize = 48;
+const USER_OFFSET: usize = 49;
+const TRADE_PAYLOAD_MIN_LEN: usize = USER_OFFSET + 32; // 81 bytes
+
+/// Decode a pump.fun bonding-curve TradeEvent into the stable subset of
+/// fields that downstream sinks need (mint, sol/token amount, direction,
+/// user), reading at fixed byte offsets and ignoring whatever follows.
+///
+/// Tolerates append-only schema growth: works for V0..V3 and any variant
+/// that appends fields after the leading layout.
+///
+/// Expects the inner-instruction data of an `emit_cpi!`-style event:
+/// `[ANCHOR_SELF_CPI_TAG (8B)][TRADE (8B)][payload]`.
+///
+/// Returns `Ok(None)` for envelope-shaped data with a non-trade discriminator
+/// (e.g. Create, Complete, SetParams) so callers can ignore those without
+/// treating them as errors.
+pub fn unpack_trade_event_minimal(data: &[u8]) -> Result<Option<TradeEventMinimal>, ParseError> {
+    if data.len() < 16 {
+        return Err(ParseError::TooShort(data.len()));
+    }
+    if data[..8] != ANCHOR_SELF_CPI_TAG {
+        return Err(ParseError::Unknown(data[..8].try_into().expect("len 8")));
+    }
+    let event_disc: [u8; 8] = data[8..16].try_into().expect("len 8");
+    if event_disc != TRADE {
+        return Ok(None);
+    }
+    let payload = &data[16..];
+    if payload.len() < TRADE_PAYLOAD_MIN_LEN {
+        return Err(ParseError::TooShort(payload.len()));
+    }
+    let mint: [u8; 32] = payload[MINT_OFFSET..MINT_OFFSET + 32]
+        .try_into()
+        .expect("len 32");
+    let sol_amount = u64::from_le_bytes(
+        payload[SOL_AMOUNT_OFFSET..SOL_AMOUNT_OFFSET + 8]
+            .try_into()
+            .expect("len 8"),
+    );
+    let token_amount = u64::from_le_bytes(
+        payload[TOKEN_AMOUNT_OFFSET..TOKEN_AMOUNT_OFFSET + 8]
+            .try_into()
+            .expect("len 8"),
+    );
+    let is_buy = match payload[IS_BUY_OFFSET] {
+        0 => false,
+        1 => true,
+        _ => {
+            return Err(ParseError::InvalidLength {
+                expected: 1,
+                got: payload[IS_BUY_OFFSET] as usize,
+            })
+        }
+    };
+    let user: [u8; 32] = payload[USER_OFFSET..USER_OFFSET + 32]
+        .try_into()
+        .expect("len 32");
+    Ok(Some(TradeEventMinimal {
+        mint,
+        sol_amount,
+        token_amount,
+        is_buy,
+        user,
+    }))
+}
+
+#[cfg(test)]
+mod minimal_tests {
+    use super::*;
+
+    fn make_event(is_buy: bool, mint: [u8; 32], user: [u8; 32], sol: u64, token: u64, trailing: &[u8]) -> Vec<u8> {
+        let mut data = Vec::with_capacity(16 + TRADE_PAYLOAD_MIN_LEN + trailing.len());
+        data.extend_from_slice(&ANCHOR_SELF_CPI_TAG);
+        data.extend_from_slice(&TRADE);
+        data.extend_from_slice(&mint); // 32
+        data.extend_from_slice(&sol.to_le_bytes()); // 8
+        data.extend_from_slice(&token.to_le_bytes()); // 8
+        data.push(if is_buy { 1 } else { 0 }); // 1
+        data.extend_from_slice(&user); // 32
+        data.extend_from_slice(trailing);
+        data
+    }
+
+    fn pk(b: u8) -> [u8; 32] {
+        [b; 32]
+    }
+
+    #[test]
+    fn buy_with_v0_payload() {
+        let data = make_event(true, pk(0xa1), pk(0xa2), 1_000_000_000, 50_000_000, &[]);
+        let ev = unpack_trade_event_minimal(&data).unwrap().unwrap();
+        assert!(ev.is_buy);
+        assert_eq!(ev.sol_amount, 1_000_000_000);
+        assert_eq!(ev.token_amount, 50_000_000);
+        assert_eq!(ev.mint, pk(0xa1));
+        assert_eq!(ev.user, pk(0xa2));
+    }
+
+    #[test]
+    fn sell_with_v0_payload() {
+        let data = make_event(false, pk(0xb1), pk(0xb2), 7, 13, &[]);
+        let ev = unpack_trade_event_minimal(&data).unwrap().unwrap();
+        assert!(!ev.is_buy);
+        assert_eq!(ev.sol_amount, 7);
+        assert_eq!(ev.token_amount, 13);
+    }
+
+    #[test]
+    fn ignores_v3_trailing_fields() {
+        // V3 - V0 = 250 - 81 = 169 bytes of appended fields.
+        let data = make_event(true, pk(0xc1), pk(0xc2), 100, 200, &vec![0u8; 169]);
+        let ev = unpack_trade_event_minimal(&data).unwrap().unwrap();
+        assert_eq!(ev.sol_amount, 100);
+        assert_eq!(ev.token_amount, 200);
+    }
+
+    #[test]
+    fn ignores_post_v3_trailing_fields() {
+        // The post-2025-10-17 variant adds ix_name (String) + cashback fields.
+        let data = make_event(true, pk(0xd1), pk(0xd2), 42, 84, &vec![0u8; 250]);
+        let ev = unpack_trade_event_minimal(&data).unwrap().unwrap();
+        assert_eq!(ev.sol_amount, 42);
+        assert_eq!(ev.token_amount, 84);
+    }
+
+    #[test]
+    fn returns_ok_none_for_non_trade_event() {
+        let mut data = Vec::new();
+        data.extend_from_slice(&ANCHOR_SELF_CPI_TAG);
+        data.extend_from_slice(&CREATE);
+        data.extend_from_slice(&[0u8; TRADE_PAYLOAD_MIN_LEN]);
+        assert!(unpack_trade_event_minimal(&data).unwrap().is_none());
+    }
+
+    #[test]
+    fn errors_on_data_without_anchor_cpi_tag() {
+        let mut data = make_event(true, pk(0), pk(0), 1, 1, &[]);
+        data[..8].fill(0);
+        assert!(matches!(
+            unpack_trade_event_minimal(&data),
+            Err(ParseError::Unknown(_))
+        ));
+    }
+
+    #[test]
+    fn errors_on_short_payload() {
+        let mut data = Vec::new();
+        data.extend_from_slice(&ANCHOR_SELF_CPI_TAG);
+        data.extend_from_slice(&TRADE);
+        data.extend_from_slice(&[0u8; 50]); // < 81-byte minimum
+        assert!(matches!(
+            unpack_trade_event_minimal(&data),
+            Err(ParseError::TooShort(_))
+        ));
+    }
+
+    #[test]
+    fn errors_on_invalid_is_buy_byte() {
+        let mut data = make_event(true, pk(0), pk(0), 1, 1, &[]);
+        // is_buy lives at offset 16 (preamble) + 48 (within payload) = 64
+        data[16 + IS_BUY_OFFSET] = 2;
+        assert!(matches!(
+            unpack_trade_event_minimal(&data),
+            Err(ParseError::InvalidLength { .. })
+        ));
+    }
+}
