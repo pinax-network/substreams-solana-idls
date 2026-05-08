@@ -135,7 +135,7 @@ fn make_tx(accounts: &[[u8; 32]]) -> ConfirmedTransaction {
     }
 }
 
-/// Full required+optional account list for a V2 buy/sell. Indices 0..17 are
+/// Full required+optional account list for a V2 buy/sell. Indices 0..=16 are
 /// the IDL-required accounts; 17/18 are the V2 trailing optional accounts we
 /// expose in `TradeAccounts`.
 fn full_v2_accounts() -> [[u8; 32]; 19] {

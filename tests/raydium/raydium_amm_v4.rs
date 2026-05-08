@@ -272,4 +272,69 @@ mod tests {
         let err = get_swap_base_in_accounts(&ix).expect_err("must error on too-few accounts");
         assert!(matches!(err, AccountsError::Missing { .. }));
     }
+
+    // -------------------------------------------------------------------------
+    // SwapV2Accounts — orderbook-disabled `SwapBaseInV2` / `SwapBaseOutV2`.
+    //
+    // V2 ships an 8-account layout in this fixed order: token_program, amm,
+    // amm_authority, pool_coin_token_account, pool_pc_token_account,
+    // uer_source_token_account, uer_destination_token_account,
+    // user_source_owner. These tests pin the layout against the canonical
+    // Raydium AMM v4 source.
+    // -------------------------------------------------------------------------
+    use substreams_solana_idls::raydium::amm::v4::accounts::{get_swap_base_in_v2_accounts, get_swap_base_out_v2_accounts, SwapV2Accounts};
+
+    #[test]
+    fn swap_v2_accounts_resolve_8_account_layout() {
+        let token_program = [0x00; 32];
+        let amm = [0x01; 32];
+        let amm_authority = [0x02; 32];
+        let pool_coin = [0x03; 32];
+        let pool_pc = [0x04; 32];
+        let user_src = [0x05; 32];
+        let user_dst = [0x06; 32];
+        let user_owner = [0x07; 32];
+
+        let tx = make_tx(&[token_program, amm, amm_authority, pool_coin, pool_pc, user_src, user_dst, user_owner]);
+        let ix = tx.walk_instructions().next().unwrap();
+        let a = get_swap_base_in_v2_accounts(&ix).expect("V2 8-account layout must resolve");
+
+        assert_eq!(a.token_program, pubkey(token_program));
+        assert_eq!(a.amm, pubkey(amm));
+        assert_eq!(a.amm_authority, pubkey(amm_authority));
+        assert_eq!(a.pool_coin_token_account, pubkey(pool_coin));
+        assert_eq!(a.pool_pc_token_account, pubkey(pool_pc));
+        assert_eq!(a.uer_source_token_account, pubkey(user_src));
+        assert_eq!(a.uer_destination_token_account, pubkey(user_dst));
+        assert_eq!(a.user_source_owner, pubkey(user_owner));
+
+        // Regression: pool vault slots must not pick up amm/authority indices.
+        assert_ne!(a.pool_coin_token_account, pubkey(amm));
+        assert_ne!(a.pool_coin_token_account, pubkey(amm_authority));
+    }
+
+    #[test]
+    fn swap_v2_accounts_get_base_out_uses_same_layout() {
+        // `get_swap_base_out_v2_accounts` shares the same struct/layout —
+        // this test pins the parity so a future divergence in V2 base-out
+        // surfaces here.
+        let accounts: Vec<[u8; 32]> = (0u8..8u8).map(|i| [i + 0x10; 32]).collect();
+        let tx = make_tx(&accounts);
+        let ix = tx.walk_instructions().next().unwrap();
+        let a: SwapV2Accounts = get_swap_base_out_v2_accounts(&ix).expect("V2 base-out must resolve");
+        assert_eq!(a.amm, pubkey(accounts[1]));
+        assert_eq!(a.pool_coin_token_account, pubkey(accounts[3]));
+        assert_eq!(a.pool_pc_token_account, pubkey(accounts[4]));
+        assert_eq!(a.user_source_owner, pubkey(accounts[7]));
+    }
+
+    #[test]
+    fn swap_v2_accounts_reports_missing_required() {
+        // Only 5 accounts — short of the 8-account V2 layout.
+        let accounts: Vec<[u8; 32]> = (0u8..5u8).map(|i| [i + 1; 32]).collect();
+        let tx = make_tx(&accounts);
+        let ix = tx.walk_instructions().next().unwrap();
+        let err = get_swap_base_in_v2_accounts(&ix).expect_err("must error on too-few accounts");
+        assert!(matches!(err, AccountsError::Missing { .. }));
+    }
 }
