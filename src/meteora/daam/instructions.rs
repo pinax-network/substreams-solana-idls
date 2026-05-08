@@ -197,6 +197,7 @@ pub const REMOVE_LIQUIDITY: [u8; 8] = [80, 85, 209, 72, 24, 206, 177, 108];
 pub const SET_POOL_STATUS: [u8; 8] = [112, 87, 135, 223, 83, 204, 132, 53];
 pub const SPLIT_POSITION: [u8; 8] = [172, 241, 221, 138, 161, 29, 253, 42];
 pub const SWAP: [u8; 8] = [248, 198, 158, 145, 225, 117, 135, 200];
+pub const SWAP2: [u8; 8] = [65, 75, 63, 76, 235, 91, 91, 136];
 pub const UPDATE_REWARD_DURATION: [u8; 8] = [138, 174, 196, 169, 213, 235, 254, 107];
 pub const UPDATE_REWARD_FUNDER: [u8; 8] = [211, 28, 48, 32, 215, 160, 35, 23];
 pub const WITHDRAW_INELIGIBLE_REWARD: [u8; 8] = [148, 206, 42, 195, 247, 49, 103, 8];
@@ -233,6 +234,10 @@ pub enum MeteoraDammInstruction {
     SetPoolStatus(SetPoolStatusInstruction),
     SplitPosition(SplitPositionInstruction),
     Swap(SwapInstruction),
+    /// Same on-chain account list as `Swap`; new payload type for dynamic
+    /// fees / referral params shipped post-launch. Same anchor-CPI `EvtSwap`
+    /// emit, so consumers can reuse the existing event handler.
+    Swap2(SwapInstruction),
     UpdateRewardDuration(UpdateRewardDurationInstruction),
     UpdateRewardFunder(UpdateRewardFunderInstruction),
     WithdrawIneligibleReward(WithdrawIneligibleRewardInstruction),
@@ -399,6 +404,7 @@ impl<'a> TryFrom<&'a [u8]> for MeteoraDammInstruction {
             SET_POOL_STATUS => Self::SetPoolStatus(SetPoolStatusInstruction::try_from_slice(payload)?),
             SPLIT_POSITION => Self::SplitPosition(SplitPositionInstruction::try_from_slice(payload)?),
             SWAP => Self::Swap(SwapInstruction::try_from_slice(payload)?),
+            SWAP2 => Self::Swap2(SwapInstruction::try_from_slice(payload)?),
             UPDATE_REWARD_DURATION => Self::UpdateRewardDuration(UpdateRewardDurationInstruction::try_from_slice(payload)?),
             UPDATE_REWARD_FUNDER => Self::UpdateRewardFunder(UpdateRewardFunderInstruction::try_from_slice(payload)?),
             WITHDRAW_INELIGIBLE_REWARD => Self::WithdrawIneligibleReward(WithdrawIneligibleRewardInstruction::try_from_slice(payload)?),

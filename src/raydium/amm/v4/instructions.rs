@@ -25,6 +25,13 @@ pub const SIMULATE_INFO: u8 = 12;
 pub const ADMIN_CANCEL_ORDERS: u8 = 13;
 pub const CREATE_CONFIG_ACCOUNT: u8 = 14;
 pub const UPDATE_CONFIG_ACCOUNT: u8 = 15;
+/// Orderbook-disabled swap — same payload as `SWAP_BASE_IN`, simpler 8-account
+/// list (no Serum/OpenBook). Reuses V1's `ray_log` log format, so the
+/// existing `RaydiumV4Log::SwapBaseIn` decoder handles the emit unchanged.
+pub const SWAP_BASE_IN_V2: u8 = 16;
+/// Orderbook-disabled swap — same payload as `SWAP_BASE_OUT`. See
+/// `SWAP_BASE_IN_V2`.
+pub const SWAP_BASE_OUT_V2: u8 = 17;
 
 // The canonical SwapBaseIn payload is 17 bytes.
 // Extra bytes (the 0x40 you saw) are legal and ignored by the contract.
@@ -200,6 +207,16 @@ pub enum RaydiumV4Instruction {
     /// *Same account list and behaviour as `SwapBaseIn`, but
     /// the contract ensures an **exact-output / max-input** swap.*
     SwapBaseOut(SwapBaseOutInstruction),
+
+    /// V2 swap — orderbook-disabled, identical payload to `SwapBaseIn` but
+    /// with a simpler 8-account layout (token_program, amm, amm_authority,
+    /// amm_coin_vault, amm_pc_vault, user_source, user_destination,
+    /// user_source_owner). Emits the same `ray_log` `SwapBaseIn` log as V1.
+    SwapBaseInV2(SwapBaseInInstruction),
+
+    /// V2 swap — orderbook-disabled, identical payload to `SwapBaseOut`.
+    /// See `SwapBaseInV2`.
+    SwapBaseOutV2(SwapBaseOutInstruction),
 
     // ─────────────────────────────────────────────────────────────────────
     // Admin / maintenance
@@ -464,6 +481,8 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumV4Instruction {
             SWAP_BASE_IN => Self::SwapBaseIn(SwapBaseInInstruction::try_from_slice(&payload[..SWAP_LEN])?),
             PRE_INITIALIZE => Self::PreInitialize(PreInitializeInstruction::try_from_slice(payload)?),
             SWAP_BASE_OUT => Self::SwapBaseOut(SwapBaseOutInstruction::try_from_slice(&payload[..SWAP_LEN])?),
+            SWAP_BASE_IN_V2 => Self::SwapBaseInV2(SwapBaseInInstruction::try_from_slice(&payload[..SWAP_LEN])?),
+            SWAP_BASE_OUT_V2 => Self::SwapBaseOutV2(SwapBaseOutInstruction::try_from_slice(&payload[..SWAP_LEN])?),
             SIMULATE_INFO => Self::SimulateInfo(SimulateInstruction::try_from_slice(payload)?),
             ADMIN_CANCEL_ORDERS => Self::AdminCancelOrders(AdminCancelOrdersInstruction::try_from_slice(payload)?),
             CREATE_CONFIG_ACCOUNT => Self::CreateConfigAccount,
