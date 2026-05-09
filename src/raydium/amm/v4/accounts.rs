@@ -7,11 +7,23 @@ use crate::common::accounts::AccountsError;
 // -----------------------------------------------------------------------------
 // Swap accounts (shared by `swap_base_in` and `swap_base_out`)
 // -----------------------------------------------------------------------------
+//
+// Raydium AMM v4 has two on-chain layouts depending on when the pool was
+// initialised:
+//   - **Post-fork (current, 18 accounts)** — includes `amm_target_orders` at
+//     index 4. Indices below match this layout.
+//   - **Pre-fork (legacy, 17 accounts)** — no `amm_target_orders`. Every
+//     index from `pool_coin_token_account` onward shifts down by 1.
+// `SwapBaseAccounts::try_from` detects the layout by `accounts.len()` and
+// applies the right offset transparently, so consumers always get the same
+// named-field struct.
+//
+// Source of truth: `idl.json` `swapBaseIn` / `swapBaseOut` instructions.
 const IDX_TOKEN_PROGRAM: usize = 0;
 const IDX_AMM: usize = 1;
 const IDX_AMM_AUTHORITY: usize = 2;
 const IDX_AMM_OPEN_ORDERS: usize = 3;
-const IDX_AMM_TARGET_ORDERS: usize = 4; // optional
+const IDX_AMM_TARGET_ORDERS: usize = 4; // optional — absent in legacy 17-account form
 const IDX_POOL_COIN_TOKEN_ACCOUNT: usize = 5;
 const IDX_POOL_PC_TOKEN_ACCOUNT: usize = 6;
 const IDX_SERUM_PROGRAM: usize = 7;
@@ -25,6 +37,9 @@ const IDX_SERUM_VAULT_SIGNER: usize = 14;
 const IDX_UER_SOURCE_TOKEN_ACCOUNT: usize = 15;
 const IDX_UER_DESTINATION_TOKEN_ACCOUNT: usize = 16;
 const IDX_USER_SOURCE_OWNER: usize = 17;
+
+/// Total post-fork account count (with `amm_target_orders`).
+const SWAP_ACCOUNTS_LEN_WITH_TARGET_ORDERS: usize = 18;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapBaseAccounts {
@@ -53,33 +68,44 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapBaseAccounts {
 
     fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
         let accounts = ix.accounts();
+        // Detect post-fork (with `amm_target_orders`) vs legacy 17-account
+        // layout. Anything < 17 accounts is malformed and will surface as a
+        // `Missing` error from the first absent required field.
+        let with_target_orders = accounts.len() >= SWAP_ACCOUNTS_LEN_WITH_TARGET_ORDERS;
+        // When `amm_target_orders` is absent, every named index from
+        // `pool_coin_token_account` onward shifts down by 1.
+        let post_target_shift = if with_target_orders { 0usize } else { 1usize };
 
         let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
             let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
             crate::common::accounts::to_pubkey(name, index, a.0)
         };
 
-        let get_opt = |index: usize| -> Option<Pubkey> { accounts.get(index).and_then(|a| a.0.as_slice().try_into().ok()).map(Pubkey::new_from_array) };
+        let amm_target_orders = if with_target_orders {
+            Some(get_req(IDX_AMM_TARGET_ORDERS, "amm_target_orders")?)
+        } else {
+            None
+        };
 
         Ok(SwapBaseAccounts {
             token_program: get_req(IDX_TOKEN_PROGRAM, "token_program")?,
             amm: get_req(IDX_AMM, "amm")?,
             amm_authority: get_req(IDX_AMM_AUTHORITY, "amm_authority")?,
             amm_open_orders: get_req(IDX_AMM_OPEN_ORDERS, "amm_open_orders")?,
-            amm_target_orders: get_opt(IDX_AMM_TARGET_ORDERS),
-            pool_coin_token_account: get_req(IDX_POOL_COIN_TOKEN_ACCOUNT, "pool_coin_token_account")?,
-            pool_pc_token_account: get_req(IDX_POOL_PC_TOKEN_ACCOUNT, "pool_pc_token_account")?,
-            serum_program: get_req(IDX_SERUM_PROGRAM, "serum_program")?,
-            serum_market: get_req(IDX_SERUM_MARKET, "serum_market")?,
-            serum_bids: get_req(IDX_SERUM_BIDS, "serum_bids")?,
-            serum_asks: get_req(IDX_SERUM_ASKS, "serum_asks")?,
-            serum_event_queue: get_req(IDX_SERUM_EVENT_QUEUE, "serum_event_queue")?,
-            serum_coin_vault_account: get_req(IDX_SERUM_COIN_VAULT_ACCOUNT, "serum_coin_vault_account")?,
-            serum_pc_vault_account: get_req(IDX_SERUM_PC_VAULT_ACCOUNT, "serum_pc_vault_account")?,
-            serum_vault_signer: get_req(IDX_SERUM_VAULT_SIGNER, "serum_vault_signer")?,
-            uer_source_token_account: get_req(IDX_UER_SOURCE_TOKEN_ACCOUNT, "uer_source_token_account")?,
-            uer_destination_token_account: get_req(IDX_UER_DESTINATION_TOKEN_ACCOUNT, "uer_destination_token_account")?,
-            user_source_owner: get_req(IDX_USER_SOURCE_OWNER, "user_source_owner")?,
+            amm_target_orders,
+            pool_coin_token_account: get_req(IDX_POOL_COIN_TOKEN_ACCOUNT - post_target_shift, "pool_coin_token_account")?,
+            pool_pc_token_account: get_req(IDX_POOL_PC_TOKEN_ACCOUNT - post_target_shift, "pool_pc_token_account")?,
+            serum_program: get_req(IDX_SERUM_PROGRAM - post_target_shift, "serum_program")?,
+            serum_market: get_req(IDX_SERUM_MARKET - post_target_shift, "serum_market")?,
+            serum_bids: get_req(IDX_SERUM_BIDS - post_target_shift, "serum_bids")?,
+            serum_asks: get_req(IDX_SERUM_ASKS - post_target_shift, "serum_asks")?,
+            serum_event_queue: get_req(IDX_SERUM_EVENT_QUEUE - post_target_shift, "serum_event_queue")?,
+            serum_coin_vault_account: get_req(IDX_SERUM_COIN_VAULT_ACCOUNT - post_target_shift, "serum_coin_vault_account")?,
+            serum_pc_vault_account: get_req(IDX_SERUM_PC_VAULT_ACCOUNT - post_target_shift, "serum_pc_vault_account")?,
+            serum_vault_signer: get_req(IDX_SERUM_VAULT_SIGNER - post_target_shift, "serum_vault_signer")?,
+            uer_source_token_account: get_req(IDX_UER_SOURCE_TOKEN_ACCOUNT - post_target_shift, "uer_source_token_account")?,
+            uer_destination_token_account: get_req(IDX_UER_DESTINATION_TOKEN_ACCOUNT - post_target_shift, "uer_destination_token_account")?,
+            user_source_owner: get_req(IDX_USER_SOURCE_OWNER - post_target_shift, "user_source_owner")?,
         })
     }
 }
@@ -90,6 +116,67 @@ pub fn get_swap_base_in_accounts(ix: &InstructionView) -> Result<SwapBaseAccount
 
 pub fn get_swap_base_out_accounts(ix: &InstructionView) -> Result<SwapBaseAccounts, AccountsError> {
     SwapBaseAccounts::try_from(ix)
+}
+
+// -----------------------------------------------------------------------------
+// V2 Swap accounts — orderbook-disabled `SwapBaseInV2` / `SwapBaseOutV2`
+// -----------------------------------------------------------------------------
+//
+// Same payload as V1 but a simpler 8-account list (no Serum/OpenBook).
+// Confirmed against on-chain tx
+// `CuEXudB98X7nWGVMGgPNFcgB8aEPgHoePvf6jUJYTbMrassDaE593Y3CLyr8APQSWEdM83jmUBHtbR1H4AB7weT`
+// (slot 418472889): inner ix disc=16, exactly 8 accounts in the order below.
+const IDX_V2_TOKEN_PROGRAM: usize = 0;
+const IDX_V2_AMM: usize = 1;
+const IDX_V2_AMM_AUTHORITY: usize = 2;
+const IDX_V2_POOL_COIN_TOKEN_ACCOUNT: usize = 3;
+const IDX_V2_POOL_PC_TOKEN_ACCOUNT: usize = 4;
+const IDX_V2_UER_SOURCE_TOKEN_ACCOUNT: usize = 5;
+const IDX_V2_UER_DESTINATION_TOKEN_ACCOUNT: usize = 6;
+const IDX_V2_USER_SOURCE_OWNER: usize = 7;
+
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct SwapV2Accounts {
+    pub token_program: Pubkey,
+    pub amm: Pubkey,
+    pub amm_authority: Pubkey,
+    pub pool_coin_token_account: Pubkey,
+    pub pool_pc_token_account: Pubkey,
+    pub uer_source_token_account: Pubkey,
+    pub uer_destination_token_account: Pubkey,
+    pub user_source_owner: Pubkey,
+}
+
+impl<'ix> TryFrom<&InstructionView<'ix>> for SwapV2Accounts {
+    type Error = AccountsError;
+
+    fn try_from(ix: &InstructionView<'ix>) -> Result<Self, Self::Error> {
+        let accounts = ix.accounts();
+
+        let get_req = |index: usize, name: &'static str| -> Result<Pubkey, AccountsError> {
+            let a = accounts.get(index).ok_or(AccountsError::Missing { name, index })?;
+            crate::common::accounts::to_pubkey(name, index, a.0)
+        };
+
+        Ok(SwapV2Accounts {
+            token_program: get_req(IDX_V2_TOKEN_PROGRAM, "token_program")?,
+            amm: get_req(IDX_V2_AMM, "amm")?,
+            amm_authority: get_req(IDX_V2_AMM_AUTHORITY, "amm_authority")?,
+            pool_coin_token_account: get_req(IDX_V2_POOL_COIN_TOKEN_ACCOUNT, "pool_coin_token_account")?,
+            pool_pc_token_account: get_req(IDX_V2_POOL_PC_TOKEN_ACCOUNT, "pool_pc_token_account")?,
+            uer_source_token_account: get_req(IDX_V2_UER_SOURCE_TOKEN_ACCOUNT, "uer_source_token_account")?,
+            uer_destination_token_account: get_req(IDX_V2_UER_DESTINATION_TOKEN_ACCOUNT, "uer_destination_token_account")?,
+            user_source_owner: get_req(IDX_V2_USER_SOURCE_OWNER, "user_source_owner")?,
+        })
+    }
+}
+
+pub fn get_swap_base_in_v2_accounts(ix: &InstructionView) -> Result<SwapV2Accounts, AccountsError> {
+    SwapV2Accounts::try_from(ix)
+}
+
+pub fn get_swap_base_out_v2_accounts(ix: &InstructionView) -> Result<SwapV2Accounts, AccountsError> {
+    SwapV2Accounts::try_from(ix)
 }
 
 // -----------------------------------------------------------------------------

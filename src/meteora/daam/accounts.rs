@@ -1676,6 +1676,13 @@ pub fn get_swap_accounts(ix: &InstructionView) -> Result<SwapAccounts, AccountsE
     SwapAccounts::try_from(ix)
 }
 
+/// `swap2` shares the on-chain account list with `swap` — only the args type
+/// differs (new dynamic-fee / referral params). Surfaced as its own getter to
+/// document the IDL parity.
+pub fn get_swap2_accounts(ix: &InstructionView) -> Result<SwapAccounts, AccountsError> {
+    SwapAccounts::try_from(ix)
+}
+
 // -----------------------------------------------------------------------------
 // UpdateRewardDuration accounts
 // -----------------------------------------------------------------------------
