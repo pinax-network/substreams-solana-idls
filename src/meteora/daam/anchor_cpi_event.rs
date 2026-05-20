@@ -33,6 +33,7 @@ pub const EVTREMOVELIQUIDITY: [u8; 8] = [87, 46, 88, 98, 175, 96, 34, 91];
 pub const EVTSETPOOLSTATUS: [u8; 8] = [100, 213, 74, 3, 95, 91, 228, 146];
 pub const EVTSPLITPOSITION: [u8; 8] = [182, 138, 42, 254, 27, 94, 82, 221];
 pub const EVTSWAP: [u8; 8] = [27, 60, 21, 213, 138, 170, 187, 147];
+pub const EVTSWAP2: [u8; 8] = [189, 66, 51, 168, 38, 80, 117, 153];
 pub const EVTUPDATEREWARDDURATION: [u8; 8] = [149, 135, 65, 231, 129, 153, 65, 57];
 pub const EVTUPDATEREWARDFUNDER: [u8; 8] = [76, 154, 208, 13, 40, 115, 246, 146];
 pub const EVTWITHDRAWINELIGIBLEREWARD: [u8; 8] = [248, 215, 184, 78, 31, 180, 179, 168];
@@ -65,6 +66,7 @@ pub enum MeteoraDammAnchorCpiEvent {
     EvtSetPoolStatus(EvtSetPoolStatus),
     EvtSplitPosition(EvtSplitPosition),
     EvtSwap(EvtSwap),
+    EvtSwap2(EvtSwap2),
     EvtUpdateRewardDuration(EvtUpdateRewardDuration),
     EvtUpdateRewardFunder(EvtUpdateRewardFunder),
     EvtWithdrawIneligibleReward(EvtWithdrawIneligibleReward),
@@ -289,6 +291,66 @@ pub struct EvtSwap {
     pub current_timestamp: u64,
 }
 
+/// Anchor `event:EvtSwap2` parameters block (mirrors cp-amm's `SwapParameters2`).
+///
+/// `swap_mode` discriminates between exact-in (`0`) and exact-out (`1`),
+/// matching cp-amm's `TradeDirection` / `SwapMode` enums. `amount_0` /
+/// `amount_1` are the user-supplied bounds (input amount for exact-in,
+/// minimum output for exact-out, with the inverse field acting as a slippage
+/// guard).
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct SwapParameters2 {
+    pub amount_0: u64,
+    pub amount_1: u64,
+    pub swap_mode: u8,
+}
+
+/// Anchor `event:EvtSwap2` result block (mirrors cp-amm's `SwapResult2`).
+///
+/// Adds three fields over the legacy `SwapResult`:
+/// - `included_fee_input_amount` / `excluded_fee_input_amount` separate the
+///   gross input from the input net of swap fees,
+/// - `amount_left` reports leftover for exact-out swaps,
+/// - `compounding_fee` replaces `lp_fee` and `claiming_fee` replaces the
+///   pre-rename trader-claiming portion.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct SwapResult2 {
+    pub included_fee_input_amount: u64,
+    pub excluded_fee_input_amount: u64,
+    pub amount_left: u64,
+    pub output_amount: u64,
+    pub next_sqrt_price: u128,
+    pub claiming_fee: u64,
+    pub protocol_fee: u64,
+    pub compounding_fee: u64,
+    pub referral_fee: u64,
+}
+
+/// Emitted by `swap2` (and by the legacy `swap` instruction since the
+/// Dec 2025 cp-amm upgrade — both share the same handler now). Replaces
+/// the deprecated [`EvtSwap`] event.
+///
+/// `included_transfer_fee_amount_in` and `excluded_transfer_fee_amount_out`
+/// carry token-2022 transfer-fee adjustments around the swap so callers can
+/// reconstruct what the user paid and received in their own wallet, while
+/// `swap_result.included_fee_input_amount` / `output_amount` reflect the
+/// amounts moving through the pool reserves.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct EvtSwap2 {
+    pub pool: Pubkey,
+    pub trade_direction: u8,
+    pub collect_fee_mode: u8,
+    pub has_referral: bool,
+    pub params: SwapParameters2,
+    pub swap_result: SwapResult2,
+    pub included_transfer_fee_amount_in: u64,
+    pub included_transfer_fee_amount_out: u64,
+    pub excluded_transfer_fee_amount_out: u64,
+    pub current_timestamp: u64,
+    pub reserve_a_amount: u64,
+    pub reserve_b_amount: u64,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct EvtUpdateRewardDuration {
     pub pool: Pubkey,
@@ -352,6 +414,7 @@ impl<'a> TryFrom<&'a [u8]> for MeteoraDammAnchorCpiEvent {
             EVTSETPOOLSTATUS => Self::EvtSetPoolStatus(EvtSetPoolStatus::try_from_slice(payload)?),
             EVTSPLITPOSITION => Self::EvtSplitPosition(EvtSplitPosition::try_from_slice(payload)?),
             EVTSWAP => Self::EvtSwap(EvtSwap::try_from_slice(payload)?),
+            EVTSWAP2 => Self::EvtSwap2(EvtSwap2::try_from_slice(payload)?),
             EVTUPDATEREWARDDURATION => Self::EvtUpdateRewardDuration(EvtUpdateRewardDuration::try_from_slice(payload)?),
             EVTUPDATEREWARDFUNDER => Self::EvtUpdateRewardFunder(EvtUpdateRewardFunder::try_from_slice(payload)?),
             EVTWITHDRAWINELIGIBLEREWARD => Self::EvtWithdrawIneligibleReward(EvtWithdrawIneligibleReward::try_from_slice(payload)?),
