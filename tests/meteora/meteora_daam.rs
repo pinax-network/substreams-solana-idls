@@ -28,4 +28,31 @@ mod tests {
             _ => panic!("Expected Swap event"),
         }
     }
+
+    #[test]
+    fn unpack_daam_swap2_event() {
+        // Captured from mainnet tx
+        // 3K3UphSxL7XMGiqzGi1rpx5hRsyR5S7vFh9fUCbNQyJpAxuu3MDiUNKHGmJDGXhHZAk5CCEH19rCHSCfFkX4rGB
+        // at slot 421001393 (2026-05-16). Since the cp-amm program upgrade
+        // on 2025-12-26 the `swap` / `swap2` handlers emit `EvtSwap2` only.
+        let bytes = hex!("e445a52e51cb9a1dbd4233a82650759954ab128d0bd1fbd22afd56292a2d0c992d122b329f11f811676666849788b008010000ff822da60e0000002d169f050000000002885b990500000000885b9905000000000000000000000000ff822da60e0000003eff4f381ee9e909000000000000000024ce0003000000008833c0000000000000000000000000000000000000000000885b990500000000ff822da60e000000ff822da60e0000005cc10d6a000000001c1877eb7d0a000026d4280704000000");
+        match daam::anchor_cpi_event::unpack(&bytes).expect("decode event") {
+            daam::anchor_cpi_event::MeteoraDammAnchorCpiEvent::EvtSwap2(event) => {
+                assert_eq!(event.trade_direction, 1, "trade_direction");
+                assert_eq!(event.collect_fee_mode, 0, "collect_fee_mode");
+                assert!(!event.has_referral, "has_referral");
+                assert_eq!(event.params.swap_mode, 2, "swap_mode");
+                assert_eq!(event.swap_result.included_fee_input_amount, 93_936_520);
+                assert_eq!(event.swap_result.output_amount, 62_917_542_655, "output_amount");
+                assert_eq!(event.swap_result.claiming_fee, 50_384_420, "claiming_fee");
+                assert_eq!(event.swap_result.protocol_fee, 12_596_104, "protocol_fee");
+                assert_eq!(event.included_transfer_fee_amount_in, 93_936_520);
+                assert_eq!(event.excluded_transfer_fee_amount_out, 62_917_542_655);
+                assert_eq!(event.current_timestamp, 1_779_286_364, "current_timestamp");
+                assert_eq!(event.reserve_a_amount, 11_535_937_640_476);
+                assert_eq!(event.reserve_b_amount, 17_299_985_446);
+            }
+            _ => panic!("Expected Swap2 event"),
+        }
+    }
 }
