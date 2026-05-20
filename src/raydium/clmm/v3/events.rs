@@ -268,7 +268,7 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumClmmEvent {
             LIQUIDITY_CALCULATE_EVENT => Self::LiquidityCalculateEvent(LiquidityCalculateEvent::try_from_slice(payload)?),
             LIQUIDITY_CHANGE_EVENT => Self::LiquidityChangeEvent(LiquidityChangeEvent::try_from_slice(payload)?),
             POOL_CREATED_EVENT => Self::PoolCreatedEvent(PoolCreatedEvent::try_from_slice(payload)?),
-            SWAP_EVENT => Self::SwapEvent(SwapEvent::try_from_slice(payload)?),
+            SWAP_EVENT => Self::SwapEvent(SwapEvent::deserialize(&mut &payload[..])?),
             UPDATE_REWARD_INFOS_EVENT => Self::UpdateRewardInfosEvent(UpdateRewardInfosEvent::try_from_slice(payload)?),
             other => return Err(ParseError::Unknown(other)),
         })
@@ -278,4 +278,68 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumClmmEvent {
 /// Convenience wrapper that forwards to `TryFrom`.
 pub fn unpack(data: &[u8]) -> Result<RaydiumClmmEvent, ParseError> {
     RaydiumClmmEvent::try_from(data)
+}
+
+#[cfg(test)]
+mod tests {
+    //! On-chain CLMM `SwapEvent` grew by 16 trailing bytes on
+    //! 2026-05-18 (upstream added `trade_fee_0` / `trade_fee_1` u64 fields).
+    //! `unpack` must accept both the historical 197-byte payload and the
+    //! current 213-byte payload so backfills and live decoding both succeed.
+    use super::*;
+    use solana_program::pubkey::Pubkey;
+
+    fn legacy_event_bytes() -> Vec<u8> {
+        let event = SwapEvent {
+            pool_state: Pubkey::new_from_array([1; 32]),
+            sender: Pubkey::new_from_array([2; 32]),
+            token_account_0: Pubkey::new_from_array([3; 32]),
+            token_account_1: Pubkey::new_from_array([4; 32]),
+            amount_0: 1_000,
+            transfer_fee_0: 0,
+            amount_1: 2_000,
+            transfer_fee_1: 0,
+            zero_for_one: true,
+            sqrt_price_x64: 0,
+            liquidity: 0,
+            tick: 0,
+        };
+        let mut buf = SWAP_EVENT.to_vec();
+        event.serialize(&mut buf).expect("serialize");
+        buf
+    }
+
+    #[test]
+    fn unpack_accepts_legacy_197_byte_payload() {
+        let raw = legacy_event_bytes();
+        assert_eq!(raw.len(), 8 + 197, "legacy payload is 197 bytes");
+        let event = unpack(&raw).expect("legacy payload must unpack");
+        match event {
+            RaydiumClmmEvent::SwapEvent(e) => assert_eq!(e.amount_0, 1_000),
+            _ => panic!("wrong variant"),
+        }
+    }
+
+    #[test]
+    fn unpack_accepts_upgraded_213_byte_payload_with_trade_fees() {
+        // Real on-chain payload format observed 2026-05-18 onward: legacy 197
+        // bytes + 16 trailing bytes for `trade_fee_0` + `trade_fee_1` (u64
+        // each). The IDL struct hasn't been extended yet — tolerance comes
+        // from using `BorshDeserialize::deserialize` (which ignores trailing
+        // bytes) instead of `try_from_slice` (which rejects them).
+        let mut raw = legacy_event_bytes();
+        raw.extend_from_slice(&0u64.to_le_bytes()); // trade_fee_0
+        raw.extend_from_slice(&3_381_260u64.to_le_bytes()); // trade_fee_1
+        assert_eq!(raw.len(), 8 + 213, "upgraded payload is 213 bytes");
+
+        let event = unpack(&raw).expect("upgraded payload must unpack");
+        match event {
+            RaydiumClmmEvent::SwapEvent(e) => {
+                assert_eq!(e.amount_0, 1_000);
+                assert_eq!(e.amount_1, 2_000);
+                assert_eq!(e.zero_for_one, true);
+            }
+            _ => panic!("wrong variant"),
+        }
+    }
 }
