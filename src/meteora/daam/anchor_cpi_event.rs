@@ -8,6 +8,9 @@ use crate::common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
 
+// Preserve the event module's public path while sharing the instruction layout.
+pub use super::instructions::SwapParameters2;
+
 // -----------------------------------------------------------------------------
 // Discriminators
 // -----------------------------------------------------------------------------
@@ -289,20 +292,6 @@ pub struct EvtSwap {
     pub swap_result: SwapResult,
     pub actual_amount_in: u64,
     pub current_timestamp: u64,
-}
-
-/// Anchor `event:EvtSwap2` parameters block (mirrors cp-amm's `SwapParameters2`).
-///
-/// `swap_mode` discriminates between exact-in (`0`) and exact-out (`1`),
-/// matching cp-amm's `TradeDirection` / `SwapMode` enums. `amount_0` /
-/// `amount_1` are the user-supplied bounds (input amount for exact-in,
-/// minimum output for exact-out, with the inverse field acting as a slippage
-/// guard).
-#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
-pub struct SwapParameters2 {
-    pub amount_0: u64,
-    pub amount_1: u64,
-    pub swap_mode: u8,
 }
 
 /// Anchor `event:EvtSwap2` result block (mirrors cp-amm's `SwapResult2`).
