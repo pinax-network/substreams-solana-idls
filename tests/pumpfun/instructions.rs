@@ -72,3 +72,34 @@ fn too_short_returns_error() {
 fn unknown_discriminator_returns_error() {
     assert!(unpack(&[0u8; 8]).is_err());
 }
+
+#[test]
+fn parse_current_and_legacy_buy_arguments() {
+    for discriminator in [[102, 6, 61, 18, 1, 218, 235, 234], BUY_EXACT_SOL_IN] {
+        for flag in [None, Some(0), Some(1)] {
+            let mut data = discriminator.to_vec();
+            data.extend_from_slice(&1_000_000u64.to_le_bytes());
+            data.extend_from_slice(&500_000u64.to_le_bytes());
+            if let Some(flag) = flag {
+                data.push(flag);
+            }
+            match unpack(&data).unwrap() {
+                PumpFunInstruction::Buy(ix) => {
+                    assert_eq!(ix.amount, 1_000_000);
+                    assert_eq!(ix.max_sol_cost, 500_000);
+                }
+                PumpFunInstruction::BuyExactSolIn(ix) => {
+                    assert_eq!(ix.spendable_sol_in, 1_000_000);
+                    assert_eq!(ix.min_tokens_out, 500_000);
+                }
+                other => panic!("expected buy instruction, got {other:?}"),
+            }
+            data.truncate(24);
+            data.push(2);
+            assert!(unpack(&data).is_err());
+            data.truncate(24);
+            data.extend_from_slice(&[1, 0]);
+            assert!(unpack(&data).is_err());
+        }
+    }
+}

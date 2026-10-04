@@ -7,6 +7,7 @@ use solana_program::pubkey::Pubkey;
 // Discriminators (first 8 bytes of the instruction data)
 // -----------------------------------------------------------------------------
 const BUY: [u8; 8] = [102, 6, 61, 18, 1, 218, 235, 234]; // 33e685a4017f83ad
+pub const BUY_EXACT_SOL_IN: [u8; 8] = [56, 252, 116, 8, 158, 223, 205, 95];
 const SELL: [u8; 8] = [51, 230, 133, 164, 1, 127, 131, 173]; // 66063d1201daebea
 const INITIALIZE: [u8; 8] = [175, 175, 109, 31, 13, 152, 155, 237];
 const SET_PARAMS: [u8; 8] = [165, 31, 134, 53, 189, 180, 130, 255];
@@ -130,6 +131,8 @@ pub enum PumpFunInstruction {
 
     /// Discriminator did not match any known instruction.
     Unknown,
+    /// Buys tokens with an exact SOL input, using the same account list as `Buy`.
+    BuyExactSolIn(BuyExactSolInInstruction),
 }
 
 // -----------------------------------------------------------------------------
@@ -174,6 +177,12 @@ pub struct BuyInstruction {
     pub max_sol_cost: u64,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct BuyExactSolInInstruction {
+    pub spendable_sol_in: u64,
+    pub min_tokens_out: u64,
+}
+
 /// Instruction data for [`PumpFunInstruction::Sell`].
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SellInstruction {
@@ -197,10 +206,22 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunInstruction {
         let (disc, payload) = data.split_at(8);
         let discriminator: [u8; 8] = disc.try_into().expect("slice len 8");
 
+        // Current buy arguments append an OptionBool `track_volume` flag. The
+        // amount structs retain their historical API; only a valid flag may be
+        // omitted from their payload before strict amount deserialization.
+        let payload = match discriminator {
+            BUY | BUY_EXACT_SOL_IN if payload.len() == 17 => {
+                bool::try_from_slice(&payload[16..])?;
+                &payload[..16]
+            }
+            _ => payload,
+        };
+
         Ok(match discriminator {
             SET_PARAMS => Self::SetParams(SetParamsInstruction::try_from_slice(payload)?),
             CREATE_INSTRUCTION => Self::Create(CreateInstruction::try_from_slice(payload)?),
             BUY => Self::Buy(BuyInstruction::try_from_slice(payload)?),
+            BUY_EXACT_SOL_IN => Self::BuyExactSolIn(BuyExactSolInInstruction::try_from_slice(payload)?),
             SELL => Self::Sell(SellInstruction::try_from_slice(payload)?),
             WITHDRAW => Self::Withdraw,
             INITIALIZE => Self::Initialize,

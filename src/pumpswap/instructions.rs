@@ -157,6 +157,17 @@ impl<'a> TryFrom<&'a [u8]> for PumpSwapInstruction {
         let (disc, payload) = data.split_at(8);
         let discriminator: [u8; 8] = disc.try_into().expect("slice len 8");
 
+        // Current buy arguments append an OptionBool `track_volume` flag to the
+        // two amounts. Validate it without changing the existing amount-only
+        // structs, and keep decoding historical instructions without the flag.
+        let payload = match discriminator {
+            BUY | BUY_EXACT_QUOTE_IN if payload.len() == 17 => {
+                bool::try_from_slice(&payload[16..])?;
+                &payload[..16]
+            }
+            _ => payload,
+        };
+
         Ok(match discriminator {
             ADMIN_SET_COIN_CREATOR => Self::AdminSetCoinCreator(AdminSetCoinCreatorInstruction::try_from_slice(payload)?),
             ADMIN_UPDATE_TOKEN_INCENTIVES => Self::AdminUpdateTokenIncentives(AdminUpdateTokenIncentivesInstruction::try_from_slice(payload)?),
