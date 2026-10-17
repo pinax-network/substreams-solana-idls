@@ -247,8 +247,8 @@ Program log: SwapEvent { dex: AlphaQ, amount_in: 6884273882, amount_out: 8156649
         let program = [6u8; 32];
 
         let trx = pb::ConfirmedTransaction {
-            transaction: Some(pb::Transaction {
-                message: Some(pb::Message {
+            transaction: pb::Transaction {
+                message: pb::Message {
                     account_keys: vec![
                         payer.to_vec(),
                         source_token_account.to_vec(),
@@ -263,10 +263,12 @@ Program log: SwapEvent { dex: AlphaQ, amount_in: 6884273882, amount_out: 8156649
                         data: vec![],
                     }],
                     ..Default::default()
-                }),
+                }
+                .into(),
                 ..Default::default()
-            }),
-            meta: Some(pb::TransactionStatusMeta::default()),
+            }
+            .into(),
+            meta: pb::TransactionStatusMeta::default().into(),
         };
 
         let ix = trx.compiled_instructions().next().expect("instruction view");
@@ -286,8 +288,8 @@ Program log: SwapEvent { dex: AlphaQ, amount_in: 6884273882, amount_out: 8156649
         let okx_program = Pubkey::from_str("6m2CDdhRgxpH4WjvdzxAYbGxwdGUz5MziiL5jek2kBma").unwrap();
 
         let trx = pb::ConfirmedTransaction {
-            transaction: Some(pb::Transaction {
-                message: Some(pb::Message {
+            transaction: pb::Transaction {
+                message: pb::Message {
                     account_keys: vec![
                         payer.to_bytes().to_vec(),
                         source_token_account.to_bytes().to_vec(),
@@ -311,10 +313,12 @@ Program log: SwapEvent { dex: AlphaQ, amount_in: 6884273882, amount_out: 8156649
                         data: vec![],
                     }],
                     ..Default::default()
-                }),
+                }
+                .into(),
                 ..Default::default()
-            }),
-            meta: Some(pb::TransactionStatusMeta::default()),
+            }
+            .into(),
+            meta: pb::TransactionStatusMeta::default().into(),
         };
 
         let ix = trx.compiled_instructions().next().expect("instruction view");

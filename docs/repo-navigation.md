@@ -1,89 +1,59 @@
 # Repository Navigation Guide
 
-This document captures durable navigation and workflow knowledge for `substreams-solana-idls`.
+This repository is one Rust crate, `substreams-solana-idls`.
 
-## 1) Workspace Layout
+## Layout and edit routing
 
-- `Cargo.toml`: root package metadata plus workspace membership.
-- `src/lib.rs`: root re-exports of selected protocol crates.
-- `packages/common/`: shared `ParseError` and account parsing helpers used by protocol crates.
-- `packages/<protocol>/`: one crate per protocol (for example `raydium`, `jupiter`, `pumpfun`).
-- `.github/workflows/`: CI/publish pipelines.
-- `target/`: Rust build artifacts (generated; not source).
+- `Cargo.toml`, `Cargo.lock`: crate metadata and dependencies.
+- `src/lib.rs`: protocol module exports.
+- `src/common/`: shared `ParseError`, account errors and parsing macros.
+- `src/<protocol>/`: protocol decoders, with variant submodules where needed.
+- `tests/<protocol>/`: integration fixtures, registered by `tests/<protocol>.rs`.
+- `.github/workflows/`: native tests, WASM checks and release publishing.
 
-Each protocol package typically contains:
+Within a protocol module, `mod.rs` declares modules and program-address constants;
+`instructions.rs` and `events.rs` decode raw bytes; `accounts.rs` resolves instruction
+accounts. JSON IDLs in these directories are reference inputs, not generated build output.
+`target/` is generated and ignored.
 
-- `Cargo.toml`: crate dependencies and metadata.
-- `src/lib.rs`: protocol module entrypoint and `PROGRAM_ID` constants.
-- `src/instructions.rs`: instruction enums + `unpack`.
-- `src/events.rs`: event enums/structs + `unpack` (if supported).
-- `src/accounts.rs`: account helper structs/functions (if needed).
-- `src/<variant>/`: versioned or product-specific submodules (`v4`, `v6`, `amm`, `clmm`, etc.).
-- `tests/*.rs`: decode fixtures and behavior checks.
+Add protocols under `src/`, export them from `src/lib.rs`, and register their tests under
+`tests/`. Change shared parsing behavior in `src/common/`; keep protocol-specific changes
+in the relevant module. There is no `packages/` workspace.
 
-## 2) Architecture / Data-Flow Mental Model
+## Model and dependency boundary
 
-- Input: raw Solana instruction/log bytes.
-- Decoder entrypoint: `<module>::instructions::unpack(data)` and/or `<module>::events::unpack(data)`.
-- Dispatch mechanism: match on discriminators, then Borsh-deserialize into typed structs.
-- Shared errors: `common::ParseError` standardizes decode failures across crates.
-- Substreams usage: downstream mappings filter by `PROGRAM_ID`, decode, then map to output entities.
+Version 2 uses the Buffa-based `substreams-solana-core` 0.16 model, aliased as
+`substreams_solana` inside the crate. `substreams-solana-macro` supplies `b58!` directly.
+Neither dependency introduces the Substreams runtime. Borsh instruction/event decoding
+is independent of the protobuf runtime; account helpers take the owned model's
+`InstructionView` and therefore require downstream consumers to use the same model version.
 
-Think of each protocol crate as a codec library with a stable decode API: `PROGRAM_ID` + `unpack` + typed structs.
+The upstream Solana repository owns the protobuf schemas and Buf generation configuration.
+This repository does not contain `.proto` files or generated block models. A model upgrade
+requires checking public account-helper compatibility and migrating protobuf fixtures;
+do not add a duplicate private block model or copy generated upstream types here.
 
-## 3) Where To Edit For X
+Buffa message presence must be checked explicitly when required: `.as_option()` and
+`.is_set()` distinguish an absent message from the default returned by dereferencing it.
+Lazy views are a separate upstream API; current account helpers use owned `InstructionView`.
 
-- Add a new protocol crate:
-  - Add `packages/<protocol>/`.
-  - Register it in `Cargo.toml` `[workspace].members` and `[dependencies]`.
-  - Optionally re-export in `src/lib.rs`.
+## Validation
 
-- Add support for a new program/version inside an existing protocol:
-  - Add a new module under `packages/<protocol>/src/<variant>/`.
-  - Wire it in `packages/<protocol>/src/lib.rs` or parent `mod.rs`.
-  - Add/extend tests in `packages/<protocol>/tests/`.
+Rust 1.85 is the declared minimum and the CI/publishing toolchain. Run:
 
-- Update instruction decoding logic:
-  - Edit `instructions.rs` in the relevant protocol/variant module.
+```bash
+cargo test --locked
+cargo check --locked --target wasm32-unknown-unknown
+cargo fmt --all -- --check
+cargo clippy --all-targets --locked -- -D warnings
+git diff --check
+```
 
-- Update event decoding logic:
-  - Edit `events.rs` (or `anchor_cpi_event.rs`/`logs.rs` where present).
+Keep fixture bytes and expected decoder outputs stable during dependency-only migrations.
+For normal/build/development dependency inspection, use:
 
-- Update account parsing helpers:
-  - Edit `accounts.rs` in the relevant module.
-  - Shared account helper macros live in `packages/common/src/accounts.rs`.
+```bash
+cargo tree --locked --edges normal,build,dev
+```
 
-- Change shared parse error behavior:
-  - Edit `packages/common/src/lib.rs` (`ParseError`).
-
-- Expose protocol from top-level crate path:
-  - Add `pub use <protocol>;` in `src/lib.rs`.
-
-## 4) Key Build/Test Anchors
-
-- Format check: `cargo fmt --all -- --check`
-- Lint check: `cargo clippy --workspace -- -D warnings`
-- Tests: `cargo test --workspace`
-- WASM compatibility: `cargo check --workspace --target wasm32-unknown-unknown`
-
-CI equivalents are defined in `.github/workflows/ci.yml`.
-
-## 5) Source vs Generated Artifacts
-
-Source of truth:
-
-- `packages/**/src/**/*.rs`
-- `packages/**/tests/**/*.rs`
-- `Cargo.toml`, `Cargo.lock`, `rust-toolchain.toml`
-- `.github/workflows/*.yml`
-
-Generated/build artifacts:
-
-- `target/**`
-
-Committed data artifacts (treated as inputs, not build outputs):
-
-- `packages/**/src/**/idl*.json`
-- `packages/**/src/idl.json`
-
-Those JSON IDLs are checked in and used by maintainers as decoder references.
+The crate should not depend on the `substreams` SDK or its WASM allocator symbols.

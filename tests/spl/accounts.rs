@@ -27,14 +27,15 @@ fn make_tx(accounts: &[[u8; 32]]) -> ConfirmedTransaction {
     }
 
     ConfirmedTransaction {
-        transaction: Some(Transaction {
+        transaction: Transaction {
             signatures: vec![vec![0; 64]],
-            message: Some(Message {
-                header: Some(MessageHeader {
+            message: Message {
+                header: MessageHeader {
                     num_required_signatures: 1,
                     num_readonly_signed_accounts: 0,
                     num_readonly_unsigned_accounts: 0,
-                }),
+                }
+                .into(),
                 account_keys: keys,
                 recent_blockhash: vec![0; 32],
                 instructions: vec![CompiledInstruction {
@@ -44,9 +45,12 @@ fn make_tx(accounts: &[[u8; 32]]) -> ConfirmedTransaction {
                 }],
                 versioned: false,
                 address_table_lookups: vec![],
-            }),
-        }),
-        meta: Some(TransactionStatusMeta::default()),
+                ..Default::default()
+            }
+            .into(),
+        }
+        .into(),
+        meta: TransactionStatusMeta::default().into(),
     }
 }
 

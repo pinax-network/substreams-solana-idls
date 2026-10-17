@@ -2,7 +2,7 @@
 
 > **Type-safe instruction & event decoders for any Solana program you want to index with Substreams.**
 
-This crate bundles thin, `no_std`-friendly byte-codecs that turn on-chain **instruction** and **event** byte arrays into well-typed Rust enums & structs, ready for use inside Substreams modules.
+This crate bundles byte-codecs that turn on-chain **instruction** and **event** byte arrays into well-typed Rust enums & structs, ready for native applications and Substreams modules.
 
 ---
 
@@ -76,8 +76,28 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-substreams-solana-idls = { git = "https://github.com/pinax-network/substreams-solana-idls", tag = "v1.1.2" }
+substreams-solana-idls = { git = "https://github.com/pinax-network/substreams-solana-idls" }
+substreams-solana = "0.16.0"
 ```
+
+Pin a reviewed Git revision for reproducible builds. The 2.x source uses the Buffa-based
+Solana 0.16 model and requires Rust 1.85 or later. Substreams handlers should use SDK 0.8.
+
+### Migrating from 1.x
+
+Instruction and event byte decoders retain their existing APIs and Borsh layouts. Account
+helpers now accept the `InstructionView` from Solana 0.16; the older prost-based 0.14
+`InstructionView` is a different Rust type, so migrate downstream consumers together.
+Singular protobuf messages use `buffa::MessageField` instead of `Option`, enum fields use
+`buffa::EnumValue`, and messages encode/decode through `buffa::Message`. Construct message
+fields with `.into()`; use `.as_option()` or `.is_set()` when presence matters. Unset fields
+deref to defaults, which does not prove that a required source field was present.
+
+The dependency graph contains only the Solana core/model and address macro crates, with
+no Substreams runtime dependency. Native callers can use these decoders without linking
+WASM allocator exports. The upstream Solana crate owns protobuf generation using
+`buf.build/anthropics/buffa:v0.9.2`; this repository has no protobuf schema or generated
+block model to regenerate. See the [upstream migration notes](https://github.com/streamingfast/substreams-solana/releases/tag/v0.16.0-beta.1).
 
 ## Workspace Layout
 
@@ -112,24 +132,22 @@ Examples:
 ## Quick Start (Pump.fun example)
 
 ```rust
-use substreams_solana_idls::pumpfun;
+use substreams_solana::pb::sf::solana::r#type::v1::Block;
+use substreams_solana_idls::pumpfun::bonding_curve::{self, instructions};
 
-#[substreams::handlers::map]
-fn map_events(block: Block) -> Result<Events, Error> {
+fn count_buys(block: &Block) -> usize {
+    let mut buys = 0;
     for tx in block.transactions() {
         for ix in tx.walk_instructions() {
             // Fast path: ignore anything not coming from Pump.fun
-            if ix.program() != pumpfun::PROGRAM_ID { continue; }
+            if ix.program_id() != bonding_curve::PROGRAM_ID { continue; }
 
-            match pumpfun::events::unpack(ix.data()) {
-                pumpfun::events::PumpFunEvent::Trade(tr) => {
-                    // …handle trade…
-                }
-                _ => {}
+            if let Ok(instructions::PumpFunInstruction::Buy(_)) = instructions::unpack(ix.data()) {
+                buys += 1;
             }
         }
     }
-    Ok(Default::default())
+    buys
 }
 ```
 
@@ -151,6 +169,6 @@ cargo check --workspace --target wasm32-unknown-unknown
 * Add a new module under `src/<protocol>/` with `instructions.rs`, `events.rs`, and `mod.rs`.
 * Register the module in `src/lib.rs`.
 * Follow existing modules for structure & doc style.
-* Keep dependencies minimal (`borsh`, `solana_program` only).
+* Keep dependencies minimal; byte decoders should not require the Substreams runtime.
 
 PRs and issues welcome!
