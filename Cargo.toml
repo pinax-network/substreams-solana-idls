@@ -1,15 +1,16 @@
 [package]
 name = "substreams-solana-idls"
-version = "1.4.0"
+version = "2.0.0"
 edition = "2021"
+rust-version = "1.85"
 description = "Type-safe Solana instruction, event & account decoders for Substreams"
 license = "MIT"
 repository = "https://github.com/pinax-network/substreams-solana-idls"
 documentation = "https://docs.rs/substreams-solana-idls"
 
 [dependencies]
-substreams = "0.6.2"
-substreams-solana = "0.14.1"
+substreams-solana = { package = "substreams-solana-core", version = "0.16.0" }
+substreams-solana-macro = "0.16.0"
 solana-program = "2.3.0"
 borsh = { version = "1.5.7", features = ["derive"] }
 thiserror = "2.0.16"

@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
     use base64::prelude::*;
-    use substreams::hex;
+    use hex_literal::hex;
     use substreams_solana_idls::pancakeswap;
 
     #[test]

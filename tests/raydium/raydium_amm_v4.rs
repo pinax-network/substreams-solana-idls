@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
     use base64::Engine;
-    use substreams::hex;
+    use hex_literal::hex;
     use substreams_solana_idls::common::ParseError;
     #[test]
     fn unpack_amm_v4_swap_event() {
@@ -130,14 +130,15 @@ mod tests {
             acc_idx.push((i + 2) as u8);
         }
         ConfirmedTransaction {
-            transaction: Some(Transaction {
+            transaction: Transaction {
                 signatures: vec![vec![0u8; 64]],
-                message: Some(Message {
-                    header: Some(MessageHeader {
+                message: Message {
+                    header: MessageHeader {
                         num_required_signatures: 1,
                         num_readonly_signed_accounts: 0,
                         num_readonly_unsigned_accounts: 0,
-                    }),
+                    }
+                    .into(),
                     account_keys: keys,
                     recent_blockhash: vec![0u8; 32],
                     instructions: vec![CompiledInstruction {
@@ -147,9 +148,12 @@ mod tests {
                     }],
                     versioned: false,
                     address_table_lookups: vec![],
-                }),
-            }),
-            meta: Some(TransactionStatusMeta::default()),
+                    ..Default::default()
+                }
+                .into(),
+            }
+            .into(),
+            meta: TransactionStatusMeta::default().into(),
         }
     }
 

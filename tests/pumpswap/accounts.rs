@@ -1,8 +1,6 @@
 use borsh::BorshSerialize;
 use solana_program::pubkey::Pubkey;
-use substreams_solana::pb::sf::solana::r#type::v1::{
-    CompiledInstruction, ConfirmedTransaction, Message, MessageHeader, Transaction, TransactionStatusMeta,
-};
+use substreams_solana::pb::sf::solana::r#type::v1::{CompiledInstruction, ConfirmedTransaction, Message, MessageHeader, Transaction, TransactionStatusMeta};
 use substreams_solana_idls::common::accounts::AccountsError;
 use substreams_solana_idls::pumpswap::accounts::*;
 
@@ -112,14 +110,15 @@ fn make_tx(accounts: &[[u8; 32]]) -> ConfirmedTransaction {
         ix_accounts.push((i + 2) as u8);
     }
     ConfirmedTransaction {
-        transaction: Some(Transaction {
+        transaction: Transaction {
             signatures: vec![vec![0; 64]],
-            message: Some(Message {
-                header: Some(MessageHeader {
+            message: Message {
+                header: MessageHeader {
                     num_required_signatures: 1,
                     num_readonly_signed_accounts: 0,
                     num_readonly_unsigned_accounts: 0,
-                }),
+                }
+                .into(),
                 account_keys: keys,
                 recent_blockhash: vec![0; 32],
                 instructions: vec![CompiledInstruction {
@@ -129,9 +128,12 @@ fn make_tx(accounts: &[[u8; 32]]) -> ConfirmedTransaction {
                 }],
                 versioned: false,
                 address_table_lookups: vec![],
-            }),
-        }),
-        meta: Some(TransactionStatusMeta::default()),
+                ..Default::default()
+            }
+            .into(),
+        }
+        .into(),
+        meta: TransactionStatusMeta::default().into(),
     }
 }
 
@@ -192,10 +194,7 @@ fn buy_accounts_resolve_to_idl_layout() {
     assert_eq!(accounts.protocol_fee_recipient, pubkey(PROTOCOL_FEE_RECIPIENT));
     assert_eq!(accounts.protocol_fee_recipient_token_account, pubkey(PROTOCOL_FEE_RECIPIENT_TA));
     assert_eq!(accounts.coin_creator_vault_ata, Some(pubkey(COIN_CREATOR_VAULT_ATA)));
-    assert_eq!(
-        accounts.coin_creator_vault_authority,
-        Some(pubkey(COIN_CREATOR_VAULT_AUTHORITY))
-    );
+    assert_eq!(accounts.coin_creator_vault_authority, Some(pubkey(COIN_CREATOR_VAULT_AUTHORITY)));
 }
 
 #[test]
