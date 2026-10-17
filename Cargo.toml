@@ -9,8 +9,8 @@ repository = "https://github.com/pinax-network/substreams-solana-idls"
 documentation = "https://docs.rs/substreams-solana-idls"
 
 [dependencies]
-substreams-solana = { package = "substreams-solana-core", version = "=0.16.0" }
-substreams-solana-macro = "=0.16.0"
+substreams-solana = { package = "substreams-solana-core", version = "0.16.0" }
+substreams-solana-macro = "0.16.0"
 solana-program = "2.3.0"
 borsh = { version = "1.5.7", features = ["derive"] }
 thiserror = "2.0.16"
