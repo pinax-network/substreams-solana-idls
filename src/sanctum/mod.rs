@@ -1,6 +1,6 @@
 pub mod instructions;
 
-use substreams_solana::b58;
+use substreams_solana_macro::b58;
 
 /// Sanctum Router program — LST swap routing via stake accounts
 ///

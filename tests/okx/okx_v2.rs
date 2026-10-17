@@ -1,9 +1,9 @@
 #[cfg(test)]
 mod tests {
     use base64::Engine;
+    use hex_literal::hex;
     use solana_program::pubkey::Pubkey;
     use std::str::FromStr;
-    use substreams::hex;
     use substreams_solana::pb::sf::solana::r#type::v1 as pb;
     use substreams_solana_idls::okx::v2::{
         accounts,

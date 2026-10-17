@@ -1,7 +1,7 @@
 #![cfg(test)]
 #![allow(deprecated)]
 mod tests {
-    use substreams::hex;
+    use hex_literal::hex;
     use substreams_solana_idls::raydium::launchpad;
 
     #[test]

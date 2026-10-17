@@ -2,7 +2,7 @@ pub mod accounts;
 pub mod events;
 pub mod instructions;
 
-use substreams_solana::b58;
+use substreams_solana_macro::b58;
 
 /// Marinade Finance liquid staking program
 ///

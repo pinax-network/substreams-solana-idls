@@ -1,7 +1,7 @@
 pub mod events;
 pub mod instructions;
 
-use substreams_solana::b58;
+use substreams_solana_macro::b58;
 
 /// Tensor Marketplace program (cNFT, pNFT, Token-2022, WNS, Core)
 ///

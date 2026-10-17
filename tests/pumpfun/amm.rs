@@ -18,7 +18,7 @@ fn parse_amm_buy_exact_quote_in() {
     // 61heGfiqm9enY7MEfqjvmADrnRyD1oMUjAdMTUa8u1iXMKz8ecgBXEgX2xnoZuUor6dyJ8ni8KbNxBrY37NgWPdo
     // (pumpfun amm program pAMMBay6...). Discriminator c62e1552b4d9e870
     // followed by spendable_quote_in=11904075 and min_base_amount_out=1.
-    let bytes = substreams::hex!("c62e1552b4d9e8704ba4b500000000000100000000000000");
+    let bytes = hex_literal::hex!("c62e1552b4d9e8704ba4b500000000000100000000000000");
     match unpack(&bytes).expect("decode buy_exact_quote_in") {
         PumpFunAmmInstruction::BuyExactQuoteIn(b) => {
             assert_eq!(b.spendable_quote_in, 11_904_075);

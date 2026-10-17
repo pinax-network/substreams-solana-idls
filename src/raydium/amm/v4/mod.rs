@@ -1,4 +1,4 @@
-use substreams_solana::b58;
+use substreams_solana_macro::b58;
 pub mod accounts;
 pub mod instructions;
 pub mod logs;
