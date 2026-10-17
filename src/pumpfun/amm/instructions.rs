@@ -121,6 +121,16 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunAmmInstruction {
         let (disc, payload) = data.split_at(8);
         let discriminator: [u8; 8] = disc.try_into().expect("slice len 8");
 
+        // Match the current PumpSwap OptionBool suffix while retaining support
+        // for historical amount-only buy arguments in this compatibility module.
+        let payload = match discriminator {
+            BUY | BUY_EXACT_QUOTE_IN if payload.len() == 17 => {
+                bool::try_from_slice(&payload[16..])?;
+                &payload[..16]
+            }
+            _ => payload,
+        };
+
         Ok(match discriminator {
             BUY => Self::Buy(BuyInstruction::try_from_slice(payload)?),
             BUY_EXACT_QUOTE_IN => Self::BuyExactQuoteIn(BuyExactQuoteInInstruction::try_from_slice(payload)?),

@@ -64,3 +64,28 @@ fn amm_too_short() {
 fn amm_unknown() {
     assert!(unpack(&[0u8; 16]).is_err());
 }
+
+#[test]
+fn parse_amm_buy_volume_flags() {
+    for discriminator in [[102, 6, 61, 18, 1, 218, 235, 234], [198, 46, 21, 82, 180, 217, 232, 112]] {
+        for flag in [0, 1] {
+            let mut data = discriminator.to_vec();
+            data.extend_from_slice(&5_000_000u64.to_le_bytes());
+            data.extend_from_slice(&1_000_000u64.to_le_bytes());
+            data.push(flag);
+            match unpack(&data).unwrap() {
+                PumpFunAmmInstruction::Buy(ix) => {
+                    assert_eq!(ix.base_amount_out, 5_000_000);
+                    assert_eq!(ix.max_quote_amount_in, 1_000_000);
+                }
+                PumpFunAmmInstruction::BuyExactQuoteIn(ix) => {
+                    assert_eq!(ix.spendable_quote_in, 5_000_000);
+                    assert_eq!(ix.min_base_amount_out, 1_000_000);
+                }
+                other => panic!("expected buy instruction, got {other:?}"),
+            }
+            data[24] = 2;
+            assert!(unpack(&data).is_err());
+        }
+    }
+}

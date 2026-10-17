@@ -148,6 +148,14 @@ pub struct SwapParameters {
     pub minimum_amount_out: u64,
 }
 
+/// Arguments shared by `swap2` and its `EvtSwap2` event.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct SwapParameters2 {
+    pub amount_0: u64,
+    pub amount_1: u64,
+    pub swap_mode: u8,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct SwapResult {
     pub output_amount: u64,
@@ -234,10 +242,8 @@ pub enum MeteoraDammInstruction {
     SetPoolStatus(SetPoolStatusInstruction),
     SplitPosition(SplitPositionInstruction),
     Swap(SwapInstruction),
-    /// Same on-chain account list as `Swap`; new payload type for dynamic
-    /// fees / referral params shipped post-launch. Same anchor-CPI `EvtSwap`
-    /// emit, so consumers can reuse the existing event handler.
-    Swap2(SwapInstruction),
+    /// Shares `Swap`'s account list, but includes the swap mode in its arguments.
+    Swap2(Swap2Instruction),
     UpdateRewardDuration(UpdateRewardDurationInstruction),
     UpdateRewardFunder(UpdateRewardFunderInstruction),
     WithdrawIneligibleReward(WithdrawIneligibleRewardInstruction),
@@ -348,6 +354,11 @@ pub struct SwapInstruction {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct Swap2Instruction {
+    pub params: SwapParameters2,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct UpdateRewardDurationInstruction {
     pub reward_index: u8,
     pub new_duration: u64,
@@ -404,7 +415,7 @@ impl<'a> TryFrom<&'a [u8]> for MeteoraDammInstruction {
             SET_POOL_STATUS => Self::SetPoolStatus(SetPoolStatusInstruction::try_from_slice(payload)?),
             SPLIT_POSITION => Self::SplitPosition(SplitPositionInstruction::try_from_slice(payload)?),
             SWAP => Self::Swap(SwapInstruction::try_from_slice(payload)?),
-            SWAP2 => Self::Swap2(SwapInstruction::try_from_slice(payload)?),
+            SWAP2 => Self::Swap2(Swap2Instruction::try_from_slice(payload)?),
             UPDATE_REWARD_DURATION => Self::UpdateRewardDuration(UpdateRewardDurationInstruction::try_from_slice(payload)?),
             UPDATE_REWARD_FUNDER => Self::UpdateRewardFunder(UpdateRewardFunderInstruction::try_from_slice(payload)?),
             WITHDRAW_INELIGIBLE_REWARD => Self::WithdrawIneligibleReward(WithdrawIneligibleRewardInstruction::try_from_slice(payload)?),

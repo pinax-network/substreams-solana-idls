@@ -35,14 +35,24 @@ fn daam_unpack_swap() {
 
 #[test]
 fn daam_unpack_swap2() {
-    // SWAP2 reuses the V1 `SwapInstruction` payload struct (only the args
-    // type semantics differ on-chain — they share Borsh layout). This test
-    // pins the discriminator → enum-variant mapping.
     let mut data = daam_ix::SWAP2.to_vec();
+    data.extend_from_slice(&1_087_808_068u64.to_le_bytes());
     data.extend_from_slice(&0u64.to_le_bytes());
-    data.extend_from_slice(&0u64.to_le_bytes());
+    data.push(1);
     let parsed = daam_ix::unpack(&data).expect("SWAP2 must decode");
-    assert!(matches!(parsed, daam_ix::MeteoraDammInstruction::Swap2(_)));
+    match parsed {
+        daam_ix::MeteoraDammInstruction::Swap2(ix) => {
+            assert_eq!(ix.params.amount_0, 1_087_808_068);
+            assert_eq!(ix.params.amount_1, 0);
+            assert_eq!(ix.params.swap_mode, 1);
+        }
+        other => panic!("expected Swap2, got {other:?}"),
+    }
+
+    data.pop();
+    assert!(daam_ix::unpack(&data).is_err(), "swap mode is required");
+    data.extend_from_slice(&[1, 0]);
+    assert!(daam_ix::unpack(&data).is_err(), "unexpected trailing bytes must fail");
 }
 
 #[test]

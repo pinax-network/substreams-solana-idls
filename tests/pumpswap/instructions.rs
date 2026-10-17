@@ -19,6 +19,46 @@ fn test_buy() {
 }
 
 #[test]
+fn test_buy_volume_flag_and_legacy_arguments() {
+    for discriminator in [BUY, BUY_EXACT_QUOTE_IN] {
+        for flag in [None, Some(0), Some(1)] {
+            let mut data = discriminator.to_vec();
+            data.extend_from_slice(&576_275_924_281u64.to_le_bytes());
+            data.extend_from_slice(&55_920_000u64.to_le_bytes());
+            if let Some(flag) = flag {
+                data.push(flag);
+            }
+            match unpack(&data).unwrap() {
+                PumpSwapInstruction::Buy(ix) => {
+                    assert_eq!(ix.base_amount_out, 576_275_924_281);
+                    assert_eq!(ix.max_quote_amount_in, 55_920_000);
+                }
+                PumpSwapInstruction::BuyExactQuoteIn(ix) => {
+                    assert_eq!(ix.spendable_quote_in, 576_275_924_281);
+                    assert_eq!(ix.min_base_amount_out, 55_920_000);
+                }
+                other => panic!("expected buy instruction, got {other:?}"),
+            }
+        }
+    }
+}
+
+#[test]
+fn test_buy_rejects_invalid_or_extra_volume_flag_bytes() {
+    for discriminator in [BUY, BUY_EXACT_QUOTE_IN] {
+        let mut data = discriminator.to_vec();
+        data.extend_from_slice(&[0; 16]);
+        data.push(2);
+        assert!(unpack(&data).is_err(), "invalid boolean must fail");
+        data.pop();
+        data.extend_from_slice(&[1, 0]);
+        assert!(unpack(&data).is_err(), "extra bytes must fail");
+        data.truncate(23);
+        assert!(unpack(&data).is_err(), "truncated amounts must fail");
+    }
+}
+
+#[test]
 fn test_sell() {
     let ix = SellInstruction {
         base_amount_in: 2_000_000,
