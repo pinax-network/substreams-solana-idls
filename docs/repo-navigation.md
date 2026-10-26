@@ -50,6 +50,8 @@ git diff --check
 ```
 
 Keep fixture bytes and expected decoder outputs stable during dependency-only migrations.
+Pump AMM creation layouts and their captured-chain evidence are documented in
+[`pump-amm-creation.md`](pump-amm-creation.md).
 For normal/build/development dependency inspection, use:
 
 ```bash
