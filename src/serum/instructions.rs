@@ -4,6 +4,7 @@
 //! instruction data) rather than Anchor's 8-byte sha256 discriminators.
 
 use crate::common::ParseError;
+use borsh::{BorshDeserialize, BorshSerialize};
 
 // -----------------------------------------------------------------------------
 // Discriminators (little-endian u32)
@@ -100,4 +101,28 @@ impl<'a> TryFrom<&'a [u8]> for SerumInstruction {
 /// Convenience wrapper that forwards to `TryFrom`.
 pub fn unpack(data: &[u8]) -> Result<SerumInstruction, ParseError> {
     SerumInstruction::try_from(data)
+}
+
+/// Canonical version-0 Serum market initialization arguments.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct InitializeMarketInstruction {
+    pub coin_lot_size: u64,
+    pub pc_lot_size: u64,
+    pub fee_rate_bps: u16,
+    pub vault_signer_nonce: u64,
+    pub pc_dust_threshold: u64,
+}
+
+/// Decode the on-chain version byte and exact initialization payload. This
+/// additive entry point leaves the older unversioned raw-payload API unchanged.
+pub fn unpack_initialize_market(data: &[u8]) -> Result<InitializeMarketInstruction, ParseError> {
+    if data.len() < 5 {
+        return Err(ParseError::TooShort(data.len()));
+    }
+    if data[..5] != [0; 5] {
+        let mut discriminator = [0; 8];
+        discriminator[..5].copy_from_slice(&data[..5]);
+        return Err(ParseError::Unknown(discriminator));
+    }
+    Ok(InitializeMarketInstruction::try_from_slice(&data[5..])?)
 }

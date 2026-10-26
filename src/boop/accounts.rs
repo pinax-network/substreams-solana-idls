@@ -2,6 +2,7 @@
 
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
+use substreams_solana::block_view::InstructionView;
 
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub enum BondingCurveStatus {
@@ -81,4 +82,17 @@ pub struct LockedCpLiquidityState {
     pub locked_owner: Pubkey,
     pub locked_lp_mint: Pubkey,
     pub padding: [u64; 8],
+}
+
+// On-chain Anchor IDL, retrieved from idl.solana.com on 2026-10-26.
+accounts!(DeployBondingCurveAccounts, get_deploy_bonding_curve_accounts, {
+    mint, vault_authority, bonding_curve, bonding_curve_sol_vault,
+    bonding_curve_vault, config, payer, system_program, token_program,
+    associated_token_program,
+});
+
+pub type DeployBondingCurveFallbackAccounts = DeployBondingCurveAccounts;
+
+pub fn get_deploy_bonding_curve_fallback_accounts(ix: &InstructionView) -> Result<DeployBondingCurveFallbackAccounts, crate::common::accounts::AccountsError> {
+    get_deploy_bonding_curve_accounts(ix)
 }

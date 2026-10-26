@@ -2,6 +2,7 @@
 
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
+use substreams_solana::block_view::InstructionView;
 
 #[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
 pub struct RampingLimit {
@@ -28,3 +29,10 @@ pub struct LiquidityPool {
     pub in_use: bool,
     pub closed: bool,
 }
+
+// On-chain Anchor IDL, retrieved from idl.solana.com on 2026-10-26.
+accounts!(MintAccounts, get_mint_accounts, {
+    payer, metadata_account, mint_account, liquidity_pool, liquidity_pool_authority,
+    liquidity_pool_token_account, token_metadata_program, token_program,
+    associated_token_program, system_program, rent,
+});

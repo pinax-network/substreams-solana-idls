@@ -21,7 +21,7 @@ pub struct SwapV1 {
 }
 
 /// Trade fee numerator/denominator
-#[derive(Debug, Clone, PartialEq, BorshSerialize, BorshDeserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct Fees {
     pub trade_fee_numerator: u64,
     pub trade_fee_denominator: u64,
@@ -114,3 +114,15 @@ impl<'ix> TryFrom<&InstructionView<'ix>> for SwapAccounts {
 pub fn get_swap_accounts(ix: &InstructionView) -> Result<SwapAccounts, AccountsError> {
     SwapAccounts::try_from(ix)
 }
+
+// Canonical initialize account order: SPL Token Swap / Saros SDK.
+accounts!(InitializeAccounts, get_initialize_accounts, {
+    swap_account,
+    authority,
+    token_a,
+    token_b,
+    pool_mint,
+    fee_account,
+    destination,
+    token_program,
+});

@@ -326,6 +326,53 @@ pub fn get_create_pool_accounts(ix: &InstructionView) -> Result<CreatePoolAccoun
     CreatePoolAccounts::try_from(ix)
 }
 
+/// The original customizable constructor has the same thirteen declared
+/// accounts as CreatePool. Optional support-mint / dynamic-fee accounts follow.
+pub type CreateCustomizablePoolAccounts = CreatePoolAccounts;
+
+pub fn get_create_customizable_pool_accounts(ix: &InstructionView) -> Result<CreateCustomizablePoolAccounts, AccountsError> {
+    CreateCustomizablePoolAccounts::try_from(ix)
+}
+
+// SDK V2 73e95fcb3cf5df55637286a573655e5f64182b62, clmm/instrument.ts.
+// The 2026-10-22 V2 constructor adds a payer separate from pool_creator and
+// removes the permission account from the historical permissioned constructor.
+accounts!(CreateCustomizablePoolV2Accounts, get_create_customizable_pool_v2_accounts, {
+    payer,
+    pool_creator,
+    amm_config,
+    pool_state,
+    token_mint_0,
+    token_mint_1,
+    token_vault_0,
+    token_vault_1,
+    observation_state,
+    tick_array_bitmap,
+    token_program_0,
+    token_program_1,
+    system_program,
+    rent,
+});
+
+// raydium-clmm edfc5c0, programs/amm/src/instructions/create_permissioned_pool.rs.
+accounts!(CreatePermissionedPoolAccounts, get_create_permissioned_pool_accounts, {
+    payer,
+    pool_creator,
+    permission,
+    amm_config,
+    pool_state,
+    token_mint_0,
+    token_mint_1,
+    token_vault_0,
+    token_vault_1,
+    observation_state,
+    tick_array_bitmap,
+    token_program_0,
+    token_program_1,
+    system_program,
+    rent,
+});
+
 /// Accounts for the `create_support_mint_associated` instruction.
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct CreateSupportMintAssociatedAccounts {

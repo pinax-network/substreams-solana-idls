@@ -95,3 +95,20 @@ accounts!(
         token_program
     }
 );
+
+// Fixed initialize prefix from bundled IDL; remaining accounts are not inferred.
+accounts!(InitializeAccounts, get_initialize_accounts, {owner, mint, pool, pool_authority, withdraw_authority, vault});
+
+/// Ordered underlying asset mints supplied as remaining accounts to initialize.
+/// The fixed prefix's `mint` is the LP mint and is not an underlying asset.
+/// Verified against stabbleorg/amm_v1 ecae315 initialize.rs. Callers match the
+/// returned length with both InitializeInstruction vectors and prove execution.
+pub fn get_initialize_mints(ix: &InstructionView) -> Result<Vec<Pubkey>, crate::common::accounts::AccountsError> {
+    get_initialize_accounts(ix)?;
+    ix.accounts()
+        .iter()
+        .enumerate()
+        .skip(6)
+        .map(|(index, account)| crate::common::accounts::to_pubkey("asset_mint", index, account.0))
+        .collect()
+}

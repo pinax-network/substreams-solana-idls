@@ -30,7 +30,7 @@ This crate bundles byte-codecs that turn on-chain **instruction** and **event** 
 | Darklake | Dark Pool DEX | `darkr3FB87qAZmgLwKov6Hk9Yiah5UT4rUYu8Zhthw1` |
 | Drift | V2 Perpetual | `dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH` |
 | Tensor | NFT Marketplace | `TCMPhJdwDryooaGtiocG1u3xcYbRpiJzb283XfCZsDp` |
-| Stabble | Stable Swap | `swapFpHZwjELNnjvThjajtiVmkz3yPQEHjLtka2fwHW` |
+| Stabble | Weighted Swap | `swapFpHZwjELNnjvThjajtiVmkz3yPQEHjLtka2fwHW` |
 | PancakeSwap | AMM Swap | `HpNfyc2Saw7RKkQd8nEL4khUcuPhQ7WwY1B2qjx8jxFq` |
 | BonkSwap | AMM | `BSwp6bEBihVLdqJRKGgzjcGLHkcTuzmSo1TQkHepzH8p` |
 | Marinade | Liquid Staking | `MarBmsSgKXdrN1egZf5sqe1TMai9K1rChYNDJgjq7aD` |
@@ -50,8 +50,8 @@ This crate bundles byte-codecs that turn on-chain **instruction** and **event** 
 | Obric | V2 | `coUnmi3oBUtwtd9fU42p6jg75UmdnNMgBQMedGNYEAs` |
 | Obric | V3 | `ob2wXVFGiWXkPwYv8CSpPMm5m3NR7DjSrVJAHGSb9Gu` |
 | Plasma | AMM | `srAMMzfVHVAtgSJc8iH6CfKzuWuUTzLHVCE81QU1rgi` |
-| Boop | Token Launchpad | `boop8hVGQGqehUK2iVEMEnMrL5E7ZbEYKRBBRCkjGrf` |
-| DumpFun | Token Launchpad | `BSfD6SHZigAfDWSjzD5Q41jw8LmKwtmjskCH9EXqjkAQ` |
+| Boop | Token Launchpad | `boop8hVGQGqehUK2iVEMEnMrL5RbjywRzHKBmBE7ry4` |
+| DumpFun | Token Launchpad | `DumpFunGAgW6kPHzWMA3Nnqecyrd6SGnLZvNGp2aHwEa` |
 | MagicEden | NFT Marketplace M2 | `M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K` |
 | MagicEden | NFT Marketplace M3 | `M3mxk5W2tt27WGT7THox7PmgRDp4m6NEhL5xvxrBfS1` |
 | Aldrin | AMM Swap | `AMM55ShdkoGRB5jVYPjWziwk8m5MpwyDgsMWHaMSQWH6` |

@@ -2,6 +2,7 @@
 
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
+use substreams_solana::block_view::InstructionView;
 
 // Account discriminators
 pub const AMM_CONFIG_ACCOUNT: [u8; 8] = [218, 244, 33, 104, 203, 203, 43, 111];
@@ -59,3 +60,32 @@ pub struct Pool {
     pub bump: u8,
     pub padding: [u64; 4],
 }
+
+// darklakefi/sdk-on-chain dab51a2, src/account_metas.rs::DarklakeAmmInitializePool.
+accounts!(InitializePoolAccounts, get_initialize_pool_accounts, {
+    user,
+    pool,
+    authority,
+    amm_config,
+    token_mint_x,
+    token_mint_y,
+    token_mint_wsol,
+    token_mint_lp,
+    metadata_account,
+    metadata_account_x,
+    metadata_account_y,
+    user_token_account_x,
+    user_token_account_y,
+    user_token_account_lp,
+    pool_token_reserve_x,
+    pool_token_reserve_y,
+    pool_wsol_reserve,
+    create_pool_fee_vault,
+    mpl_program,
+    system_program,
+    rent,
+    associated_token_program,
+    token_mint_x_program,
+    token_mint_y_program,
+    token_program,
+});

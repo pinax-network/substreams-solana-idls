@@ -1,5 +1,6 @@
 //! Pump.fun on-chain instruction definitions and Borsh deserialisation helpers.
 use crate::common::ParseError;
+pub use crate::pumpfun::amm::instructions::{OptionBool, OptionU64};
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
 
@@ -11,6 +12,7 @@ pub const BUY_EXACT_SOL_IN: [u8; 8] = [56, 252, 116, 8, 158, 223, 205, 95];
 const SELL: [u8; 8] = [51, 230, 133, 164, 1, 127, 131, 173]; // 66063d1201daebea
 const INITIALIZE: [u8; 8] = [175, 175, 109, 31, 13, 152, 155, 237];
 const SET_PARAMS: [u8; 8] = [165, 31, 134, 53, 189, 180, 130, 255];
+pub const CREATE_V2: [u8; 8] = [214, 144, 76, 236, 95, 139, 49, 180];
 const CREATE_INSTRUCTION: [u8; 8] = [24, 30, 200, 40, 5, 28, 7, 119];
 const WITHDRAW: [u8; 8] = [183, 18, 70, 156, 148, 109, 161, 34];
 
@@ -133,6 +135,7 @@ pub enum PumpFunInstruction {
     Unknown,
     /// Buys tokens with an exact SOL input, using the same account list as `Buy`.
     BuyExactSolIn(BuyExactSolInInstruction),
+    CreateV2(CreateV2Instruction),
 }
 
 // -----------------------------------------------------------------------------
@@ -219,6 +222,7 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunInstruction {
 
         Ok(match discriminator {
             SET_PARAMS => Self::SetParams(SetParamsInstruction::try_from_slice(payload)?),
+            CREATE_V2 => Self::CreateV2(unpack_create_v2(payload)?),
             CREATE_INSTRUCTION => Self::Create(CreateInstruction::try_from_slice(payload)?),
             BUY => Self::Buy(BuyInstruction::try_from_slice(payload)?),
             BUY_EXACT_SOL_IN => Self::BuyExactSolIn(BuyExactSolInInstruction::try_from_slice(payload)?),
@@ -233,4 +237,48 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunInstruction {
 // Convenience function retaining the old name; forwards to `TryFrom`.
 pub fn unpack(data: &[u8]) -> Result<PumpFunInstruction, ParseError> {
     PumpFunInstruction::try_from(data)
+}
+
+/// Complete current Token-2022 creation arguments from the official Pump IDL.
+/// OptionBool/OptionU64 are fixed tuple wrappers, not Borsh Option<T>.
+/// `unpack` also admits the documented omitted fee and reward suffixes and
+/// supplies their on-chain defaults (zero/false).
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct CreateV2Instruction {
+    pub name: String,
+    pub symbol: String,
+    pub uri: String,
+    pub creator: Pubkey,
+    pub is_mayhem_mode: bool,
+    pub is_cashback_enabled: OptionBool,
+    pub creator_fee_bps: OptionU64,
+    pub is_holder_reward: OptionBool,
+}
+
+// The official create_v2 contract explicitly allows EOF before creator_fee_bps
+// and before is_holder_reward. Only those complete field boundaries are valid;
+// a partial u64, invalid bool, or trailing byte still fails.
+fn unpack_create_v2(mut payload: &[u8]) -> Result<CreateV2Instruction, ParseError> {
+    let name = String::deserialize(&mut payload)?;
+    let symbol = String::deserialize(&mut payload)?;
+    let uri = String::deserialize(&mut payload)?;
+    let creator = Pubkey::deserialize(&mut payload)?;
+    let is_mayhem_mode = bool::deserialize(&mut payload)?;
+    let is_cashback_enabled = OptionBool::deserialize(&mut payload)?;
+    let (creator_fee_bps, is_holder_reward) = match payload.len() {
+        0 => (OptionU64(0), OptionBool(false)),
+        8 => (OptionU64::deserialize(&mut payload)?, OptionBool(false)),
+        9 => (OptionU64::deserialize(&mut payload)?, OptionBool::deserialize(&mut payload)?),
+        got => return Err(ParseError::InvalidLength { expected: 9, got }),
+    };
+    Ok(CreateV2Instruction {
+        name,
+        symbol,
+        uri,
+        creator,
+        is_mayhem_mode,
+        is_cashback_enabled,
+        creator_fee_bps,
+        is_holder_reward,
+    })
 }

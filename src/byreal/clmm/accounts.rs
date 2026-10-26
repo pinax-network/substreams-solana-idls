@@ -39,3 +39,27 @@ accounts!(
         output_vault_mint
     }
 );
+
+// Exact create_pool account order from this module's bundled IDL.
+accounts!(
+    CreatePoolAccounts,
+    get_create_pool_accounts,
+    {
+        pool_creator,
+        pool_manager,
+        admin_group,
+        amm_config,
+        pool_state,
+        offchain_reward_config,
+        token_mint_0,
+        token_mint_1,
+        token_vault_0,
+        token_vault_1,
+        observation_state,
+        tick_array_bitmap,
+        token_program_0,
+        token_program_1,
+        system_program,
+        rent,
+    }
+);

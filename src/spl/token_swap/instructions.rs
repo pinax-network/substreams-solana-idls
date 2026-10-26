@@ -1,6 +1,7 @@
 //! SPL Token Swap on-chain instructions.
 
 use crate::common::ParseError;
+use borsh::{BorshDeserialize, BorshSerialize};
 
 // -----------------------------------------------------------------------------
 // Discriminators (single-byte index)
@@ -109,4 +110,23 @@ impl TryFrom<&[u8]> for TokenSwapInstruction {
 
 pub fn unpack(data: &[u8]) -> Result<TokenSwapInstruction, ParseError> {
     TokenSwapInstruction::try_from(data)
+}
+
+/// Complete canonical Token Swap initialization payload. Pool mints are not in
+/// its instruction accounts; callers must resolve the vaults' token metadata.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct InitializeInstruction {
+    pub fees: super::accounts::Fees,
+    pub curve_type: u8,
+    pub curve_parameters: [u8; 32],
+}
+
+/// Strict initialization decoder. Unlike the historical `unpack` enum's unit
+/// Initialize variant, this checks the complete 97-byte payload.
+pub fn unpack_initialize(data: &[u8]) -> Result<InitializeInstruction, ParseError> {
+    let (&tag, payload) = data.split_first().ok_or(ParseError::TooShort(0))?;
+    if tag != INITIALIZE {
+        return Err(ParseError::SplUnknown(tag));
+    }
+    Ok(InitializeInstruction::try_from_slice(payload)?)
 }

@@ -38,3 +38,17 @@ accounts!(
         token_program
     }
 );
+
+// Ellipsis-Labs/plasma 86fb350, idl/plasma.json::InitializePool.
+accounts!(InitializePoolAccounts, get_initialize_pool_accounts, {
+    plasma_program,
+    log_authority,
+    pool,
+    pool_creator,
+    base_mint,
+    quote_mint,
+    base_vault,
+    quote_vault,
+    system_program,
+    token_program,
+});
