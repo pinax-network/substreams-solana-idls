@@ -31,3 +31,21 @@ accounts!(
         token_program
     }
 );
+
+// Exact InitializeMarket account order from this module's bundled IDL.
+accounts!(
+    InitializeMarketAccounts,
+    get_initialize_market_accounts,
+    {
+        phoenix_program,
+        log_authority,
+        market,
+        market_creator,
+        base_mint,
+        quote_mint,
+        base_vault,
+        quote_vault,
+        system_program,
+        token_program,
+    }
+);

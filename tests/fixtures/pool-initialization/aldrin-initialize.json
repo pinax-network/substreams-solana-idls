@@ -1,0 +1,50 @@
+{
+  "rpc": "https://api.mainnet-beta.solana.com",
+  "method": "getTransaction",
+  "params": [
+    "4C1z3zxydcyVKGJFN8ahpwBGMfjmQGYHrMMoFzi768ue1eVYeGDbomcSSYVV4RdRWmKyb5bTyqZ4CK9ymjBxA1GJ",
+    {
+      "encoding": "json",
+      "maxSupportedTransactionVersion": 0,
+      "commitment": "finalized"
+    }
+  ],
+  "retrieved": "2026-10-26",
+  "slot": 193097357,
+  "program_id": "CURVGoZn8zycx6FXwwevgBTB2gVvdbGTEpvMJDbgs2t4",
+  "instruction_index": 2,
+  "instruction_hex": "afaf6d1f0d989bedfe00",
+  "instruction_accounts": [
+    "931bAjQx4RtbBjreP8HTNEu7ykozk4QXyYj3hiaJNdH",
+    "8mg8rqJ1YZ13q6aCjjqhHiCYm1pU5rJiRdvPFLgHCzV9",
+    "4pjcPAuj8PKdNQpnDNwE5KLm6TJe672Gvfxjv1NNMeoS",
+    "GBN31V2iuAf4vVszJopaeWtncQpaR6yCqiQZxrKxQNNc",
+    "A24aR7uX7bZmyTQqHoADthNdc9nCru25oc7uafw18EWk",
+    "3guKh88gLnvpPSX9KsifKW5evkELH2whHPS4CAjs71QQ",
+    "CaqmrirFkc7hCJ5gpxcxGs86FYPEkXEFgLNCKPXwZxrL",
+    "BqSGA2WdiQXA2cC1EdGDnVD615A4nYEAq49K3fz2hNBo",
+    "HjJr5UV5SmsD2EBrHMA5wkMgG5hpQ2ErzPg3FKiQkTBR",
+    "9HfUuTaJMzajvqasTdoVPYhHnjA6pqXLVsMz3AxjxX6A",
+    "5j1X7jTFsGtgAsSSXeiFmqNgDhXybyrLhAaWRqrM94Nw",
+    "5KkK1Q74g1AtMaieFpPo1TT3crdELVi2wVP5XbszZ8Uz",
+    "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+    "SysvarRent111111111111111111111111111111111"
+  ],
+  "response_sha256": "fe94d97bcd669c599cbfc1c3c6c8a7c1b7b41bef74d2fa23875b91e33e19d317",
+  "data_sha256": "cf72e6072390b38de53b961ba46d6184999201f4ccf6ff6ea619a254c091a64c",
+  "accounts_sha256": "199b11322c95fce2e82e924cb1d87c93039a5964ba388932f1be6444970cb5a8",
+  "official_idl": "https://github.com/aldrin-labs/aldrin-registry/blob/b1db26ca326356e7bbdd582985a12f6c7a2bbdcf/src/idls/poolsV2.json",
+  "official_sdk": {
+    "package": "@aldrin_exchange/sdk",
+    "version": "0.4.51",
+    "tarball": "https://registry.npmjs.org/@aldrin_exchange/sdk/-/sdk-0.4.51.tgz",
+    "integrity": "sha512-0MCcrxKgJu03065SutL9tSzO+lZUEuduZLF+xnDwyRAqnbADTNHCM9/ylitrPJAasPV+aDSEDsnVwXsDUMzcDw==",
+    "repository": "https://github.com/aldrin-exchange/aldrin-sdk.git",
+    "bindings": [
+      "dist/esm/constants.js::POOLS_V2_PROGRAM_ADDRESS",
+      "dist/esm/pools/pool.js::swapInstructionV2",
+      "dist/esm/pools/layout.js::POOL_V2_LAYOUT",
+      "dist/esm/pools/client.js::getProgramId"
+    ]
+  }
+}

@@ -2,6 +2,7 @@
 
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
+use substreams_solana::block_view::InstructionView;
 
 // Account discriminators (sha256("account:<Name>")[..8])
 pub const CONFIG_ACCOUNT: [u8; 8] = [189, 255, 97, 70, 186, 189, 24, 102];
@@ -57,3 +58,22 @@ pub struct CurveAccount {
     pub coef_b: u32,
     pub bump: u8,
 }
+
+// Exact tokenMint account order from this module's bundled IDL.
+accounts!(
+    TokenMintAccounts,
+    get_token_mint_accounts,
+    {
+        sender,
+        backend_authority,
+        curve_account,
+        mint,
+        mint_metadata,
+        curve_token_account,
+        config_account,
+        token_program,
+        associated_token_program,
+        mpl_token_metadata,
+        system_program,
+    }
+);

@@ -2,6 +2,7 @@
 
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
+use substreams_solana::block_view::InstructionView;
 
 // Account discriminators
 pub const MARKET_STATE_V2_ACCOUNT: [u8; 8] = [181, 11, 35, 91, 85, 209, 1, 51];
@@ -106,3 +107,12 @@ pub struct Event {
     pub owner: [u64; 4],
     pub client_order_id: u64,
 }
+
+/// AMM V2 initialize accounts from aldrin-labs/aldrin-registry poolsV2.json.
+/// Underlying mints must be resolved from the base/quote reserve token accounts;
+/// `pool_mint` is an LP mint, not either underlying asset.
+accounts!(InitializeAccounts, get_initialize_accounts, {
+    pool, pool_mint, lp_token_freeze_vault, base_token_vault, quote_token_vault,
+    pool_signer, initializer, pool_authority, fee_base_account, fee_quote_account,
+    fee_pool_token_account, curve, token_program, rent,
+});

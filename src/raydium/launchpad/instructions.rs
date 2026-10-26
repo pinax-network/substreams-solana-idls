@@ -1,11 +1,16 @@
 //! Raydium Launchpad trading instructions.
 
+pub use super::anchor_cpi_event::{AmmCreatorFeeOn, CurveParams, MintParams, VestingParams};
 use crate::common::ParseError;
 use borsh::{BorshDeserialize, BorshSerialize};
 
 // -----------------------------------------------------------------------------
 // Discriminators
 // -----------------------------------------------------------------------------
+pub const INITIALIZE: [u8; 8] = [175, 175, 109, 31, 13, 152, 155, 237];
+pub const INITIALIZE_V2: [u8; 8] = [67, 153, 175, 39, 218, 16, 38, 32];
+pub const INITIALIZE_WITH_TOKEN_2022: [u8; 8] = [37, 190, 126, 222, 44, 154, 171, 17];
+
 pub const BUY_EXACT_IN: [u8; 8] = [250, 234, 13, 123, 213, 156, 19, 236];
 pub const BUY_EXACT_OUT: [u8; 8] = [24, 211, 116, 40, 105, 3, 153, 56];
 pub const SELL_EXACT_IN: [u8; 8] = [149, 39, 222, 155, 211, 124, 152, 26];
@@ -21,6 +26,9 @@ pub enum RaydiumLaunchpadInstruction {
     SellExactIn(SellExactInInstruction),
     SellExactOut(SellExactOutInstruction),
     Unknown,
+    Initialize(InitializeInstruction),
+    InitializeV2(InitializeV2Instruction),
+    InitializeWithToken2022(InitializeWithToken2022Instruction),
 }
 
 // -----------------------------------------------------------------------------
@@ -70,6 +78,36 @@ pub struct SellExactOutInstruction {
     pub share_fee_rate: u64,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct InitializeInstruction {
+    pub base_mint_param: MintParams,
+    pub curve_param: CurveParams,
+    pub vesting_param: VestingParams,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct InitializeV2Instruction {
+    pub base_mint_param: MintParams,
+    pub curve_param: CurveParams,
+    pub vesting_param: VestingParams,
+    pub amm_fee_on: AmmCreatorFeeOn,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct InitializeWithToken2022Instruction {
+    pub base_mint_param: MintParams,
+    pub curve_param: CurveParams,
+    pub vesting_param: VestingParams,
+    pub amm_fee_on: AmmCreatorFeeOn,
+    pub transfer_fee_extension_param: Option<TransferFeeExtensionParams>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct TransferFeeExtensionParams {
+    pub transfer_fee_basis_points: u16,
+    pub maximum_fee: u64,
+}
+
 // -----------------------------------------------------------------------------
 // Borsh deserialisation helper
 // -----------------------------------------------------------------------------
@@ -85,6 +123,9 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumLaunchpadInstruction {
         let discriminator: [u8; 8] = disc.try_into().expect("slice len 8");
 
         Ok(match discriminator {
+            INITIALIZE => Self::Initialize(InitializeInstruction::try_from_slice(payload)?),
+            INITIALIZE_V2 => Self::InitializeV2(InitializeV2Instruction::try_from_slice(payload)?),
+            INITIALIZE_WITH_TOKEN_2022 => Self::InitializeWithToken2022(InitializeWithToken2022Instruction::try_from_slice(payload)?),
             BUY_EXACT_IN => Self::BuyExactIn(BuyExactInInstruction::try_from_slice(payload)?),
             BUY_EXACT_OUT => Self::BuyExactOut(BuyExactOutInstruction::try_from_slice(payload)?),
             SELL_EXACT_IN => Self::SellExactIn(SellExactInInstruction::try_from_slice(payload)?),

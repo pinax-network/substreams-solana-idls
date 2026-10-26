@@ -23,6 +23,9 @@ pub const COLLECT_PROTOCOL_FEE: [u8; 8] = [136, 136, 252, 221, 194, 66, 126, 89]
 pub const COLLECT_REMAINING_REWARDS: [u8; 8] = [18, 237, 166, 197, 34, 16, 213, 144];
 pub const CREATE_AMM_CONFIG: [u8; 8] = [137, 52, 237, 212, 215, 117, 108, 104];
 pub const CREATE_OPERATION_ACCOUNT: [u8; 8] = [63, 87, 148, 33, 109, 35, 8, 104];
+pub const CREATE_CUSTOMIZABLE_POOL: [u8; 8] = [43, 68, 212, 167, 89, 47, 164, 1];
+pub const CREATE_CUSTOMIZABLE_POOL_V2: [u8; 8] = [29, 172, 106, 188, 103, 45, 70, 100];
+pub const CREATE_PERMISSIONED_POOL: [u8; 8] = [36, 243, 179, 35, 42, 239, 53, 229];
 pub const CREATE_POOL: [u8; 8] = [233, 146, 209, 142, 207, 104, 64, 188];
 pub const CREATE_SUPPORT_MINT_ASSOCIATED: [u8; 8] = [17, 251, 65, 92, 136, 242, 14, 169];
 pub const DECREASE_LIQUIDITY: [u8; 8] = [160, 38, 208, 111, 104, 91, 44, 1];
@@ -55,6 +58,10 @@ pub enum RaydiumClmmInstruction {
     CreateAmmConfig(CreateAmmConfigInstruction),
     CreateOperationAccount,
     CreatePool(CreatePoolInstruction),
+    CreateCustomizablePool(CreateCustomizablePoolInstruction),
+    CreateCustomizablePoolV2(CreateCustomizablePoolV2Instruction),
+    CreatePermissionedPool(CreatePermissionedPoolInstruction),
+
     CreateSupportMintAssociated,
     DecreaseLiquidity(DecreaseLiquidityInstruction),
     DecreaseLiquidityV2(DecreaseLiquidityV2Instruction),
@@ -148,6 +155,43 @@ pub struct CreateAmmConfigInstruction {
 pub struct CreatePoolInstruction {
     pub sqrt_price_x64: u128,
     pub open_time: u64,
+}
+
+/// Fee side selected at pool creation. Borsh discriminants are 0, 1 and 2.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub enum CollectFeeOn {
+    FromInput,
+    Token0Only,
+    Token1Only,
+}
+
+/// Canonical parameters shared by customizable and permissioned constructors.
+/// Sources: raydium-clmm edfc5c0, create_customizable_pool.rs; SDK V2
+/// 73e95fcb3cf5df55637286a573655e5f64182b62, clmm/instrument.ts.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct CreateCustomizableParams {
+    pub sqrt_price_x64: u128,
+    pub collect_fee_on: CollectFeeOn,
+    pub enable_dynamic_fee: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct CreateCustomizablePoolInstruction {
+    pub customizable_params: CreateCustomizableParams,
+}
+
+/// Permissionless multiple-pool constructor introduced on 2026-10-22.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct CreateCustomizablePoolV2Instruction {
+    pub customizable_params: CreateCustomizableParams,
+    pub seed_index: u16,
+}
+
+/// Historical constructor, before the 2026-10-22 permissionless replacement.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct CreatePermissionedPoolInstruction {
+    pub customizable_params: CreateCustomizableParams,
+    pub seed_index: u16,
 }
 
 /// #[deprecated(note = "Use `decrease_liquidity_v2` instead.")]
@@ -449,6 +493,10 @@ impl<'a> TryFrom<&'a [u8]> for RaydiumClmmInstruction {
             CREATE_AMM_CONFIG => Self::CreateAmmConfig(CreateAmmConfigInstruction::try_from_slice(payload)?),
             CREATE_OPERATION_ACCOUNT => Self::CreateOperationAccount,
             CREATE_POOL => Self::CreatePool(CreatePoolInstruction::try_from_slice(payload)?),
+            CREATE_CUSTOMIZABLE_POOL => Self::CreateCustomizablePool(CreateCustomizablePoolInstruction::try_from_slice(payload)?),
+            CREATE_CUSTOMIZABLE_POOL_V2 => Self::CreateCustomizablePoolV2(CreateCustomizablePoolV2Instruction::try_from_slice(payload)?),
+            CREATE_PERMISSIONED_POOL => Self::CreatePermissionedPool(CreatePermissionedPoolInstruction::try_from_slice(payload)?),
+
             CREATE_SUPPORT_MINT_ASSOCIATED => Self::CreateSupportMintAssociated,
             DECREASE_LIQUIDITY => Self::DecreaseLiquidity(DecreaseLiquidityInstruction::try_from_slice(payload)?),
             DECREASE_LIQUIDITY_V2 => Self::DecreaseLiquidityV2(DecreaseLiquidityV2Instruction::try_from_slice(payload)?),

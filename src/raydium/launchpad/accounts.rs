@@ -163,3 +163,78 @@ accounts!(
         program
     }
 );
+
+// Exact initialize account order from this module's bundled IDL.
+accounts!(
+    InitializeAccounts,
+    get_initialize_accounts,
+    {
+        payer,
+        creator,
+        global_config,
+        platform_config,
+        authority,
+        pool_state,
+        base_mint,
+        quote_mint,
+        base_vault,
+        quote_vault,
+        metadata_account,
+        base_token_program,
+        quote_token_program,
+        metadata_program,
+        system_program,
+        rent_program,
+        event_authority,
+        program,
+    }
+);
+
+// Exact initialize_v2 account order from this module's bundled IDL.
+accounts!(
+    InitializeV2Accounts,
+    get_initialize_v2_accounts,
+    {
+        payer,
+        creator,
+        global_config,
+        platform_config,
+        authority,
+        pool_state,
+        base_mint,
+        quote_mint,
+        base_vault,
+        quote_vault,
+        metadata_account,
+        base_token_program,
+        quote_token_program,
+        metadata_program,
+        system_program,
+        rent_program,
+        event_authority,
+        program,
+    }
+);
+
+// Exact initialize_with_token_2022 account order from this module's bundled IDL.
+accounts!(
+    InitializeWithToken2022Accounts,
+    get_initialize_with_token_2022_accounts,
+    {
+        payer,
+        creator,
+        global_config,
+        platform_config,
+        authority,
+        pool_state,
+        base_mint,
+        quote_mint,
+        base_vault,
+        quote_vault,
+        base_token_program,
+        quote_token_program,
+        system_program,
+        event_authority,
+        program,
+    }
+);

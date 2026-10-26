@@ -9,6 +9,9 @@ use borsh::{BorshDeserialize, BorshSerialize};
 pub const SWAP: [u8; 8] = [248, 198, 158, 145, 225, 117, 135, 200];
 pub const SWAP_V2: [u8; 8] = [43, 4, 237, 11, 26, 201, 30, 98];
 
+/// Exact create_pool discriminator from this module's bundled IDL.
+pub const CREATE_POOL: [u8; 8] = [233, 146, 209, 142, 207, 104, 64, 188];
+
 // -----------------------------------------------------------------------------
 // Instruction enumeration
 // -----------------------------------------------------------------------------
@@ -17,6 +20,7 @@ pub enum ByrealClmmInstruction {
     Swap(SwapInstruction),
     SwapV2(SwapInstruction),
     Unknown,
+    CreatePool(CreatePoolInstruction),
 }
 
 // -----------------------------------------------------------------------------
@@ -28,6 +32,13 @@ pub struct SwapInstruction {
     pub other_amount_threshold: u64,
     pub sqrt_price_limit_x64: u128,
     pub is_base_input: bool,
+}
+
+/// Initial pool price and opening time, in IDL field order.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct CreatePoolInstruction {
+    pub sqrt_price_x64: u128,
+    pub open_time: u64,
 }
 
 // -----------------------------------------------------------------------------
@@ -43,6 +54,7 @@ impl<'a> TryFrom<&'a [u8]> for ByrealClmmInstruction {
         let (disc, payload) = data.split_at(8);
         let discriminator: [u8; 8] = disc.try_into().expect("slice len 8");
         Ok(match discriminator {
+            CREATE_POOL => Self::CreatePool(CreatePoolInstruction::try_from_slice(payload)?),
             SWAP => Self::Swap(SwapInstruction::try_from_slice(payload)?),
             SWAP_V2 => Self::SwapV2(SwapInstruction::try_from_slice(payload)?),
             other => return Err(ParseError::Unknown(other)),

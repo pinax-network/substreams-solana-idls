@@ -1,0 +1,454 @@
+{
+  "source": "https://idl.solana.com/api/idl?programId=boop8hVGQGqehUK2iVEMEnMrL5RbjywRzHKBmBE7ry4",
+  "retrieved": "2026-10-26",
+  "response_sha256": "09274a82d0585eb3772bc82620129379331bd8ceb6621cdae8ffc3ee67089489",
+  "programId": "boop8hVGQGqehUK2iVEMEnMrL5RbjywRzHKBmBE7ry4",
+  "type": "anchor",
+  "valid": true,
+  "instructions": [
+    {
+      "name": "deploy_bonding_curve",
+      "discriminator": [
+        180,
+        89,
+        199,
+        76,
+        168,
+        236,
+        217,
+        138
+      ],
+      "accounts": [
+        {
+          "name": "mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "payer"
+              },
+              {
+                "kind": "arg",
+                "path": "salt"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "bonding_curve",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  99,
+                  117,
+                  114,
+                  118,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bonding_curve_sol_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  99,
+                  117,
+                  114,
+                  118,
+                  101,
+                  95,
+                  115,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bonding_curve_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  99,
+                  117,
+                  114,
+                  118,
+                  101,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        }
+      ],
+      "args": [
+        {
+          "name": "creator",
+          "type": "pubkey"
+        },
+        {
+          "name": "salt",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "deploy_bonding_curve_fallback",
+      "discriminator": [
+        53,
+        230,
+        172,
+        84,
+        77,
+        174,
+        22,
+        61
+      ],
+      "accounts": [
+        {
+          "name": "mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "salt"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "bonding_curve",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  99,
+                  117,
+                  114,
+                  118,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bonding_curve_sol_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  99,
+                  117,
+                  114,
+                  118,
+                  101,
+                  95,
+                  115,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bonding_curve_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  99,
+                  117,
+                  114,
+                  118,
+                  101,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        }
+      ],
+      "args": [
+        {
+          "name": "creator",
+          "type": "pubkey"
+        },
+        {
+          "name": "salt",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "on_chain_verification": {
+    "rpc": "https://api.mainnet-beta.solana.com",
+    "method": "getAccountInfo",
+    "commitment": "finalized",
+    "context_slot": 461780934,
+    "idl_account_address": "3HsS8PecBaFDTBFgdCDSWAgV5PCbkVUenJdSVQi7FtkM",
+    "idl_account_owner": "boop8hVGQGqehUK2iVEMEnMrL5RbjywRzHKBmBE7ry4",
+    "response_sha256": "88d245e187fab4309e27ee93a258c2d26928350e1be7e8fe248791e2543573eb",
+    "account_data_sha256": "6f8410584e0b66698023d7a7125e43cf83727f31e7e6f2bf8e3c6a78705cd2c7",
+    "idl_uncompressed_sha256": "0540d99d17ce7915146db148648b19f2bcabd6b46a8abdb9fc6b378520e23ccc",
+    "instruction_extract_matches_program_owned_anchor_idl": true
+  }
+}

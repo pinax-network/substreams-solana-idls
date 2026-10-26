@@ -52,6 +52,9 @@ git diff --check
 Keep fixture bytes and expected decoder outputs stable during dependency-only migrations.
 Pump AMM creation layouts and their captured-chain evidence are documented in
 [`pump-amm-creation.md`](pump-amm-creation.md).
+Additional pool/market initializer APIs, pinned source contracts, metadata boundaries
+and remaining public-contract gaps are documented in
+[`pool-initialization.md`](pool-initialization.md).
 For normal/build/development dependency inspection, use:
 
 ```bash

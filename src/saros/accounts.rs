@@ -35,3 +35,15 @@ accounts!(
         token_program
     }
 );
+
+// Canonical initialize account order: SPL Token Swap / Saros SDK.
+accounts!(InitializeAccounts, get_initialize_accounts, {
+    swap_account,
+    authority,
+    token_a,
+    token_b,
+    pool_mint,
+    fee_account,
+    destination,
+    token_program,
+});
