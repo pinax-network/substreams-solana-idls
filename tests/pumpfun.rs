@@ -1,5 +1,7 @@
 #[path = "pumpfun/amm.rs"]
 mod pumpfun_amm;
+#[path = "pumpfun/creation.rs"]
+mod pumpfun_creation;
 #[path = "pumpfun/events.rs"]
 mod pumpfun_events;
 #[path = "pumpfun/instructions.rs"]

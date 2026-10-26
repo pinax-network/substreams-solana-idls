@@ -12,8 +12,7 @@ const BUY_EXACT_QUOTE_IN: [u8; 8] = [198, 46, 21, 82, 180, 217, 232, 112]; // c6
 const SELL: [u8; 8] = [51, 230, 133, 164, 1, 127, 131, 173]; // 33e685a4017f83ad
 const CREATE_CONFIG: [u8; 8] = [201, 207, 243, 114, 75, 111, 47, 189];
 const CREATE_POOL: [u8; 8] = [233, 146, 209, 142, 207, 104, 64, 188]; // e992d18ecf6840bc
-const _CREATE_POOL_V1_SIZE: usize = 0;
-const _CREATE_POOL_V2_SIZE: usize = 341;
+const CREATE_POOL_V3_PAYLOAD_SIZE: usize = 62;
 const DEPOSIT: [u8; 8] = [242, 35, 198, 137, 82, 225, 242, 182];
 const DISABLE: [u8; 8] = [185, 173, 187, 90, 216, 15, 238, 233];
 const EXTEND_ACCOUNT: [u8; 8] = [234, 102, 194, 203, 150, 72, 62, 229];
@@ -39,6 +38,8 @@ pub enum PumpFunAmmInstruction {
     UpdateFeeConfig(UpdateFeeConfigInstruction),
     Withdraw(WithdrawInstruction),
     Unknown,
+    // Append new variants to preserve the existing Borsh enum discriminants.
+    CreatePoolV3(CreatePoolInstructionV3),
 }
 
 // -------------------------------------------------------------------------
@@ -75,6 +76,25 @@ pub struct CreatePoolInstructionV2 {
     pub quote_amount_in: u64,
     pub coin_creator: Pubkey,
 }
+
+/// Current IDL creation arguments. The first fields retain the V2 wire layout.
+/// `OptionBool` and `OptionU64` are IDL tuple wrappers, not Rust `Option<T>`;
+/// neither adds a Borsh option discriminant. See `docs/pump-amm-creation.md`.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct CreatePoolInstructionV3 {
+    pub base: CreatePoolInstructionV2,
+    pub is_mayhem_mode: bool,
+    pub is_cashback_coin: OptionBool,
+    pub creator_fee_bps: OptionU64,
+    pub can_edit_creator_fee: OptionBool,
+    pub is_holder_reward: OptionBool,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct OptionBool(pub bool);
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct OptionU64(pub u64);
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DepositInstruction {
     pub lp_token_amount_out: u64,
@@ -136,6 +156,7 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunAmmInstruction {
             BUY_EXACT_QUOTE_IN => Self::BuyExactQuoteIn(BuyExactQuoteInInstruction::try_from_slice(payload)?),
             SELL => Self::Sell(SellInstruction::try_from_slice(payload)?),
             CREATE_CONFIG => Self::CreateConfig(CreateConfigInstruction::try_from_slice(payload)?),
+            CREATE_POOL if payload.len() == CREATE_POOL_V3_PAYLOAD_SIZE => Self::CreatePoolV3(CreatePoolInstructionV3::try_from_slice(payload)?),
             CREATE_POOL => Self::CreatePoolV2(CreatePoolInstructionV2::try_from_slice(payload)?),
             DEPOSIT => Self::Deposit(DepositInstruction::try_from_slice(payload)?),
             DISABLE => Self::Disable(DisableInstruction::try_from_slice(payload)?),

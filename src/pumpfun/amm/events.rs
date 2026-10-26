@@ -11,6 +11,7 @@ const PUMP_EVENT: [u8; 8] = [0xe4, 0x45, 0xa5, 0x2e, 0x51, 0xcb, 0x9a, 0x1d];
 const BUY_EVENT: [u8; 8] = [103, 244, 82, 31, 44, 245, 119, 119];
 const CREATE_CONFIG_EVENT: [u8; 8] = [107, 52, 89, 129, 55, 226, 81, 22];
 const CREATE_POOL_EVENT: [u8; 8] = [177, 49, 12, 210, 160, 118, 167, 116]; // b1310cd2a076a774 (341)
+const CREATE_POOL_EVENT_V3_PAYLOAD_SIZE: usize = 336;
 const DEPOSIT_EVENT: [u8; 8] = [120, 248, 61, 83, 31, 142, 107, 144];
 const DISABLE_EVENT: [u8; 8] = [107, 253, 193, 76, 228, 202, 27, 104];
 const EXTEND_ACCOUNT_EVENT: [u8; 8] = [97, 97, 215, 144, 93, 146, 22, 124];
@@ -38,6 +39,7 @@ pub enum PumpFunAmmEvent {
     UpdateFeeConfigEvent(UpdateFeeConfigEvent),
     WithdrawEvent(WithdrawEvent),
     Unknown,
+    CreatePoolEventV3(CreatePoolEventV3),
 }
 
 // -------------------------------------------------------------------------
@@ -206,6 +208,16 @@ pub struct CreatePoolEventV2 {
     pub coin_creator: Pubkey,
 }
 
+/// Current creation event with the exact official suffix after the V2 fields.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct CreatePoolEventV3 {
+    pub base: CreatePoolEventV2,
+    pub is_mayhem_mode: bool,
+    pub creator_fee_bps: u64,
+    pub can_edit_creator_fee: bool,
+    pub is_holder_reward: bool,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
 pub struct DepositEvent {
     pub timestamp: i64,
@@ -304,6 +316,7 @@ impl<'a> TryFrom<&'a [u8]> for PumpFunAmmEvent {
             SELL_EVENT => Self::SellEventV2(SellEventV2::try_from_slice(payload)?),
             CREATE_CONFIG_EVENT => Self::CreateConfigEvent(CreateConfigEvent::try_from_slice(payload)?),
             // TO-DO CreatePoolEventV1
+            CREATE_POOL_EVENT if payload.len() == CREATE_POOL_EVENT_V3_PAYLOAD_SIZE => Self::CreatePoolEventV3(CreatePoolEventV3::try_from_slice(payload)?),
             CREATE_POOL_EVENT => Self::CreatePoolEventV2(CreatePoolEventV2::try_from_slice(payload)?),
             DEPOSIT_EVENT => Self::DepositEvent(DepositEvent::try_from_slice(payload)?),
             DISABLE_EVENT => Self::DisableEvent(DisableEvent::try_from_slice(payload)?),
