@@ -54,7 +54,7 @@ This crate bundles byte-codecs that turn on-chain **instruction** and **event** 
 | DumpFun | Token Launchpad | `DumpFunGAgW6kPHzWMA3Nnqecyrd6SGnLZvNGp2aHwEa` |
 | MagicEden | NFT Marketplace M2 | `M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K` |
 | MagicEden | NFT Marketplace M3 | `M3mxk5W2tt27WGT7THox7PmgRDp4m6NEhL5xvxrBfS1` |
-| Aldrin | AMM Swap | `AMM55ShdkoGRB5jVYPjWziwk8m5MpwyDgsMWHaMSQWH6` |
+| Aldrin | AMM V2 | `CURVGoZn8zycx6FXwwevgBTB2gVvdbGTEpvMJDbgs2t4` |
 | Serum | DEX V3 | `9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin` |
 | Metaplex | Token Metadata | `metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s` |
 | Metaplex | Bubblegum (cNFTs) | `BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY` |

@@ -1,10 +1,11 @@
-//! Synthetic wire and distinct-account fixtures checked against the pinned
-//! source contracts listed in docs/pool-initialization.md. No chain-execution
-//! claim is made by these parser tests.
+//! Wire and distinct-account fixtures checked against the pinned source
+//! contracts listed in docs/pool-initialization.md, including captured Aldrin
+//! creation bytes. These tests decode inputs; they do not prove execution.
+use sha2::Digest;
 use substreams_solana::pb::sf::solana::r#type::v1 as pb;
 use substreams_solana_idls::{
-    boop, byreal::clmm as byreal, darklake, dumpfun, moonshot, pancakeswap, phoenix, plasma, pumpfun::bonding_curve as pump, raydium::launchpad, saros, serum,
-    spl::token_swap, stabble,
+    aldrin, boop, byreal::clmm as byreal, darklake, dumpfun, moonshot, pancakeswap, phoenix, plasma, pumpfun::bonding_curve as pump, raydium::launchpad, saros,
+    serum, spl::token_swap, stabble,
 };
 
 fn transaction(count: usize) -> pb::ConfirmedTransaction {
@@ -420,4 +421,33 @@ fn existing_creation_wires_match_new_account_layout_sources() {
     assert_eq!(v.decimals, 9);
     assert_eq!(v.amount, 123);
     exact_rejections(&d, moonshot::instructions::unpack);
+}
+
+account_layout!(aldrin_accounts, aldrin::accounts::get_initialize_accounts, 14, pool, 1);
+
+#[test]
+fn captured_aldrin_pool_initializer_is_distinct_from_legacy_clob_api() {
+    use aldrin::instructions::{self, AldrinInstruction};
+    let data = include_bytes!("fixtures/pool-initialization/aldrin-initialize-data.bin");
+    let accounts = include_bytes!("fixtures/pool-initialization/aldrin-initialize-accounts.bin");
+    let AldrinInstruction::Initialize(v) = instructions::unpack(data).unwrap() else {
+        panic!()
+    };
+    assert_eq!(v.signer_nonce, 254);
+    assert_eq!(v.curve_type, 0);
+    assert_ne!(instructions::INITIALIZE, instructions::INITIALIZE_MARKET);
+    assert_eq!(&sha2::Sha256::digest(b"global:initialize")[..8], instructions::INITIALIZE);
+    exact_rejections(data, instructions::unpack);
+    let mut tx = transaction(14);
+    let message = tx.transaction.as_option_mut().unwrap().message.as_option_mut().unwrap();
+    message.account_keys = std::iter::once(aldrin::PROGRAM_ID.to_vec())
+        .chain(accounts.chunks_exact(32).map(|v| v.to_vec()))
+        .collect();
+    message.instructions[0].data = data.to_vec();
+    let view = tx.walk_instructions().next().unwrap();
+    let parsed = aldrin::accounts::get_initialize_accounts(&view).unwrap();
+    assert_eq!(borsh::to_vec(&parsed).unwrap(), accounts);
+    assert_eq!(parsed.pool.to_string(), "931bAjQx4RtbBjreP8HTNEu7ykozk4QXyYj3hiaJNdH");
+    assert_eq!(parsed.base_token_vault.to_string(), "GBN31V2iuAf4vVszJopaeWtncQpaR6yCqiQZxrKxQNNc");
+    assert_eq!(parsed.quote_token_vault.to_string(), "A24aR7uX7bZmyTQqHoADthNdc9nCru25oc7uafw18EWk");
 }

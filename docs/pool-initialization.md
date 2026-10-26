@@ -21,6 +21,7 @@ The protocol module names below are relative to `substreams_solana_idls`.
 
 | Module | Instruction variants | Account helpers / required prefix |
 | --- | --- | --- |
+| `aldrin` | `Initialize` (AMM V2) | `get_initialize_accounts`, 14; underlying mints require reserve context |
 | `byreal::clmm` | `CreatePool` | `get_create_pool_accounts`, 16 |
 | `pancakeswap` | `CreatePool` | `get_create_pool_accounts`, 13 |
 | `raydium::launchpad` | `Initialize`, `InitializeV2`, `InitializeWithToken2022` | `get_initialize_accounts` / `get_initialize_v2_accounts`, 18; `get_initialize_with_token_2022_accounts`, 15 |
@@ -45,7 +46,7 @@ variant is unchanged. Use the new entry points when establishing initialization.
 
 ## Identity and metadata boundaries
 
-- SPL Token Swap and Saros initializers contain two reserve token accounts and an
+- Aldrin AMM V2, SPL Token Swap and Saros initializers contain two reserve token accounts and an
   LP mint, but no underlying mint accounts. Resolve underlying mint identities
   from trustworthy token-account context; never use the LP mint as an asset mint.
 - Stabble is the weighted swap program. Its fixed `mint` account is the LP mint,
@@ -77,6 +78,7 @@ reference inputs at the pinned baseline revision, not newly inferred layouts.
 
 | Coverage | Pinned reference |
 | --- | --- |
+| Aldrin AMM V2 | [official registry IDL](https://github.com/aldrin-labs/aldrin-registry/blob/b1db26ca326356e7bbdd582985a12f6c7a2bbdcf/src/idls/poolsV2.json), `initialize`; [official published SDK 0.4.51 constants](https://unpkg.com/@aldrin_exchange/sdk@0.4.51/dist/esm/constants.js), `POOLS_V2_PROGRAM_ADDRESS`; captured exact-program initialization described below |
 | Byreal | [bundled CLMM IDL](https://github.com/pinax-network/substreams-idls/blob/5c7a36d416a75cdd8d3affd51d292d2b88426776/src/byreal/clmm/idl.json), `create_pool` |
 | PancakeSwap | [bundled IDL](https://github.com/pinax-network/substreams-idls/blob/5c7a36d416a75cdd8d3affd51d292d2b88426776/src/pancakeswap/idl.json), `create_pool` |
 | Raydium Launchpad | [bundled IDL](https://github.com/pinax-network/substreams-idls/blob/5c7a36d416a75cdd8d3affd51d292d2b88426776/src/raydium/launchpad/idl.json), three initialize variants |
@@ -107,6 +109,34 @@ record IDL account addresses, owners, slots, and response/data/IDL hashes.
 This is program-published IDL provenance, not a successful creation fixture.
 See the [service documentation](https://idl.solana.com/docs).
 
+## Aldrin AMM V2 source binding and captured evidence
+
+The official registry's `poolsV2.json` supplies `initialize(signerNonce: u8,
+curveType: u8)` and the 14-account layout. The official published
+`@aldrin_exchange/sdk@0.4.51` assigns `POOLS_V2_PROGRAM_ADDRESS` to the crate's
+exact `CURVGoZn8zycx6FXwwevgBTB2gVvdbGTEpvMJDbgs2t4` program. Its
+`dist/esm/pools/pool.js` binds the V2 swap constructor to that constant, and its
+`dist/esm/pools/layout.js` declares the complete V2 pool state matching the
+registry IDL. This SDK builds instructions directly rather than importing the IDL.
+The package tarball integrity was verified against NPM's published SHA-512 value;
+the version, integrity, URL and binding files are recorded in the fixture manifest.
+
+Public finalized transaction `4C1z3zxydcyVKGJFN8ahpwBGMfjmQGYHrMMoFzi768ue1eVYeGDbomcSSYVV4RdRWmKyb5bTyqZ4CK9ymjBxA1GJ`
+is recorded in [`aldrin-initialize.json`](../tests/fixtures/pool-initialization/aldrin-initialize.json).
+At slot 193097357 its successful instruction invokes that exact program with
+`afaf6d1f0d989bedfe00`, all 14 accounts, and untruncated logs. It creates pool
+`931bAjQx4RtbBjreP8HTNEu7ykozk4QXyYj3hiaJNdH`. The full RPC response, instruction
+bytes and resolved account bytes are retained beside the manifest. The parser
+fixture checks that nonce 254, curve type 0 and the account mapping match this
+captured instruction. Full transaction success/provenance projection remains the
+consumer's responsibility.
+
+The canonical Anchor IDL account was absent for this program when checked; this
+qualification uses official published source corroborated by captured successful
+execution, not an on-chain IDL claim. The pre-existing CLOB-shaped
+`InitializeMarket` API is retained for compatibility and is not used to identify
+AMM V2 pool creation. The program address in the README now matches the module.
+
 ## Explicit public-contract gaps
 
 This change does not invent initializers for swap-only catalog entries. The
@@ -129,6 +159,7 @@ truncation, trailing bytes, and documented Pump EOF compatibility. Existing
 Moonshot, Darklake, Plasma, Boop and Dumpfun instruction parsers are checked with
 the newly added account layouts. `tests/raydium_pool_creation.rs` covers the three
 additional CLMM families, their distinct account layouts and invalid wire fields.
-These are parser tests, not captured successful creation transactions. Existing
+The Aldrin fixture is a captured successful instruction; the other added families
+use synthetic parser fixtures. Existing
 Pump AMM captured tests and their separate coverage remain documented in
 [`pump-amm-creation.md`](pump-amm-creation.md).

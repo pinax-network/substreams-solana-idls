@@ -29,6 +29,8 @@ pub enum SelfTradeBehavior {
 // -----------------------------------------------------------------------------
 // Discriminators
 // -----------------------------------------------------------------------------
+/// Aldrin AMM V2 pool initializer; distinct from the legacy CLOB compatibility API.
+pub const INITIALIZE: [u8; 8] = [175, 175, 109, 31, 13, 152, 155, 237];
 pub const INITIALIZE_MARKET: [u8; 8] = [35, 35, 189, 193, 155, 48, 170, 203];
 pub const NEW_ORDER: [u8; 8] = [153, 0, 116, 34, 241, 46, 40, 139];
 pub const MATCH_ORDERS: [u8; 8] = [17, 1, 201, 93, 7, 51, 251, 134];
@@ -72,6 +74,7 @@ pub enum AldrinInstruction {
     Prune(PruneInstruction),
     ConsumeEventsPermissioned(ConsumeEventsPermissionedInstruction),
     Unknown,
+    Initialize(InitializeInstruction),
 }
 
 // -----------------------------------------------------------------------------
@@ -179,6 +182,7 @@ impl<'a> TryFrom<&'a [u8]> for AldrinInstruction {
         let discriminator: [u8; 8] = disc.try_into().expect("slice len 8");
 
         Ok(match discriminator {
+            INITIALIZE => Self::Initialize(InitializeInstruction::try_from_slice(payload)?),
             INITIALIZE_MARKET => Self::InitializeMarket(InitializeMarketInstruction::try_from_slice(payload)?),
             NEW_ORDER => Self::NewOrder(NewOrderInstructionV1::try_from_slice(payload)?),
             MATCH_ORDERS => Self::MatchOrders(MatchOrdersInstruction::try_from_slice(payload)?),
@@ -204,4 +208,11 @@ impl<'a> TryFrom<&'a [u8]> for AldrinInstruction {
 
 pub fn unpack(data: &[u8]) -> Result<AldrinInstruction, ParseError> {
     AldrinInstruction::try_from(data)
+}
+
+/// Aldrin AMM V2 pool creation arguments from the official poolsV2 IDL.
+#[derive(Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize)]
+pub struct InitializeInstruction {
+    pub signer_nonce: u8,
+    pub curve_type: u8,
 }
